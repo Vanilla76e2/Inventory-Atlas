@@ -1,0 +1,40 @@
+# ========================
+# Visual Studio / .NET
+# ========================
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+bin/
+obj/
+*.dbmdl
+*.dbproj.schemaview
+
+# ========================
+# ASP.NET Core
+# ========================
+# локальные dev-конфиги
+appsettings.Development.json
+
+# лог-файлы
+*.log
+
+# пакеты NuGet
+*.nupkg
+packages/
+.nuget/
+
+# ========================
+# Node / Frontend
+# ========================
+# Node modules
+client/node_modules/
+# Vite build output
+client/dist/
+
+# ========================
+# Misc
+# ========================
+*.DS_Store
+*.Thumbs.db
