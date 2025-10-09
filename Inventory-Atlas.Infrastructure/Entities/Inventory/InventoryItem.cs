@@ -17,6 +17,16 @@ namespace Inventory_Atlas.Infrastructure.Entities.Inventory
     public class InventoryItem : SoftDeletable
     {
         /// <summary>
+        /// Название объекта.
+        /// <para/>
+        /// Тип: <see cref="string"/>.
+        /// <para/>
+        /// Обязательное поле, не может быть null.
+        /// </summary>
+        [Column("name")]
+        public string Name { get; set; } = null!;
+
+        /// <summary>
         /// Инвентарный номер объекта.
         /// <para/>
         /// Тип: <see cref="long"/>?.
@@ -34,7 +44,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Inventory
         /// Может быть <see langword="null"/>.
         /// </summary>
         [Column("registry_number")]
-        public string? RegistryId { get; set; }
+        public string? RegistryNumber { get; set; }
 
         /// <summary>
         /// Идентификатор сотрудника, ответственного за объект.
@@ -75,6 +85,16 @@ namespace Inventory_Atlas.Infrastructure.Entities.Inventory
         /// </summary>
         [Column("status_id")]
         public InventoryStatus StatusId { get; set; }
+
+        /// <summary>
+        /// Комментарий по объект.
+        /// <para/>
+        /// Тип: <see cref="string"/>?.
+        /// <para/>
+        /// Может содержать дополнительные сведения, примечания или инструкции.
+        /// </summary>
+        [Column("comment")]
+        public string? Comment { get; set; }
 
         /// <summary>
         /// Коллекция фотографий объекта.

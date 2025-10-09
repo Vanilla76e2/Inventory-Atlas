@@ -31,7 +31,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// Может быть <see langword="null"/>. Хранится в PostgreSQL как <c>inet</c>.
         /// </summary>
         [Column("ip_address", TypeName = "inet")]
-        public IPAddress? IP { get; set; }
+        public IPAddress? IpAddress { get; set; }
 
         /// <summary>
         /// Операционная система, установленная на компьютере.

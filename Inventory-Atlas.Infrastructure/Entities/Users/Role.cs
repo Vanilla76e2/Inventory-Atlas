@@ -23,7 +23,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Users
         [StringLength(100)]
         public string Name { get; set; } = null!;
 
-        [Column("decription")]
+        [Column("description")]
         public string? Description { get; set; }
         /// <summary>
         /// Коллекция пользователей, связанных с этой ролью.
@@ -52,7 +52,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Users
         /// Не может быть <see langword="null"/>. По умолчанию пустой объект JSON.
         /// </summary>
         [Column("permissions", TypeName = "jsonb")]
-        public string PermissionJson { get; set; } = "{}";
+        public string PermissionJson { get; set; } = "[]";
 
     }
 }

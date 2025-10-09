@@ -1,4 +1,5 @@
 ﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+using Inventory_Atlas.Infrastructure.Entities.Inventory;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
@@ -11,17 +12,27 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// Содержит информацию о модели, IP, MAC, настройках Wi-Fi, количестве портов и т.д.
     /// </summary>
     [Table("NetworkDevices", Schema = "Technics")]
-    public class NetworkDevice : DeviceEntity, IHasIpAddress
+    public class NetworkDevice : InventoryItem, IHasIpAddress
     {
         /// <summary>
         /// Модель устройства.
         /// <para/>
         /// Тип: <see langword="string"/>.
         /// <para/>
-        /// Не может быть <see langword="null"/>.
+        /// Может быть <see langword="null"/>.
         /// </summary>
         [Column("model")]
-        public string Model { get; set; } = null!;
+        public string? Model { get; set; }
+
+        /// <summary>
+        /// Производитель устройства.
+        /// <para/>
+        /// Тип: <see langword="string"/>.
+        /// <para/>
+        /// Может быть <see langword="null"/>.
+        /// </summary>
+        [Column("vendor")]
+        public string? Vendor { get; set; }
 
         /// <summary>
         /// Серийный номер устройства.
@@ -41,7 +52,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// Может быть <see langword="null"/>.
         /// </summary>
         [Column("ip_address")]
-        public IPAddress? IP { get; set; }
+        public IPAddress? IpAddress { get; set; }
 
         /// <summary>
         /// MAC-адрес устройства.
@@ -51,7 +62,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// Может быть <see langword="null"/>.
         /// </summary>
         [Column("mac_address")]
-        public string? MAC { get; set; }
+        public string? MacAddress { get; set; }
 
         /// <summary>
         /// DHCP-настройка.
@@ -60,8 +71,8 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// <para/>
         /// Может быть <see langword="null"/>.
         /// </summary>
-        [Column("dhcp")]
-        public string? Dhcp { get; set; }
+        [Column("dhcp_range")]
+        public string? DhcpRange { get; set; }
 
         /// <summary>
         /// Логин администратора устройства.
@@ -101,7 +112,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// По умолчанию <see langword="false"/>.
         /// </summary>
         [Column("has_wifi")]
-        public bool HasWiFi { get; set; } = false;
+        public bool HasWifi { get; set; } = false;
 
         /// <summary>
         /// Название Wi-Fi сети.

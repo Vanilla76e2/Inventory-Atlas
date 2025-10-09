@@ -13,30 +13,8 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// связанный картридж и характеристики устройства.
     /// </summary>
     [Table("Printers", Schema = "Technics")]
-    public class Printer : Equipment, IHasIpAddress
+    public class Printer : DeviceEntity, IHasIpAddress
     {
-        /// <summary>
-        /// Модель принтера.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>. Максимальная длина — 255 символов.
-        /// </summary>
-        [Column("model")]
-        [StringLength(255)]
-        public string? Model { get; set; }
-
-        /// <summary>
-        /// Серийный номер принтера.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>. Максимальная длина — 255 символов.
-        /// </summary>
-        [Column("serial_number")]
-        [StringLength(255)]
-        public string? SerialNumber { get; set; }
-
         /// <summary>
         /// IP-адрес принтера.
         /// <para/>
@@ -45,7 +23,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// Может быть <see langword="null"/>.
         /// </summary>
         [Column("ip_address")]
-        public IPAddress? IP { get; set; }
+        public IPAddress? IpAddress { get; set; }
 
         /// <summary>
         /// Идентификатор картриджа, установленного в принтере.
@@ -58,12 +36,12 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// <summary>
         /// Навигационное свойство на картридж.
         /// <para/>
-        /// Тип: <see cref="PrinterCartrige"/>?.
+        /// Тип: <see cref="PrinterCartridge"/>?.
         /// <para/>
         /// Может быть <see langword="null"/>.
         /// </summary>
         [ForeignKey(nameof(CartridgeId))]
-        public virtual PrinterCartrige? Cartridge { get; set; }
+        public virtual PrinterCartridge? Cartridge { get; set; }
 
         /// <summary>
         /// Флаг цветной печати.

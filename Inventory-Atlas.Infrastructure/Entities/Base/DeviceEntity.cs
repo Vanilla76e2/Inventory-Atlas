@@ -1,35 +1,37 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Inventory;
-using Inventory_Atlas.Infrastructure.Entities.Technics;
+﻿using Inventory_Atlas.Infrastructure.Entities.Technics;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Base
 {
     /// <summary>
-    /// Абстрактная сущность устройства.
+    /// Представляет запись об устройстве в инвентаре.
     /// <para/>
-    /// Содержит общие свойства для всех типов устройств в системе, включая имя, инвентарный номер,
-    /// ответственного сотрудника, местоположение и статус.
+    /// Наследует общие свойства инвентарного объекта из <see cref="Equipment"/>.
     /// </summary>
-    public abstract class DeviceEntity : InventoryItem
+    public class DeviceEntity : Equipment
     {
         /// <summary>
-        /// Название устройства.
+        /// Модель устройства.
         /// <para/>
-        /// Тип: <see cref="string"/>.
-        /// <para/>
-        /// Обязательное поле, не может быть null.
+        /// Обязательное поле: не может быть <see langword="null"/>.
         /// </summary>
-        [Column("name")]
-        public string Name { get; set; } = null!;
+        [Column("model")]
+        public string? Model { get; set; }
 
         /// <summary>
-        /// Комментарий по устройству.
+        /// Серийный номер устройства.
         /// <para/>
-        /// Тип: <see cref="string"/>?.
-        /// <para/>
-        /// Может содержать дополнительные сведения, примечания или инструкции.
+        /// Может быть <see langword="null"/>, если серийный номер не указан.
         /// </summary>
-        [Column("comment")]
-        public string? Comment { get; set; }
+        [Column("serial_number")]
+        public string? SerialNumber { get; set; }
+
+        /// <summary>
+        /// Поставщик или производитель устройства.
+        /// <para/>
+        /// Может быть <see langword="null"/>, если информация о поставщике не указана.
+        /// </summary>
+        [Column("vendor")]
+        public string? Vendor { get; set; }
     }
 }

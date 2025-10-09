@@ -1,4 +1,4 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+﻿using Inventory_Atlas.Infrastructure.Entities.Inventory;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Technics
@@ -9,7 +9,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// Является устройством (<see cref="DeviceEntity"/>), может быть связанным с рабочими местами.
     /// </summary>
     [Table("Equipment", Schema = "Technics")]
-    public class Equipment : DeviceEntity
+    public class Equipment : InventoryItem
     {
         /// <summary>
         /// Коллекция связей оборудования с рабочими местами.

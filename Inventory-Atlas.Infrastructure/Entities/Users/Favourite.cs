@@ -47,5 +47,15 @@ namespace Inventory_Atlas.Infrastructure.Entities.Users
         /// </summary>
         [ForeignKey(nameof(ItemId))]
         public virtual InventoryItem Item { get; set; } = null!;
+
+        /// <summary>
+        /// Дата добавления в избранное.
+        /// <para/>
+        /// Тип: <see cref="DateTime"/>
+        /// <para/>
+        /// По умолчанию <see cref="DateTime.UtcNow"/>
+        /// </summary>
+        [Column("favourited_at")]
+        public DateTime FavouritedAt { get; set; } = DateTime.UtcNow;
     }
 }

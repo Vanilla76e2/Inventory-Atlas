@@ -24,38 +24,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Audit.IpAudit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<IPAddress>("Ip")
-                        .IsRequired()
-                        .HasColumnType("inet")
-                        .HasColumnName("ip");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("note");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IpAudit", "Audit");
-                });
-
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Audit.LogEntry", b =>
                 {
                     b.Property<int>("Id")
@@ -624,6 +592,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Comment")
+                        .HasColumnType("text")
+                        .HasColumnName("comment");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -644,7 +616,12 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("location");
 
-                    b.Property<string>("RegistryId")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("RegistryNumber")
                         .HasColumnType("text")
                         .HasColumnName("registry_number");
 
@@ -705,7 +682,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CPUs", "References");
+                    b.ToTable("CPUs", "Dictionaries");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.References.GPU", b =>
@@ -752,7 +729,39 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GPUs", "References");
+                    b.ToTable("GPUs", "Dictionaries");
+                });
+
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.References.IpDictionary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<IPAddress>("Ip")
+                        .IsRequired()
+                        .HasColumnType("inet")
+                        .HasColumnName("ip");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("note");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IpAddresses", "Dictionaries");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.References.MoBo", b =>
@@ -804,7 +813,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MoBos", "References");
+                    b.ToTable("MoBos", "Dictionaries");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Services.FurnitureMaterial", b =>
@@ -1015,6 +1024,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("FavouritedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("favourited_at");
+
                     b.Property<int>("ItemId")
                         .HasColumnType("integer")
                         .HasColumnName("item_id");
@@ -1047,7 +1060,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
-                        .HasColumnName("decription");
+                        .HasColumnName("description");
 
                     b.Property<bool>("IsSystem")
                         .HasColumnType("boolean")
@@ -1138,10 +1151,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserProfiles", "Users");
+                    b.ToTable("UsersProfiles", "Users");
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Сonsumables.PrinterCartrige", b =>
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Сonsumables.PrinterCartridge", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1174,7 +1187,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PrinterCartriges", "Consumables");
+                    b.ToTable("PrinterCartridges", "Consumables");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Inventory.Furniture", b =>
@@ -1210,11 +1223,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("category_id");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
                     b.Property<string>("Properties")
                         .IsRequired()
                         .HasColumnType("jsonb")
@@ -1234,15 +1242,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     b.HasBaseType("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem");
 
-                    b.Property<string>("Comment")
-                        .HasColumnType("text")
-                        .HasColumnName("comment");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
                     b.ToTable("Equipments", "Technics");
                 });
 
@@ -1258,35 +1257,25 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("admin_password");
 
-                    b.Property<string>("Comment")
+                    b.Property<string>("DhcpRange")
                         .HasColumnType("text")
-                        .HasColumnName("comment");
+                        .HasColumnName("dhcp_range");
 
-                    b.Property<string>("Dhcp")
-                        .HasColumnType("text")
-                        .HasColumnName("dhcp");
-
-                    b.Property<bool>("HasWiFi")
+                    b.Property<bool>("HasWifi")
                         .HasColumnType("boolean")
                         .HasColumnName("has_wifi");
 
-                    b.Property<IPAddress>("IP")
+                    b.Property<IPAddress>("IpAddress")
                         .HasColumnType("inet")
                         .HasColumnName("ip_address");
 
-                    b.Property<string>("MAC")
+                    b.Property<string>("MacAddress")
                         .HasColumnType("text")
                         .HasColumnName("mac_address");
 
                     b.Property<string>("Model")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("model");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
 
                     b.Property<int?>("NetworkBandwidth")
                         .HasColumnType("integer")
@@ -1299,6 +1288,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.Property<string>("SerialNumber")
                         .HasColumnType("text")
                         .HasColumnName("serial_number");
+
+                    b.Property<string>("Vendor")
+                        .HasColumnType("text")
+                        .HasColumnName("vendor");
 
                     b.Property<string>("WifiName")
                         .HasColumnType("text")
@@ -1459,7 +1452,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     b.HasBaseType("Inventory_Atlas.Infrastructure.Entities.Technics.Equipment");
 
-                    b.Property<IPAddress>("IP")
+                    b.Property<IPAddress>("IpAddress")
                         .HasColumnType("inet")
                         .HasColumnName("ip_address");
 
@@ -1491,14 +1484,12 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("gpu");
 
-                    b.Property<IPAddress>("IP")
+                    b.Property<IPAddress>("IpAddress")
                         .HasColumnType("inet")
                         .HasColumnName("ip_address");
 
                     b.Property<string>("Model")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("text")
                         .HasColumnName("model");
 
                     b.Property<string>("OperatingSystem")
@@ -1521,9 +1512,12 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnName("resolution");
 
                     b.Property<string>("SerialNumber")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("text")
                         .HasColumnName("serial_number");
+
+                    b.Property<string>("Vendor")
+                        .HasColumnType("text")
+                        .HasColumnName("vendor");
 
                     b.ToTable("Laptops", "Technics");
                 });
@@ -1549,14 +1543,12 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnName("hdmi_port");
 
                     b.Property<string>("Model")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("text")
                         .HasColumnName("model");
 
-                    b.Property<string>("PanelType")
+                    b.Property<int>("PanelType")
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("integer")
                         .HasColumnName("panel_type");
 
                     b.Property<int?>("RefreshRate")
@@ -1567,6 +1559,14 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("resolution");
+
+                    b.Property<string>("SerialNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("serial_number");
+
+                    b.Property<string>("Vendor")
+                        .HasColumnType("text")
+                        .HasColumnName("vendor");
 
                     b.Property<short?>("Vga")
                         .HasColumnType("smallint")
@@ -1580,7 +1580,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasBaseType("Inventory_Atlas.Infrastructure.Entities.Technics.Equipment");
 
                     b.Property<string>("Model")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("model");
 
@@ -1589,8 +1588,11 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("character varying(18)")
                         .HasColumnName("phone_number");
 
+                    b.Property<string>("SerialNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("serial_number");
+
                     b.Property<string>("Vendor")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("vendor");
 
@@ -1613,19 +1615,21 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("has_scanner");
 
-                    b.Property<IPAddress>("IP")
+                    b.Property<IPAddress>("IpAddress")
                         .HasColumnType("inet")
                         .HasColumnName("ip_address");
 
                     b.Property<string>("Model")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("text")
                         .HasColumnName("model");
 
                     b.Property<string>("SerialNumber")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("text")
                         .HasColumnName("serial_number");
+
+                    b.Property<string>("Vendor")
+                        .HasColumnType("text")
+                        .HasColumnName("vendor");
 
                     b.HasIndex("CartridgeId");
 
@@ -1640,23 +1644,25 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("color");
 
-                    b.Property<int?>("DPI")
+                    b.Property<int?>("Dpi")
                         .HasColumnType("integer")
                         .HasColumnName("dpi");
 
-                    b.Property<IPAddress>("IP")
+                    b.Property<IPAddress>("IpAddress")
                         .HasColumnType("inet")
                         .HasColumnName("ip_address");
 
                     b.Property<string>("Model")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("text")
                         .HasColumnName("model");
 
                     b.Property<string>("SerialNumber")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("text")
                         .HasColumnName("serial_number");
+
+                    b.Property<string>("Vendor")
+                        .HasColumnType("text")
+                        .HasColumnName("vendor");
 
                     b.ToTable("Scanners", "Technics");
                 });
@@ -1689,7 +1695,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnName("drive");
 
                     b.Property<string>("Model")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("model");
 
@@ -1704,6 +1709,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.Property<string>("SerialNumber")
                         .HasColumnType("text")
                         .HasColumnName("serial_number");
+
+                    b.Property<string>("Vendor")
+                        .HasColumnType("text")
+                        .HasColumnName("vendor");
 
                     b.ToTable("Tablets", "Technics");
                 });
@@ -1721,7 +1730,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnName("capacity_watts");
 
                     b.Property<string>("Model")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("model");
 
@@ -1732,6 +1740,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.Property<short?>("SocketCount")
                         .HasColumnType("smallint")
                         .HasColumnName("socket_count");
+
+                    b.Property<string>("Vendor")
+                        .HasColumnType("text")
+                        .HasColumnName("vendor");
 
                     b.ToTable("UPS", "Technics");
                 });
@@ -2212,7 +2224,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Printer", b =>
                 {
-                    b.HasOne("Inventory_Atlas.Infrastructure.Entities.Сonsumables.PrinterCartrige", "Cartridge")
+                    b.HasOne("Inventory_Atlas.Infrastructure.Entities.Сonsumables.PrinterCartridge", "Cartridge")
                         .WithMany("Printers")
                         .HasForeignKey("CartridgeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2367,7 +2379,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.Navigation("Favourites");
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Сonsumables.PrinterCartrige", b =>
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Сonsumables.PrinterCartridge", b =>
                 {
                     b.Navigation("Printers");
                 });

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-Atlas.Server", "Inventory Atlas\Inventory-Atlas.Server.csproj", "{2273E79C-7738-4246-B2CC-F22CD78B0CF8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-Atlas.Core", "Inventory-Atlas.Core\Inventory-Atlas.Core.csproj", "{699F4172-0A31-4AF7-BD5B-D66B7F77839D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-Atlas.Application", "Inventory-Atlas.Application\Inventory-Atlas.Application.csproj", "{9A2EE8CB-0D01-450B-8FDF-8CA335FFE7D9}"
@@ -13,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-Atlas.Infrastruct
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOs", "DTOs\DTOs.csproj", "{5CCFE80E-59C4-4922-AD8B-C0D666F4797F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-Atlas.Server", "Inventory-Atlas\Inventory-Atlas.Server.csproj", "{56FE7334-7818-AB04-B0B8-BE70A74A2229}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2273E79C-7738-4246-B2CC-F22CD78B0CF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2273E79C-7738-4246-B2CC-F22CD78B0CF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2273E79C-7738-4246-B2CC-F22CD78B0CF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2273E79C-7738-4246-B2CC-F22CD78B0CF8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{699F4172-0A31-4AF7-BD5B-D66B7F77839D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{699F4172-0A31-4AF7-BD5B-D66B7F77839D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{699F4172-0A31-4AF7-BD5B-D66B7F77839D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,10 +31,10 @@ Global
 		{B7376055-96A9-446C-A48B-1E1D774C5D58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7376055-96A9-446C-A48B-1E1D774C5D58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7376055-96A9-446C-A48B-1E1D774C5D58}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5CCFE80E-59C4-4922-AD8B-C0D666F4797F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CCFE80E-59C4-4922-AD8B-C0D666F4797F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CCFE80E-59C4-4922-AD8B-C0D666F4797F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CCFE80E-59C4-4922-AD8B-C0D666F4797F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56FE7334-7818-AB04-B0B8-BE70A74A2229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56FE7334-7818-AB04-B0B8-BE70A74A2229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56FE7334-7818-AB04-B0B8-BE70A74A2229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56FE7334-7818-AB04-B0B8-BE70A74A2229}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,31 +11,8 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// Наследуется от <see cref="Equipment"/> и содержит модель, серийный номер, IP-адрес и характеристики устройства.
     /// </summary>
     [Table("Scanners", Schema = "Technics")]
-    public class Scanner : Equipment, IHasIpAddress
+    public class Scanner : DeviceEntity, IHasIpAddress
     {
-        /// <summary>
-        /// Модель сканера.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>. Максимальная длина — 255 символов.
-        /// </summary>
-        [Column("model")]
-        [StringLength(255)]
-        public string? Model { get; set; }
-
-
-        /// <summary>
-        /// Серийный номер сканера.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>. Максимальная длина — 255 символов.
-        /// </summary>
-        [Column("serial_number")]
-        [StringLength(255)]
-        public string? SerialNumber { get; set; }
-
         /// <summary>
         /// IP-адрес сканера.
         /// <para/>
@@ -44,7 +21,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// Может быть <see langword="null"/>.
         /// </summary>
         [Column("ip_address")]
-        public IPAddress? IP { get; set; }
+        public IPAddress? IpAddress { get; set; }
 
         /// <summary>
         /// Разрешение сканирования в DPI.
@@ -54,7 +31,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// Может быть <see langword="null"/>.
         /// </summary>
         [Column("dpi")]
-        public int? DPI { get; set; }
+        public int? Dpi { get; set; }
 
         /// <summary>
         /// Флаг цветного сканирования.

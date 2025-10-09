@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Technics
 {
@@ -8,28 +9,8 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// Наследуется от <see cref="Equipment"/> и содержит основные характеристики устройства.
     /// </summary>
     [Table("UPSs", Schema = "Technics")]
-    public class UPS : Equipment
+    public class UPS : DeviceEntity
     {
-        /// <summary>
-        /// Модель UPS.
-        /// <para/>
-        /// Тип: <see langword="string"/>.
-        /// <para/>
-        /// Обязательное поле, не может быть <see langword="null"/>.
-        /// </summary>
-        [Column("model")]
-        public string Model { get; set; } = null!;
-
-        /// <summary>
-        /// Серийный номер UPS.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>.
-        /// </summary>
-        [Column("serial_number")]
-        public string? SerialNumber { get; set; }
-
         /// <summary>
         /// Мощность UPS в ваттах.
         /// <para/>

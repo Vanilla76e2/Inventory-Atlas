@@ -26,7 +26,6 @@ namespace Inventory_Atlas.Infrastructure.Data
         { }
 
         // Audit
-        public DbSet<IpAudit> IpAudits { get; set; }
         public DbSet<LogEntry> LogEntries { get; set; }
         public DbSet<UserSession> UserSessions { get; set; }
 
@@ -49,7 +48,11 @@ namespace Inventory_Atlas.Infrastructure.Data
         // Inventory
         public DbSet<Furniture> Furnitures { get; set; }
         public DbSet<FurnitureMaterialAssignment> FurnitureMaterialAssignments { get; set; }
+        public DbSet<GenericInventoryItem> GenericInventoryItems { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
+
+        // Dictionaries
+        public DbSet<IpDictionary> IpAudits { get; set; }
         public DbSet<CPU> CPUReferences { get; set; }
         public DbSet<GPU> GPUReferences { get; set; }
         public DbSet<MoBo> MoBoReferences { get; set; }
@@ -93,7 +96,7 @@ namespace Inventory_Atlas.Infrastructure.Data
         public DbSet<UserProfile> UserProfiles { get; set; }
 
         // Consumables
-        public DbSet<PrinterCartrige> PrinterCartriges { get; set; }
+        public DbSet<PrinterCartridge> PrinterCartridges { get; set; }
 
         /// <summary>
         /// Конфигурирует модель сущностей для базы данных.
@@ -111,7 +114,7 @@ namespace Inventory_Atlas.Infrastructure.Data
 
             InventoryBuilder(modelBuilder);
 
-            ReferencesBuilder(modelBuilder);
+            DictionariesBuilder(modelBuilder);
 
             ServicesBuilder(modelBuilder);
 
@@ -126,10 +129,6 @@ namespace Inventory_Atlas.Infrastructure.Data
 
         private void AuditBuilder(ModelBuilder mb)
         {
-            mb.Entity<IpAudit>()
-                .ToTable("IpAudit", "Audit")
-                .HasKey(x => x.Id);
-
             mb.Entity<LogEntry>()
                 .ToTable("LogEntrys", "Audit")
                 .HasKey(x => x.Id);
@@ -222,18 +221,22 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .HasDatabaseName("IX_GenericInventoryItem_Properties");
         }
 
-        private void ReferencesBuilder(ModelBuilder mb)
+        private void DictionariesBuilder(ModelBuilder mb)
         {
+            mb.Entity<IpDictionary>()
+                .ToTable("IpAddresses", "Dictionaries")
+                .HasKey(x => x.Id);
+
             mb.Entity<CPU>()
-                .ToTable("CPUs", "References")
+                .ToTable("CPUs", "Dictionaries")
                 .HasKey(x => x.Id);
 
             mb.Entity<GPU>()
-                .ToTable("GPUs", "References")
+                .ToTable("GPUs", "Dictionaries")
                 .HasKey(x => x.Id);
 
             mb.Entity<MoBo>()
-                .ToTable("MoBos", "References")
+                .ToTable("MoBos", "Dictionaries")
                 .HasKey(x => x.Id);
         }
 
@@ -370,7 +373,7 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .HasKey(x => x.Id);
 
             mb.Entity<UserProfile>()
-                .ToTable("UserProfiles", "Users")
+                .ToTable("UsersProfiles", "Users")
                 .HasKey(x => x.Id);
 
             mb.Entity<Role>()
@@ -381,8 +384,8 @@ namespace Inventory_Atlas.Infrastructure.Data
 
         private void ConsumablesBuilder(ModelBuilder mb)
         {
-            mb.Entity<PrinterCartrige>()
-                .ToTable("PrinterCartriges", "Consumables")
+            mb.Entity<PrinterCartridge>()
+                .ToTable("PrinterCartridges", "Consumables")
                 .HasKey(x => x.Id);
         }
         

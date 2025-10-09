@@ -1,0 +1,7 @@
+﻿namespace Inventory_Atlas.Core.DTOs.Common
+{
+    public class BaseDto
+    {
+        public int Id { get; set; }
+    }
+}

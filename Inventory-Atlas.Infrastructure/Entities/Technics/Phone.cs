@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Technics
@@ -9,28 +10,8 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// Наследуется от <see cref="Equipment"/> и содержит модель, производителя и номер телефона.
     /// </summary>
     [Table("Phones", Schema = "Technics")]
-    public class Phone : Equipment
+    public class Phone : DeviceEntity
     {
-        /// <summary>
-        /// Модель телефона.
-        /// <para/>
-        /// Тип: <see langword="string"/>.
-        /// <para/>
-        /// Не может быть <see langword="null"/>.
-        /// </summary>
-        [Column("model")]
-        public string Model { get; set; } = null!;
-
-        /// <summary>
-        /// Производитель телефона.
-        /// <para/>
-        /// Тип: <see langword="string"/>.
-        /// <para/>
-        /// Не может быть <see langword="null"/>.
-        /// </summary>
-        [Column("vendor")]
-        public string Vendor { get; set; } = null!;
-
         /// <summary>
         /// Номер телефона.
         /// <para/>

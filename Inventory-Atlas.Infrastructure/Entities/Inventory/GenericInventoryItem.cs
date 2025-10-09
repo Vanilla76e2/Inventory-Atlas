@@ -30,16 +30,6 @@ namespace Inventory_Atlas.Infrastructure.Entities.Inventory
         public virtual InventoryCategory Category { get; set; } = null!;
 
         /// <summary>
-        /// Наименование инвентарного объекта.
-        /// <para/>
-        /// Тип: <see langword="string"/>.
-        /// <para/>
-        /// Обязательное поле, не может быть null.
-        /// </summary>
-        [Column("name")]
-        public string Name { get; set; } = null!;
-
-        /// <summary>
         /// Дополнительные свойства объекта в формате JSON.
         /// <para/>
         /// Тип: <see langword="string"/>.

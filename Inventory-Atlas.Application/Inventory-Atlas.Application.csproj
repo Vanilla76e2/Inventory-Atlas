@@ -8,12 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\Inventory-Atlas.Core\Inventory-Atlas.Core.csproj" />
+    <ProjectReference Include="..\Inventory-Atlas.Infrastructure\Inventory-Atlas.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Inventory-Atlas.Core\Inventory-Atlas.Core.csproj" />
-    <ProjectReference Include="..\Inventory-Atlas.Infrastructure\Inventory-Atlas.Infrastructure.csproj" />
+    <Folder Include="Services\" />
+    <Folder Include="Mapping\" />
   </ItemGroup>
 
 </Project>

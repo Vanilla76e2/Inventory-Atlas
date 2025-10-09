@@ -12,30 +12,8 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// модель, серийный номер, диагональ экрана, разрешение, ОС, процессор, ОЗУ, накопитель и GPU.
     /// </summary>
     [Table("Laptops", Schema = "Technics")]
-    public class Laptop : Equipment, IHasIpAddress
+    public class Laptop : DeviceEntity, IHasIpAddress
     {
-        /// <summary>
-        /// Модель ноутбука.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Не может быть <see langword="null"/>.
-        /// </summary>
-        [Column("model")]
-        [StringLength(255)]
-        public string Model { get; set; } = null!;
-
-        /// <summary>
-        /// Серийный номер ноутбука.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>. Ограничение длины 255 символов.
-        /// </summary>
-        [Column("serial_number")]
-        [StringLength(255)]
-        public string? SerialNumber { get; set; }
-
         /// <summary>
         /// Диагональ экрана в дюймах.
         /// <para/>
@@ -112,6 +90,6 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         public string? GPU { get; set; }
 
         [Column("ip_address")]
-        public IPAddress? IP { get; set; }
+        public IPAddress? IpAddress { get; set; }
     }
 }

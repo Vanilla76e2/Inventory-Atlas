@@ -1,5 +1,6 @@
 ﻿
 using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,8 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
         public static void InstallOrUpdateDatabase(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var provider = scope.ServiceProvider.GetRequiredService<IDatabaseContextProvider>();
+            var context = provider.GetDbContextAsync().Result;
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<AppDbContext>>();
 
             try

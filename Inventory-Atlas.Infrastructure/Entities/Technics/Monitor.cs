@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Technics
@@ -10,19 +11,8 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// модель, диагональ, разрешение, частоту обновления, тип панели и количество видеопортов.
     /// </summary>
     [Table("Monitors", Schema = "Technics")]
-    public class Monitor : Equipment
+    public class Monitor : DeviceEntity
     {
-        /// <summary>
-        /// Модель монитора.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>. Ограничение длины 255 символов.
-        /// </summary>
-        [Column("model")]
-        [StringLength(255)]
-        public string Model { get; set; } = null!;
-
         /// <summary>
         /// Диагональ экрана в дюймах.
         /// <para/>
@@ -63,7 +53,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// </summary>
         [Column("panel_type")]
         [StringLength(50)]
-        public string? PanelType { get; set; } // e.g., IPS, TN, VA
+        public DisplayType PanelType { get; set; } = DisplayType.Other; // e.g., IPS, TN, VA
 
         /// <summary>
         /// Количество VGA портов.
