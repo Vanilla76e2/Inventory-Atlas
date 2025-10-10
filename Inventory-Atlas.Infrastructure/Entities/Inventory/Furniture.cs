@@ -46,7 +46,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Inventory
         /// Тип: <see langword="double"/>.
         /// </summary>
         [Column("weight")]
-        public double Weight { get; set; }
+        public double? Weight { get; set; }
 
         /// <summary>
         /// Ориентация мебели (например, горизонтальная, вертикальная).

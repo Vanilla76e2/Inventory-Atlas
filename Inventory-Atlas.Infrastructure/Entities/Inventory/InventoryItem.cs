@@ -2,7 +2,6 @@
 using Inventory_Atlas.Infrastructure.Entities.Base;
 using Inventory_Atlas.Infrastructure.Entities.Documents;
 using Inventory_Atlas.Infrastructure.Entities.Employees;
-using Inventory_Atlas.Infrastructure.Entities.Services;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 using System.ComponentModel.DataAnnotations.Schema;
 

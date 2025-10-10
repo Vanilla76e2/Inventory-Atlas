@@ -21,11 +21,11 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
         /// <summary>
         /// Навигационное свойство на процессор.
         /// <para/>
-        /// Тип: <see cref="References.CPU"/>.
+        /// Тип: <see cref="References.CpuDictionary"/>.
         /// <para/>
         /// Позволяет получить информацию о модели CPU, которой является данный компонент.
         /// </summary>
         [ForeignKey(nameof(CPUId))]
-        public virtual References.CPU CPUReference { get; set; } = null!;
+        public virtual References.CpuDictionary CPUReference { get; set; } = null!;
     }
 }

@@ -9,7 +9,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Documents
     /// <para/>
     /// Связывает конкретный документ <see cref="TransferDocument"/> с конкретным предметом <see cref="InventoryItem"/>.
     /// </summary>
-    [Table("TransferTableItems", Schema = "Documents")]
+    [Table("TransferDocumentsItems", Schema = "Documents")]
     public class TransferDocumentItem : BaseEntity
     {
         /// <summary>
@@ -28,7 +28,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Documents
         /// Не может быть <see langword="null"/>.
         /// </summary>
         [ForeignKey("DocumentId")]
-        public virtual TransferDocument TransferDocument { get; set; } = new TransferDocument();
+        public virtual TransferDocument Document { get; set; } = new TransferDocument();
 
         /// <summary>
         /// Идентификатор предмета инвентаря.

@@ -10,8 +10,8 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
     /// </summary>
     public class DatabaseRepository<T> : IDatabaseRepository<T> where T : class
     {
-        private readonly IDatabaseContextProvider _contextProvider;
-        private readonly ILogger<DatabaseRepository<T>> _logger;
+        protected readonly IDatabaseContextProvider _contextProvider;
+        protected readonly ILogger<DatabaseRepository<T>> _logger;
 
         /// <summary>
         /// Конструктор репозитория.
@@ -94,6 +94,25 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         }
 
         /// <summary>
+        /// Асинхронно ищет все сущности, удовлетворяющие условию.
+        /// </summary>
+        /// <param name="predicate">Условие поиска.</param>
+        /// <returns>Список сущностей.</returns>
+        public async Task<IEnumerable<T>> FindManyAsync(Expression<Func<T, bool>> predicate)
+        {
+            try
+            {
+                await using var context = await _contextProvider.GetDbContextAsync();
+                return await context.Set<T>().Where(predicate).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error finding multiple entities of type {EntityType}.", typeof(T).Name);
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Асинхронно получает все сущности типа <typeparamref name="T"/>.
         /// </summary>
         /// <returns>Список всех сущностей.</returns>
@@ -116,7 +135,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         /// </summary>
         /// <param name="id">Идентификатор сущности.</param>
         /// <returns>Сущность или null, если не найдена.</returns>
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(params object[] id)
         {
             try
             {

@@ -2,10 +2,40 @@
 
 namespace Inventory_Atlas.Core.DTOs.Employees
 {
+    /// <summary>
+    /// DTO для подразделения компании.
+    /// <para/>
+    /// Тип: <see cref="DepartmentDto"/>
+    /// <para/>
+    /// Наследуется от <see cref="AuditableDto"/> и содержит название, комментарий и список сотрудников (опционально для UI).
+    /// </summary>
     public class DepartmentDto : AuditableDto
     {
+        /// <summary>
+        /// Название подразделения.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Не может быть <c>null</c>.
+        /// </summary>
         public string Name { get; set; } = null!;
+
+        /// <summary>
+        /// Комментарий к подразделению.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Может быть <c>null</c>.
+        /// </summary>
         public string? Comment { get; set; }
-        public List<EmployeeSummaryDto>? Employees { get; set; } // Опционально для UI
+
+        /// <summary>
+        /// Список сотрудников подразделения.
+        /// <para/>
+        /// Тип: <see cref="List{EmployeeSummaryDto}"/>
+        /// <para/>
+        /// Может быть <c>null</c>, используется опционально для UI.
+        /// </summary>
+        public List<EmployeeSummaryDto>? Employees { get; set; }
     }
 }

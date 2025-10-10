@@ -1,4 +1,5 @@
 ﻿using Inventory_Atlas.Infrastructure.Entities.Audit;
+using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
 using Inventory_Atlas.Infrastructure.Entities.Documents;
 using Inventory_Atlas.Infrastructure.Entities.Employees;
 using Inventory_Atlas.Infrastructure.Entities.Inventory;
@@ -53,9 +54,9 @@ namespace Inventory_Atlas.Infrastructure.Data
 
         // Dictionaries
         public DbSet<IpDictionary> IpAudits { get; set; }
-        public DbSet<CPU> CPUReferences { get; set; }
-        public DbSet<GPU> GPUReferences { get; set; }
-        public DbSet<MoBo> MoBoReferences { get; set; }
+        public DbSet<CpuDictionary> CPUReferences { get; set; }
+        public DbSet<GpuDictionary> GPUReferences { get; set; }
+        public DbSet<MoBoDictionary> MoBoReferences { get; set; }
 
         // Services
         public DbSet<FurnitureMaterial> FurnitureMaterials { get; set; }
@@ -116,8 +117,6 @@ namespace Inventory_Atlas.Infrastructure.Data
 
             DictionariesBuilder(modelBuilder);
 
-            ServicesBuilder(modelBuilder);
-
             ComponentsBuilder(modelBuilder);
             
             TechnicsBuilder(modelBuilder);
@@ -138,7 +137,7 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .HasKey(x => x.Id);
 
             mb.Entity<LogEntry>()
-                .HasIndex(p => p.Changes)
+                .HasIndex(p => p.Details)
                 .HasMethod("GIN")
                 .HasDatabaseName("IX_LogEntry_Changes");
         }
@@ -191,10 +190,6 @@ namespace Inventory_Atlas.Infrastructure.Data
             mb.Entity<MateriallyResponsible>()
                 .ToTable("MateriallyResponsibles", "Employees")
                 .HasKey(x => x.Id);
-
-            mb.Entity<Workplace>()
-                .ToTable("Workplaces", "Employees")
-                .HasKey(x => x.Id);
         }
 
         private void InventoryBuilder(ModelBuilder mb)
@@ -215,6 +210,18 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .ToTable("InventoryItems", "Inventory")
                 .HasKey(x => x.Id);
 
+            mb.Entity<InventoryPhoto>()
+                .ToTable("InventoryPhotos", "Inventory")
+                .HasKey(x => x.Id);
+
+            mb.Entity<Workplace>()
+                .ToTable("Workplaces", "Inventory")
+                .HasKey(x => x.Id);
+
+            mb.Entity<WorkplaceEquipment>()
+                .ToTable("WorkplaceEquipment", "Inventory")
+                .HasKey(x => x.Id);
+
             mb.Entity<GenericInventoryItem>()
                 .HasIndex(p => p.Properties)
                 .HasMethod("GIN")
@@ -227,35 +234,28 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .ToTable("IpAddresses", "Dictionaries")
                 .HasKey(x => x.Id);
 
-            mb.Entity<CPU>()
+            mb.Entity<CpuDictionary>()
                 .ToTable("CPUs", "Dictionaries")
                 .HasKey(x => x.Id);
 
-            mb.Entity<GPU>()
+            mb.Entity<GpuDictionary>()
                 .ToTable("GPUs", "Dictionaries")
                 .HasKey(x => x.Id);
 
-            mb.Entity<MoBo>()
+            mb.Entity<MoBoDictionary>()
                 .ToTable("MoBos", "Dictionaries")
-                .HasKey(x => x.Id);
-        }
-
-        private void ServicesBuilder(ModelBuilder mb)
-        {
-            mb.Entity<FurnitureMaterial>()
-                .ToTable("FurnitureMaterials", "Services")
                 .HasKey(x => x.Id);
 
             mb.Entity<FurnitureType>()
-                .ToTable("FurnitureTypes", "Services")
+                .ToTable("FurnitureTypes", "Dictionaries")
+                .HasKey(x => x.Id);
+
+            mb.Entity<FurnitureMaterial>()
+                .ToTable("FurnitureMaterials", "Dictionaries")
                 .HasKey(x => x.Id);
 
             mb.Entity<InventoryCategory>()
-                .ToTable("InventoryCategorys", "Services")
-                .HasKey(x => x.Id);
-
-            mb.Entity<InventoryPhoto>()
-                .ToTable("InventoryPhotos", "Services")
+                .ToTable("InventoryCategorys", "Dictionaries")
                 .HasKey(x => x.Id);
 
             mb.Entity<InventoryCategory>()
@@ -356,10 +356,6 @@ namespace Inventory_Atlas.Infrastructure.Data
             mb.Entity<UPS>()
                 .ToTable("UPS", "Technics")
                 .HasBaseType<Equipment>();
-
-            mb.Entity<WorkplaceEquipment>()
-                .ToTable("WorkplaceEquipment", "Technics")
-                .HasKey(x => x.Id);
         }
 
         private void UsersBuilder(ModelBuilder mb)

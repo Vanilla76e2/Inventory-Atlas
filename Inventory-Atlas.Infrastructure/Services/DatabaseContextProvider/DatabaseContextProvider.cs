@@ -23,10 +23,7 @@ namespace Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider
             _config = config;
         }
 
-        /// <summary>
-        /// Возвращает экземпляр контекста базы данных.
-        /// </summary>
-        /// <returns>Экземпляр <see cref="DbContext"/>.</returns>
+        /// <inheritdoc/>
         public Task<AppDbContext> GetDbContextAsync()
         {
             var optiononsBuilder = new DbContextOptionsBuilder<AppDbContext>();
@@ -35,11 +32,7 @@ namespace Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider
             return Task.FromResult(context);
         }
 
-        /// <summary>
-        /// Возвращает экземпляр контекста базы данных с указанной строкой подключения.
-        /// </summary>
-        /// <param name="connectionString">Строка подключения к базе данных.</param>
-        /// <returns>Экземпляр <see cref="DbContext"/>.</returns>
+        /// <inheritdoc/>
         public AppDbContext GetDbContext(string connectionString)
         {
             var optiononsBuilder = new DbContextOptionsBuilder<AppDbContext>();

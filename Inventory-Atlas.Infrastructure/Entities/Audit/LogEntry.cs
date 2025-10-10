@@ -2,6 +2,7 @@
 using Inventory_Atlas.Infrastructure.Entities.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
+using System.Threading.Channels;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Audit
 {
@@ -55,33 +56,28 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         public ActionType Action { get; set; }
 
         /// <summary>
-        /// Имя сущности, над которой было совершено действие.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>, если действие не связано с конкретной сущностью.
-        /// </summary>
-        [Column("entity_name")]
-        public string? EntityName { get; set; }
-
-        /// <summary>
-        /// Идентификатор сущности, над которой было совершено действие.
-        /// <para/>
-        /// Тип: <see langword="int"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>, если действие не связано с конкретной сущностью.
-        /// </summary>
-        [Column("entity_id")]
-        public int? EntityId { get; set; }
-
-        /// <summary>
-        /// Список изменений объекта в формате JSON.
+        /// JSON со всеми деталями действия.
+        /// Включает информацию о сущности (тип, ключ) и список изменений.
         /// <para/>
         /// Тип: <see langword="string"/>.
         /// <para/>
-        /// По умолчанию хранится пустой JSON {}.
+        /// Может быть <see langword="null"/>, если действие не связано с изменением данных.
         /// </summary>
-        [Column("changes", TypeName = "jsonb")]
-        public string Changes { get; set; } = "{}";
+        [Column("details", TypeName = "jsonb")]
+        public string? Details { get; set; } = "{}";
+
+        /// <summary>
+        /// Десириализованный список изменений.
+        /// <para/>
+        /// Тип: <see cref="Dictionary{string, object}"/>
+        /// </summary>
+        [NotMapped]
+        public Dictionary<string, object>? ParsedDetails
+        {
+            get => string.IsNullOrWhiteSpace(Details)
+                   ? null
+                   : JsonSerializer.Deserialize<Dictionary<string, object>>(Details);
+            set => Details = JsonSerializer.Serialize(value ?? new Dictionary<string, object>());
+        }
     }
 }

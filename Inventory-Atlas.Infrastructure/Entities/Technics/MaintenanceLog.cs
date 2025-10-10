@@ -24,12 +24,12 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// <summary>
         /// Навигационное свойство на устройство.
         /// <para/>
-        /// Тип: <see cref="DeviceEntity"/>.
+        /// Тип: <see cref="Equipment"/>.
         /// <para/>
         /// Обеспечивает доступ к объекту устройства, к которому относится запись обслуживания.
         /// </summary>
         [ForeignKey(nameof(DeviceId))]
-        public Equipment Device { get; set; } = null!;
+        public virtual Equipment Device { get; set; } = null!;
 
         /// <summary>
         /// Дата проведения обслуживания.
@@ -53,7 +53,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// Тип: <see cref="int"/>.
         /// </summary>
         [Column("performed_by")]
-        public int PerformedBy { get; set; }
+        public int? PerformedBy { get; set; }
 
         /// <summary>
         /// Навигационное свойство на сотрудника, который выполнил обслуживание.
@@ -63,7 +63,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// Позволяет получить информацию о сотруднике, который провёл обслуживание.
         /// </summary>
         [ForeignKey(nameof(PerformedBy))]
-        public virtual Employees.Employee Employee { get; set; } = null!;
+        public virtual Employees.Employee? Employee { get; set; }
 
         /// <summary>
         /// Комментарий к записи обслуживания.

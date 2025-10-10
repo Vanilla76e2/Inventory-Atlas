@@ -54,7 +54,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Documents
         /// <para/>
         /// Инициализируется пустым списком.
         /// </summary>
-        [InverseProperty(nameof(TransferDocumentItem.TransferDocument))]
+        [InverseProperty(nameof(TransferDocumentItem.Document))]
         public virtual ICollection<TransferDocumentItem> Items { get; set; } = new List<TransferDocumentItem>();
     }
 }

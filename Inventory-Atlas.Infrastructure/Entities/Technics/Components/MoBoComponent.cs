@@ -21,11 +21,11 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
         /// <summary>
         /// Навигационное свойство на материнскую плату.
         /// <para/>
-        /// Тип: <see cref="References.MoBo"/>.
+        /// Тип: <see cref="References.MoBoDictionary"/>.
         /// <para/>
         /// Позволяет получить информацию о модели материнской платы, которой является данный компонент.
         /// </summary>
         [ForeignKey(nameof(MoBoId))]
-        public virtual References.MoBo MoBoReference { get; set; } = null!;
+        public virtual References.MoBoDictionary MoBoReference { get; set; } = null!;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Inventory_Atlas.Infrastructure.Entities.Base;
-using Inventory_Atlas.Infrastructure.Entities.Services;
+using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Inventory
@@ -45,7 +45,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Inventory
         /// <para/>
         /// Позволяет получить информацию о материале, назначенном мебели.
         /// </summary>
-        [ForeignKey(nameof(FurnitureId))]
+        [ForeignKey(nameof(MaterialId))]
         public FurnitureMaterial FurnitureMaterial { get; set; } = new FurnitureMaterial();
     }
 }

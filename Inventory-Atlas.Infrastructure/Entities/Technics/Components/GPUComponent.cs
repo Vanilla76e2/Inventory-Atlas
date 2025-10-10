@@ -22,11 +22,11 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
         /// <summary>
         /// Навигационное свойство на видеокарту.
         /// <para/>
-        /// Тип: <see cref="References.GPU"/>.
+        /// Тип: <see cref="References.GpuDictionary"/>.
         /// <para/>
         /// Позволяет получить информацию о модели GPU, которой является данный компонент.
         /// </summary>
         [ForeignKey(nameof(GpuId))]
-        public virtual References.GPU GPUReference { get; set; } = null!;
+        public virtual References.GpuDictionary GPUReference { get; set; } = null!;
     }
 }

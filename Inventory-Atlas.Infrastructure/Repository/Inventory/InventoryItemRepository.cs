@@ -1,0 +1,62 @@
+﻿using Inventory_Atlas.Core.Enums;
+using Inventory_Atlas.Infrastructure.Entities.Inventory;
+using Inventory_Atlas.Infrastructure.Repository.Common;
+using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
+namespace Inventory_Atlas.Infrastructure.Repository.Inventory
+{
+    /// <summary>
+    /// Репозиторий для работы с элементами инвентаря.
+    /// </summary>
+    public class InventoryRepository : DatabaseRepository<InventoryItem>, IInventoryRepository
+    {
+        /// <summary>
+        /// Создаёт новый экземпляр репозитория элементов инвентаря.
+        /// </summary>
+        /// <param name="contextProvider">Провайдер DbContext.</param>
+        /// <param name="logger">Логгер репозитория.</param>
+        public InventoryRepository(
+            IDatabaseContextProvider contextProvider,
+            ILogger<InventoryRepository> logger)
+            : base(contextProvider, logger)
+        {
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<InventoryItem>> SearchAsync(
+            string? name = null,
+            long? inventoryNumber = null,
+            string? registryNumber = null,
+            int? responsibleId = null,
+            InventoryStatus? status = null,
+            string? location = null)
+        {
+            await using var context = await _contextProvider.GetDbContextAsync();
+            var query = context.Set<InventoryItem>().AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(name))
+                query = query.Where(i => EF.Functions.ILike(i.Name, $"%{name}%"));
+
+            if (inventoryNumber.HasValue)
+                query = query.Where(i => i.InventoryNumber == inventoryNumber.Value);
+
+            if (!string.IsNullOrWhiteSpace(registryNumber))
+                query = query.Where(i => EF.Functions.ILike(i.RegistryNumber!, $"%{registryNumber}%"));
+
+            if (responsibleId.HasValue)
+                query = query.Where(i => i.ResponsibleId == responsibleId.Value);
+
+            if (status.HasValue)
+                query = query.Where(i => i.StatusId == status.Value);
+
+            if (!string.IsNullOrWhiteSpace(location))
+                query = query.Where(i => EF.Functions.ILike(i.Location!, $"%{location}%"));
+
+            return await query
+                .Include(i => i.Responsible)
+                .ToListAsync();
+        }
+    }
+}

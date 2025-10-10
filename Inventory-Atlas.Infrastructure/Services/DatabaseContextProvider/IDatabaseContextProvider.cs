@@ -1,11 +1,20 @@
 ﻿using Inventory_Atlas.Infrastructure.Data;
 
-namespace Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider
+/// <summary>
+/// Провайдер контекста базы данных
+/// </summary>
+public interface IDatabaseContextProvider
 {
-    public interface IDatabaseContextProvider
-    {
-        Task<AppDbContext> GetDbContextAsync();
+    /// <summary>
+    /// Возвращает экземпляр контекста базы данных.
+    /// </summary>
+    /// <returns>Экземпляр <see cref="DbContext"/>.</returns>
+    Task<AppDbContext> GetDbContextAsync();
 
-        AppDbContext GetDbContext(string connectionString);
-    }
+    /// <summary>
+    /// Возвращает экземпляр контекста базы данных с указанной строкой подключения.
+    /// </summary>
+    /// <param name="connectionString">Строка подключения к базе данных.</param>
+    /// <returns>Экземпляр <see cref="DbContext"/>.</returns>
+    AppDbContext GetDbContext(string connectionString);
 }

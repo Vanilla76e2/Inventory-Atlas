@@ -1,18 +1,22 @@
 ﻿
 using Inventory_Atlas.Infrastructure.Data;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
 {
+    /// <summary>
+    /// Инициализатор базы данных
+    /// </summary>
     public static class DbInitializer
     {
         /// <summary>
         /// Развёртывает или обновляет базу данных с помощью миграций.
         /// Вызывается один раз при старте приложения.
         /// </summary>
+        /// <param name="serviceProvider">Провайдер служб приложения</param>
+        /// <exception cref="Exception">Исключение при ошибке применения миграций</exception>
         public static void InstallOrUpdateDatabase(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
@@ -22,13 +26,13 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
 
             try
             {
-                logger.LogInformation("Начало применения миграций...");
+                logger.LogInformation("Starting migration application...");
                 context.Database.Migrate();
-                logger.LogInformation("База данных успешно развернута/обновлена.");
+                logger.LogInformation("Database successfully deployed/updated.");
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Ошибка при развертывании/обновлении базы данных.");
+                logger.LogError(ex, "Error during database deployment/update.");
                 throw; // можно обработать или завершить запуск приложения
             }
         }
