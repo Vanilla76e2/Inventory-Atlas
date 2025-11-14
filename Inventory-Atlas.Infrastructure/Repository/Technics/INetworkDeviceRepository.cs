@@ -10,10 +10,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public interface INetworkDeviceRepository : IDatabaseRepository<NetworkDevice>
     {
         /// <summary>
-        /// Получает сетевые устройства по IP-адресу
+        /// Получает сетевые устройства по IpAddress-адресу
         /// </summary>
-        /// <param name="ipAddress">IP-адрес для поиска</param>
-        /// <returns>Коллекция сетевых устройств с указанным IP-адресом</returns>
+        /// <param name="ipAddress">IpAddress-адрес для поиска</param>
+        /// <returns>Коллекция сетевых устройств с указанным IpAddress-адресом</returns>
         Task<IEnumerable<NetworkDevice>> GetByIpAddressAsync(IPAddress ipAddress);
 
         /// <summary>

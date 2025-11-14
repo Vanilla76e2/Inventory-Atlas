@@ -24,7 +24,6 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         [Column("diagonal")]
         public double? Diagonal { get; set; } // in inches
 
-
         /// <summary>
         /// Разрешение экрана.
         /// <para/>
@@ -89,6 +88,11 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         [StringLength(255)]
         public string? GPU { get; set; }
 
+        /// <summary>
+        /// IpAddress адресс устройства.
+        /// <para/>
+        /// Тип: <see cref="IPAddress"/>.
+        /// </summary>
         [Column("ip_address")]
         public IPAddress? IpAddress { get; set; }
     }

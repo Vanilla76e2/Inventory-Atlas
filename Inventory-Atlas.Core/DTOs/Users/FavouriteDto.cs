@@ -19,7 +19,7 @@ namespace Inventory_Atlas.Core.DTOs.Users
         /// <para/>
         /// Может быть <c>null</c>.
         /// </summary>
-        public long? InventoryNumber { get; set; }
+        public string? InventoryNumber { get; set; }
 
         /// <summary>
         /// Наименование объекта.

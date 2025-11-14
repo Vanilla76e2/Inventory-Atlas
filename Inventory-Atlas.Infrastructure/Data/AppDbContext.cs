@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Audit;
+﻿using Inventory_Atlas.Infrastructure.Converters;
+using Inventory_Atlas.Infrastructure.Entities.Audit;
 using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
 using Inventory_Atlas.Infrastructure.Entities.Documents;
 using Inventory_Atlas.Infrastructure.Entities.Employees;
@@ -10,6 +11,7 @@ using Inventory_Atlas.Infrastructure.Entities.Technics.Components;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 using Inventory_Atlas.Infrastructure.Entities.Сonsumables;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Inventory_Atlas.Infrastructure.Data
 {
@@ -49,7 +51,6 @@ namespace Inventory_Atlas.Infrastructure.Data
         // Inventory
         public DbSet<Furniture> Furnitures { get; set; }
         public DbSet<FurnitureMaterialAssignment> FurnitureMaterialAssignments { get; set; }
-        public DbSet<GenericInventoryItem> GenericInventoryItems { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
 
         // Dictionaries
@@ -57,6 +58,8 @@ namespace Inventory_Atlas.Infrastructure.Data
         public DbSet<CpuDictionary> CPUReferences { get; set; }
         public DbSet<GpuDictionary> GPUReferences { get; set; }
         public DbSet<MoBoDictionary> MoBoReferences { get; set; }
+        public DbSet<CustomFieldDefenition> CustomFieldDefenitions { get; set; }
+        public DbSet<CustomFieldValue> CustomFieldValues { get; set; }
 
         // Services
         public DbSet<FurnitureMaterial> FurnitureMaterials { get; set; }
@@ -81,12 +84,12 @@ namespace Inventory_Atlas.Infrastructure.Data
         public DbSet<WorkplaceEquipment> WorkplaceEquipment { get; set; }
 
         // Components
-        public DbSet<CPUComponent> CPUComponents { get; set; }
-        public DbSet<GPUComponent> GPUComponents { get; set; }
+        public DbSet<CpuComponent> CPUComponents { get; set; }
+        public DbSet<GpuComponent> GPUComponents { get; set; }
         public DbSet<MoBoComponent> moBoComponents { get; set; }
         public DbSet<NetworkComponent> NetworkComponents { get; set; }
-        public DbSet<PSUComponent> PSUComponents { get; set; }
-        public DbSet<RAMComponent> RAMComponents { get; set; }
+        public DbSet<PsuComponent> PSUComponents { get; set; }
+        public DbSet<RamComponent> RAMComponents { get; set; }
         public DbSet<SoundComponent> SoundComponents { get; set; }
         public DbSet<StorageComponent> StorageComponents { get; set; }
         public DbSet<OtherComponent> OtherComponents { get; set; }
@@ -106,6 +109,13 @@ namespace Inventory_Atlas.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("public");
+
+            foreach (var relationship in modelBuilder.Model
+                .GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
 
             AuditBuilder(modelBuilder);
 
@@ -142,92 +152,6 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .HasDatabaseName("IX_LogEntry_Changes");
         }
 
-        private void DocumentBuilder(ModelBuilder mb)
-        {
-            mb.Entity<CheckoutDocument>()
-                .ToTable("CheckoutDocuments", "Documents")
-                .HasKey(x => x.Id);
-
-            mb.Entity<CheckoutDocumentItem>()
-                .ToTable("CheckoutDocumentItems", "Documents")
-                .HasKey(x => x.Id);
-
-            mb.Entity<ReturnDocument>()
-                .ToTable("ReturnDocuments", "Documents")
-                .HasKey(x => x.Id);
-
-            mb.Entity<ReturnDocumentItem>()
-                .ToTable("ReturnDocumentItems", "Documents")
-                .HasKey(x => x.Id);
-
-            mb.Entity<TransferDocument>()
-                .ToTable("TransferDocuments", "Documents")
-                .HasKey(x => x.Id);
-
-            mb.Entity<TransferDocumentItem>()
-                .ToTable("TransferDocumentItems", "Documents")
-                .HasKey(x => x.Id);
-
-            mb.Entity<WriteOffDocument>()
-                .ToTable("WriteOffDocuments", "Documents")
-                .HasKey(x => x.Id);
-
-            mb.Entity<WriteOffDocumentItem>()
-                .ToTable("WriteOffDocumentItems", "Documents")
-                .HasKey(x => x.Id);
-        }
-
-        private void EmployeesBuilder(ModelBuilder mb)
-        {
-            mb.Entity<Department>()
-                .ToTable("Departments", "Employees")
-                .HasKey(x => x.Id);
-
-            mb.Entity<Employee>()
-                .ToTable("Employees", "Employees")
-                .HasKey(x => x.Id);
-
-            mb.Entity<MateriallyResponsible>()
-                .ToTable("MateriallyResponsibles", "Employees")
-                .HasKey(x => x.Id);
-        }
-
-        private void InventoryBuilder(ModelBuilder mb)
-        {
-            mb.Entity<Furniture>()
-                .ToTable("Furnitures", "Inventory")
-            .HasBaseType<InventoryItem>();
-
-            mb.Entity<FurnitureMaterialAssignment>()
-                .ToTable("FurnitureMaterialAssignments", "Inventory")
-                .HasKey(x => x.Id);
-
-            mb.Entity<GenericInventoryItem>()
-                .ToTable("GenericInventoryItems", "Inventory")
-                .HasBaseType<InventoryItem>();
-
-            mb.Entity<InventoryItem>()
-                .ToTable("InventoryItems", "Inventory")
-                .HasKey(x => x.Id);
-
-            mb.Entity<InventoryPhoto>()
-                .ToTable("InventoryPhotos", "Inventory")
-                .HasKey(x => x.Id);
-
-            mb.Entity<Workplace>()
-                .ToTable("Workplaces", "Inventory")
-                .HasKey(x => x.Id);
-
-            mb.Entity<WorkplaceEquipment>()
-                .ToTable("WorkplaceEquipment", "Inventory")
-                .HasKey(x => x.Id);
-
-            mb.Entity<GenericInventoryItem>()
-                .HasIndex(p => p.Properties)
-                .HasMethod("GIN")
-                .HasDatabaseName("IX_GenericInventoryItem_Properties");
-        }
-
         private void DictionariesBuilder(ModelBuilder mb)
         {
             mb.Entity<IpDictionary>()
@@ -255,13 +179,123 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .HasKey(x => x.Id);
 
             mb.Entity<InventoryCategory>()
-                .ToTable("InventoryCategorys", "Dictionaries")
+                .ToTable("InventoryCategories", "Dictionaries")
                 .HasKey(x => x.Id);
 
-            mb.Entity<InventoryCategory>()
-                .HasIndex(p => p.CustomFields)
-                .HasMethod("GIN")
-                .HasDatabaseName("IX_InventoryCategory_CustomFields");
+            mb.Entity<CustomFieldDefenition>()
+                .ToTable("CustomFieldDefenitions", "Dictionaries")
+                .HasKey(x => x.Id);
+
+            mb.Entity<CustomFieldValue>()
+                .ToTable("CustomFieldValues", "Dictionaries")
+                .HasKey(x => x.Id);
+        }
+
+        private void DocumentBuilder(ModelBuilder mb)
+        {
+            mb.Entity<CheckoutDocument>()
+                .ToTable("CheckoutDocuments", "Documents")
+                .HasKey(x => x.Id);
+
+            mb.Entity<CheckoutDocumentItem>()
+                .ToTable("CheckoutDocumentItems", "Documents")
+                .HasKey(x => x.Id);
+
+            mb.Entity<CheckoutDocumentItem>()
+                .HasOne(i => i.Document)
+                .WithMany(d => d.Items)
+                .HasForeignKey(i => i.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            mb.Entity<ReturnDocument>()
+                .ToTable("ReturnDocuments", "Documents")
+                .HasKey(x => x.Id);
+
+            mb.Entity<ReturnDocumentItem>()
+                .ToTable("ReturnDocumentItems", "Documents")
+                .HasKey(x => x.Id);
+
+            mb.Entity<ReturnDocumentItem>()
+                .HasOne(i => i.Document)
+                .WithMany(d => d.Items)
+                .HasForeignKey(i => i.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            mb.Entity<TransferDocument>()
+                .ToTable("TransferDocuments", "Documents")
+                .HasKey(x => x.Id);
+
+            mb.Entity<TransferDocumentItem>()
+                .ToTable("TransferDocumentItems", "Documents")
+                .HasKey(x => x.Id);
+
+            mb.Entity<TransferDocumentItem>()
+                .HasOne(i => i.Document)
+                .WithMany(d => d.Items)
+                .HasForeignKey(i => i.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            mb.Entity<WriteOffDocument>()
+                .ToTable("WriteOffDocuments", "Documents")
+                .HasKey(x => x.Id);
+
+            mb.Entity<WriteOffDocumentItem>()
+                .ToTable("WriteOffDocumentItems", "Documents")
+                .HasKey(x => x.Id);
+
+            mb.Entity<WriteOffDocumentItem>()
+                .HasOne(i => i.Document)
+                .WithMany(d => d.Items)
+                .HasForeignKey(i => i.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+
+        private void EmployeesBuilder(ModelBuilder mb)
+        {
+            mb.Entity<Department>()
+                .ToTable("Departments", "Employees")
+                .HasKey(x => x.Id);
+
+            mb.Entity<Employee>()
+                .ToTable("Employees", "Employees")
+                .HasKey(x => x.Id);
+
+            mb.Entity<MateriallyResponsible>()
+                .ToTable("MateriallyResponsibles", "Employees")
+                .HasKey(x => x.Id);
+        }
+
+        private void InventoryBuilder(ModelBuilder mb)
+        {
+            mb.Entity<Furniture>()
+                .ToTable("Furnitures", "Inventory")
+            .HasBaseType<InventoryItem>();
+
+            mb.Entity<FurnitureMaterialAssignment>()
+                .ToTable("FurnitureMaterialAssignments", "Inventory")
+                .HasKey(x => x.Id);
+
+            mb.Entity<InventoryItem>()
+                .ToTable("InventoryItems", "Inventory")
+                .HasKey(x => x.Id);
+
+            mb.Entity<InventoryPhoto>()
+                .ToTable("InventoryPhotos", "Inventory")
+                .HasKey(x => x.Id);
+
+            mb.Entity<Workplace>()
+                .ToTable("Workplaces", "Inventory")
+                .HasKey(x => x.Id);
+
+            mb.Entity<WorkplaceEquipment>()
+                .ToTable("WorkplaceEquipment", "Inventory")
+                .HasKey(x => x.Id);
+
+            mb.Entity<WorkplaceEquipment>()
+                .HasOne(i => i.Workplace)
+                .WithMany(d => d.WorkplaceEquipments)
+                .HasForeignKey(i => i.WorkplaceId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         private void ComponentsBuilder(ModelBuilder mb)
@@ -270,11 +304,17 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .ToTable("ComputerComponents", "Technics")
                 .HasKey(x => x.Id);
 
-            mb.Entity<CPUComponent>()
+            mb.Entity<ComputerComponent>()
+                .HasOne(i => i.Computer)
+                .WithMany(d => d.ComputerComponents)
+                .HasForeignKey(i => i.ComputerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            mb.Entity<CpuComponent>()
                 .ToTable("CPUComponents", "Technics")
                 .HasBaseType<ComputerComponent>();
 
-            mb.Entity<GPUComponent>()
+            mb.Entity<GpuComponent>()
                 .ToTable("GPUComponents", "Technics")
                 .HasBaseType<ComputerComponent>();
 
@@ -290,11 +330,11 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .ToTable("OtherComponents", "Technics")
                 .HasBaseType<ComputerComponent>();
 
-            mb.Entity<PSUComponent>()
+            mb.Entity<PsuComponent>()
                 .ToTable("PSUComponents", "Technics")
                 .HasBaseType<ComputerComponent>();
 
-            mb.Entity<RAMComponent>()
+            mb.Entity<RamComponent>()
                 .ToTable("RAMComponents", "Technics")
                 .HasBaseType<ComputerComponent>();
 
@@ -333,6 +373,11 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .ToTable("NetworkDevices", "Technics")
                 .HasBaseType<InventoryItem>();
 
+            mb.Entity<NetworkDevice>()
+                .Property(nd => nd.WiFiNetworksJson)
+                .HasConversion(WiFiNetworkJsonConverter.Convert)
+                .HasColumnType("jsonb");
+
             mb.Entity<Phone>()
                 .ToTable("Phones", "Technics")
                 .HasBaseType<Equipment>();
@@ -364,6 +409,18 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .ToTable("Favourite", "Users")
                 .HasKey(x => x.Id);
 
+            mb.Entity<Favourite>()
+                .HasOne(i => i.Item)
+                .WithMany(d => d.Favourites)
+                .HasForeignKey(i => i.ItemId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            mb.Entity<Favourite>()
+                .HasOne(i => i.User)
+                .WithMany(d => d.Favourites)
+                .HasForeignKey(i => i.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             mb.Entity<Role>()
                 .ToTable("Roles", "Users")
                 .HasKey(x => x.Id);
@@ -371,6 +428,12 @@ namespace Inventory_Atlas.Infrastructure.Data
             mb.Entity<UserProfile>()
                 .ToTable("UsersProfiles", "Users")
                 .HasKey(x => x.Id);
+
+            mb.Entity<UserProfile>()
+                .HasOne(i => i.Employee)
+                .WithMany(d => d.UserProfiles)
+                .HasForeignKey(i => i.EmployeeId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             mb.Entity<Role>()
                 .HasIndex(p => p.PermissionJson)
@@ -384,7 +447,7 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .ToTable("PrinterCartridges", "Consumables")
                 .HasKey(x => x.Id);
         }
-        
+
         /// <summary>
         /// Частичный метод для дополнительной конфигурации модели.
         /// </summary>

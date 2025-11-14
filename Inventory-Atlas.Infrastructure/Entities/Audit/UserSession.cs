@@ -65,14 +65,14 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         public bool IsActive { get; set; } = true;
 
         /// <summary>
-        /// IP-адрес пользователя, с которого была создана сессия.
+        /// IpAddress-адрес пользователя, с которого была создана сессия.
         /// <para/>
         /// Тип: <see cref="IPAddress"/>?.
         /// <para/>
-        /// Может быть null, если IP-адрес не определён.
+        /// Может быть null, если IpAddress-адрес не определён.
         /// </summary>
         [Column("ip_address")]
-        public IPAddress? IP {  get; set; }
+        public IPAddress? IpAddress {  get; set; }
 
         /// <summary>
         /// Коллекция записей журнала аудита, связанных с данной сессией.

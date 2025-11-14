@@ -28,7 +28,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Employees
         /// Не может быть <see langword="null"/>.
         /// </summary>
         [ForeignKey(nameof(EmployeeId))]
-        public virtual Employees.Employee Employee { get; set; } = new();
+        public virtual Employees.Employee? Employee { get; set; }
 
         /// <summary>
         /// Отображаемое имя ответственного.

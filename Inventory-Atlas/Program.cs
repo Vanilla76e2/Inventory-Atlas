@@ -1,6 +1,6 @@
-using Inventory_Atlas.Infrastructure.Repository.Common;
 using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Inventory_Atlas.Infrastructure.Services.DbInstaller;
+using Inventory_Atlas.Infrastructure.Repository;
 
 namespace Inventory_Atlas
 {
@@ -18,6 +18,7 @@ namespace Inventory_Atlas
             builder.Services.AddSwaggerGen();
 
             RegisterInfrastructureServices(builder.Services);
+            builder.Services.AddRepositories();
 
             var app = builder.Build();
 
@@ -34,7 +35,6 @@ namespace Inventory_Atlas
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
@@ -43,10 +43,6 @@ namespace Inventory_Atlas
         private static void RegisterInfrastructureServices(IServiceCollection services)
         {
             services.AddScoped<IDatabaseContextProvider, DatabaseContextProvider>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped(typeof(IDatabaseRepository<>), typeof(DatabaseRepository<>));
-
-            // Сервисы инфраструктуры добавлять сюда
         }
     }
 }

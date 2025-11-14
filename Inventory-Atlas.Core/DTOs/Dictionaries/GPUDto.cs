@@ -88,14 +88,5 @@ namespace Inventory_Atlas.Core.DTOs.Dictionaries
         /// Рассчитывается автоматически.
         /// </summary>
         public int TotalPorts => (Vga ?? 0) + (Hdmi ?? 0) + (DisplayPort ?? 0) + (Dvi ?? 0);
-
-        /// <summary>
-        /// Список идентификаторов компонентов, к которым привязана видеокарта.
-        /// <para/>
-        /// Тип: <see cref="List{Int32}"/>
-        /// <para/>
-        /// Может быть <c>null</c> если компоненты не указаны.
-        /// </summary>
-        public List<int>? ComponentIds { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
     /// Наследуется от <see cref="ComputerComponent"/> и содержит информацию о типе DDR, объёме модуля и частоте.
     /// </summary>
     [Table("ComputerComponents_RAM", Schema = "Technics")]
-    public class RAMComponent : ComputerComponent
+    public class RamComponent : ComputerComponent
     {
         /// <summary>
         /// Тип DDR памяти.

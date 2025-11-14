@@ -49,7 +49,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     core_count = table.Column<short>(type: "smallint", nullable: true),
                     thread_count = table.Column<short>(type: "smallint", nullable: true),
                     сlock = table.Column<double>(type: "double precision", nullable: true),
-                    socket = table.Column<string>(type: "text", nullable: true)
+                    socket = table.Column<string>(type: "text", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,7 +82,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false)
+                    name = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,7 +98,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false)
+                    name = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,7 +121,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     vga_port = table.Column<short>(type: "smallint", nullable: true),
                     hdmi_port = table.Column<short>(type: "smallint", nullable: true),
                     display_port = table.Column<short>(type: "smallint", nullable: true),
-                    dvi_port = table.Column<short>(type: "smallint", nullable: true)
+                    dvi_port = table.Column<short>(type: "smallint", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,7 +131,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InventoryCategorys",
+                name: "InventoryCategories",
                 schema: "Dictionaries",
                 columns: table => new
                 {
@@ -131,11 +139,12 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
-                    custom_fields = table.Column<string>(type: "jsonb", nullable: false)
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InventoryCategorys", x => x.id);
+                    table.PrimaryKey("PK_InventoryCategories", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,7 +178,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     form_factor = table.Column<int>(type: "integer", nullable: false),
                     ram_slots = table.Column<short>(type: "smallint", nullable: true),
                     pcie_slots = table.Column<short>(type: "smallint", nullable: true),
-                    m2_slots = table.Column<short>(type: "smallint", nullable: true)
+                    m2_slots = table.Column<short>(type: "smallint", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -240,8 +251,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     reason = table.Column<string>(type: "text", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    document_number = table.Column<int>(type: "integer", nullable: false),
                     document_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    document_number = table.Column<string>(type: "text", nullable: true),
+                    document_name = table.Column<string>(type: "text", nullable: true),
                     comment = table.Column<string>(type: "text", nullable: true),
                     document_status = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -266,6 +278,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     position = table.Column<string>(type: "text", nullable: true),
                     comment = table.Column<string>(type: "text", nullable: true),
                     is_responsible = table.Column<bool>(type: "boolean", nullable: false),
+                    birth_date = table.Column<DateOnly>(type: "date", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_deleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -279,7 +292,33 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         column: x => x.department_id,
                         principalSchema: "Employees",
                         principalTable: "Departments",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomFieldDefenitions",
+                schema: "Dictionaries",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    category_id = table.Column<int>(type: "integer", nullable: true),
+                    field_name = table.Column<string>(type: "text", nullable: false),
+                    data_type = table.Column<int>(type: "integer", nullable: false),
+                    is_required = table.Column<bool>(type: "boolean", nullable: false),
+                    order = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomFieldDefenitions", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_CustomFieldDefenitions_InventoryCategories_category_id",
+                        column: x => x.category_id,
+                        principalSchema: "Dictionaries",
+                        principalTable: "InventoryCategories",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -303,7 +342,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Audit",
                         principalTable: "UserSessions",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -316,8 +355,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     employee_id = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    document_number = table.Column<int>(type: "integer", nullable: false),
                     document_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    document_number = table.Column<string>(type: "text", nullable: true),
+                    document_name = table.Column<string>(type: "text", nullable: true),
                     comment = table.Column<string>(type: "text", nullable: true),
                     document_status = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -330,7 +370,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Employees",
                         principalTable: "Employees",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -353,7 +393,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Employees",
                         principalTable: "Employees",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -366,8 +406,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     employee_id = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    document_number = table.Column<int>(type: "integer", nullable: false),
                     document_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    document_number = table.Column<string>(type: "text", nullable: true),
+                    document_name = table.Column<string>(type: "text", nullable: true),
                     comment = table.Column<string>(type: "text", nullable: true),
                     document_status = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -380,7 +421,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Employees",
                         principalTable: "Employees",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -394,8 +435,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     to_employee_id = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    document_number = table.Column<int>(type: "integer", nullable: false),
                     document_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    document_number = table.Column<string>(type: "text", nullable: true),
+                    document_name = table.Column<string>(type: "text", nullable: true),
                     comment = table.Column<string>(type: "text", nullable: true),
                     document_status = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -408,14 +450,14 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Employees",
                         principalTable: "Employees",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TransferDocuments_Employees_to_employee_id",
                         column: x => x.to_employee_id,
                         principalSchema: "Employees",
                         principalTable: "Employees",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -426,9 +468,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     username = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    phone_number = table.Column<string>(type: "character varying(18)", maxLength: 18, nullable: true),
-                    birth_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     password_hash = table.Column<string>(type: "text", nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
                     role_id = table.Column<int>(type: "integer", nullable: false),
@@ -444,14 +483,15 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         column: x => x.employee_id,
                         principalSchema: "Employees",
                         principalTable: "Employees",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_UsersProfiles_Roles_role_id",
                         column: x => x.role_id,
                         principalSchema: "Users",
                         principalTable: "Roles",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -475,7 +515,8 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         column: x => x.employee_id,
                         principalSchema: "Employees",
                         principalTable: "Employees",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -486,12 +527,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: false),
-                    inventory_number = table.Column<long>(type: "bigint", nullable: true),
+                    inventory_number = table.Column<string>(type: "text", nullable: true),
                     registry_number = table.Column<string>(type: "text", nullable: true),
-                    responsible_id = table.Column<int>(type: "integer", nullable: true),
+                    responsible_id = table.Column<int>(type: "integer", nullable: false),
                     location = table.Column<string>(type: "text", nullable: true),
-                    status_id = table.Column<int>(type: "integer", nullable: false),
+                    status = table.Column<int>(type: "integer", nullable: false),
                     comment = table.Column<string>(type: "text", nullable: true),
+                    category_id = table.Column<int>(type: "integer", nullable: true),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_deleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -501,11 +543,19 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_InventoryItems", x => x.id);
                     table.ForeignKey(
+                        name: "FK_InventoryItems_InventoryCategories_category_id",
+                        column: x => x.category_id,
+                        principalSchema: "Dictionaries",
+                        principalTable: "InventoryCategories",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_InventoryItems_MateriallyResponsibles_responsible_id",
                         column: x => x.responsible_id,
                         principalSchema: "Employees",
                         principalTable: "MateriallyResponsibles",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -534,7 +584,37 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Inventory",
                         principalTable: "InventoryItems",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomFieldValues",
+                schema: "Dictionaries",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    inventory_item_id = table.Column<int>(type: "integer", nullable: false),
+                    field_id = table.Column<int>(type: "integer", nullable: false),
+                    value = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomFieldValues", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_CustomFieldValues_CustomFieldDefenitions_field_id",
+                        column: x => x.field_id,
+                        principalSchema: "Dictionaries",
+                        principalTable: "CustomFieldDefenitions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CustomFieldValues_InventoryItems_inventory_item_id",
+                        column: x => x.inventory_item_id,
+                        principalSchema: "Inventory",
+                        principalTable: "InventoryItems",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -606,37 +686,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Dictionaries",
                         principalTable: "FurnitureTypes",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Furnitures_InventoryItems_id",
-                        column: x => x.id,
-                        principalSchema: "Inventory",
-                        principalTable: "InventoryItems",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GenericInventoryItems",
-                schema: "Inventory",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false),
-                    category_id = table.Column<int>(type: "integer", nullable: false),
-                    properties = table.Column<string>(type: "jsonb", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GenericInventoryItems", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_GenericInventoryItems_InventoryCategorys_category_id",
-                        column: x => x.category_id,
-                        principalSchema: "Dictionaries",
-                        principalTable: "InventoryCategorys",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GenericInventoryItems_InventoryItems_id",
                         column: x => x.id,
                         principalSchema: "Inventory",
                         principalTable: "InventoryItems",
@@ -664,7 +716,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Inventory",
                         principalTable: "InventoryItems",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -683,8 +735,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     admin_password = table.Column<string>(type: "text", nullable: true),
                     port_count = table.Column<short>(type: "smallint", nullable: true),
                     has_wifi = table.Column<bool>(type: "boolean", nullable: false),
-                    wifi_name = table.Column<string>(type: "text", nullable: true),
-                    wifi_password = table.Column<string>(type: "text", nullable: true),
+                    wifi_networks = table.Column<string>(type: "jsonb", nullable: false),
                     network_bandwidth = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -718,7 +769,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Inventory",
                         principalTable: "InventoryItems",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ReturnDocumentItems_ReturnDocuments_document_id",
                         column: x => x.document_id,
@@ -747,7 +798,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Inventory",
                         principalTable: "InventoryItems",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TransferDocumentItems_TransferDocuments_document_id",
                         column: x => x.document_id,
@@ -777,7 +828,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Inventory",
                         principalTable: "InventoryItems",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_WriteOffDocumentItems_WriteOffDocuments_document_id",
                         column: x => x.document_id,
@@ -860,14 +911,15 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         column: x => x.performed_by,
                         principalSchema: "Employees",
                         principalTable: "Employees",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MaintenanceLogs_Equipments_device_id",
                         column: x => x.device_id,
                         principalSchema: "Technics",
                         principalTable: "Equipments",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -877,7 +929,8 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false),
                     diagonal = table.Column<double>(type: "double precision", nullable: true),
-                    resolution = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    resolution_height = table.Column<int>(type: "integer", nullable: true),
+                    resolution_width = table.Column<int>(type: "integer", nullable: true),
                     refresh_rate = table.Column<int>(type: "integer", nullable: true),
                     panel_type = table.Column<int>(type: "integer", maxLength: 50, nullable: false),
                     vga_port = table.Column<short>(type: "smallint", nullable: true),
@@ -953,7 +1006,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Consumables",
                         principalTable: "PrinterCartridges",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1009,9 +1062,11 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false),
                     operating_system = table.Column<string>(type: "text", nullable: true),
-                    diagonal = table.Column<float>(type: "real", nullable: true),
+                    diagonal = table.Column<double>(type: "double precision", nullable: true),
+                    resolution = table.Column<string>(type: "text", nullable: true),
                     ram = table.Column<int>(type: "integer", nullable: true),
                     drive = table.Column<int>(type: "integer", nullable: true),
+                    IpAddress = table.Column<IPAddress>(type: "inet", nullable: true),
                     model = table.Column<string>(type: "text", nullable: true),
                     serial_number = table.Column<string>(type: "text", nullable: true),
                     vendor = table.Column<string>(type: "text", nullable: true)
@@ -1072,7 +1127,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Technics",
                         principalTable: "Equipments",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_WorkplaceEquipment_Workplaces_workplace_id",
                         column: x => x.workplace_id,
@@ -1101,14 +1156,14 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Dictionaries",
                         principalTable: "FurnitureMaterials",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_FurnitureMaterialAssignments_Furnitures_furniture_id",
                         column: x => x.furniture_id,
                         principalSchema: "Inventory",
                         principalTable: "Furnitures",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1152,7 +1207,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Dictionaries",
                         principalTable: "CPUs",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CPUComponents_ComputerComponents_id",
                         column: x => x.id,
@@ -1186,7 +1241,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Dictionaries",
                         principalTable: "GPUs",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1213,7 +1268,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         principalSchema: "Dictionaries",
                         principalTable: "MoBos",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1376,6 +1431,24 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 column: "cpu_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomFieldDefenitions_category_id",
+                schema: "Dictionaries",
+                table: "CustomFieldDefenitions",
+                column: "category_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomFieldValues_field_id",
+                schema: "Dictionaries",
+                table: "CustomFieldValues",
+                column: "field_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomFieldValues_inventory_item_id",
+                schema: "Dictionaries",
+                table: "CustomFieldValues",
+                column: "inventory_item_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Employees_department_id",
                 schema: "Employees",
                 table: "Employees",
@@ -1412,30 +1485,16 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 column: "type");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GenericInventoryItem_Properties",
-                schema: "Inventory",
-                table: "GenericInventoryItems",
-                column: "properties")
-                .Annotation("Npgsql:IndexMethod", "GIN");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GenericInventoryItems_category_id",
-                schema: "Inventory",
-                table: "GenericInventoryItems",
-                column: "category_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_GPUComponents_gpu_id",
                 schema: "Technics",
                 table: "GPUComponents",
                 column: "gpu_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InventoryCategory_CustomFields",
-                schema: "Dictionaries",
-                table: "InventoryCategorys",
-                column: "custom_fields")
-                .Annotation("Npgsql:IndexMethod", "GIN");
+                name: "IX_InventoryItems_category_id",
+                schema: "Inventory",
+                table: "InventoryItems",
+                column: "category_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InventoryItems_responsible_id",
@@ -1596,15 +1655,15 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 schema: "Technics");
 
             migrationBuilder.DropTable(
+                name: "CustomFieldValues",
+                schema: "Dictionaries");
+
+            migrationBuilder.DropTable(
                 name: "Favourite",
                 schema: "Users");
 
             migrationBuilder.DropTable(
                 name: "FurnitureMaterialAssignments",
-                schema: "Inventory");
-
-            migrationBuilder.DropTable(
-                name: "GenericInventoryItems",
                 schema: "Inventory");
 
             migrationBuilder.DropTable(
@@ -1716,6 +1775,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 schema: "Dictionaries");
 
             migrationBuilder.DropTable(
+                name: "CustomFieldDefenitions",
+                schema: "Dictionaries");
+
+            migrationBuilder.DropTable(
                 name: "UsersProfiles",
                 schema: "Users");
 
@@ -1726,10 +1789,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "Furnitures",
                 schema: "Inventory");
-
-            migrationBuilder.DropTable(
-                name: "InventoryCategorys",
-                schema: "Dictionaries");
 
             migrationBuilder.DropTable(
                 name: "GPUs",
@@ -1786,6 +1845,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "InventoryItems",
                 schema: "Inventory");
+
+            migrationBuilder.DropTable(
+                name: "InventoryCategories",
+                schema: "Dictionaries");
 
             migrationBuilder.DropTable(
                 name: "MateriallyResponsibles",

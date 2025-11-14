@@ -12,7 +12,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.References
     /// слотах для RAM, PCIe и M.2, а также связанных компонентах.
     /// </summary>
     [Table("MoBos", Schema = "Dictionaries")]
-    public class MoBoDictionary : BaseEntity
+    public class MoBoDictionary : AuditableEntity
     {
         /// <summary>
         /// Производитель материнской платы.

@@ -28,6 +28,8 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         IDatabaseRepository<InventoryCategory> InventoryCategory { get; }
         IDatabaseRepository<IpDictionary> IpDictionary { get; }
         IDatabaseRepository<MoBoDictionary> MoBoDictionary { get; }
+        IDatabaseRepository<CustomFieldDefenition> CustomFieldDefenition { get; }
+        IDatabaseRepository<CustomFieldValue> CustomFieldValue { get; }
 
         // Documents
         IDatabaseRepository<CheckoutDocument> CheckoutDocument { get; }
@@ -47,7 +49,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         // Inventory
         IDatabaseRepository<Workplace> Workplace { get; }
         IDatabaseRepository<Furniture> FurnitureRepository { get; }
-        IDatabaseRepository<GenericInventoryItem> GenericInventoryItem { get; }
         IDatabaseRepository<InventoryItem> InventoryItem { get; }
         IDatabaseRepository<InventoryPhoto> InventoryPhoto { get; }
 

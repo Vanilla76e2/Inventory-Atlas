@@ -18,7 +18,7 @@ namespace Inventory_Atlas.Core.DTOs.Dictionaries
         /// <para/>
         /// Не может быть <c>null</c>.
         /// </summary>
-        public string Name { get; set; } = null!;
+        public string Model { get; set; } = null!;
 
         /// <summary>
         /// Производитель процессора.
@@ -27,7 +27,7 @@ namespace Inventory_Atlas.Core.DTOs.Dictionaries
         /// <para/>
         /// Может быть <c>null</c>.
         /// </summary>
-        public string? Manufacturer { get; set; }
+        public string? Vendor { get; set; }
 
         /// <summary>
         /// Количество ядер процессора.
@@ -64,14 +64,5 @@ namespace Inventory_Atlas.Core.DTOs.Dictionaries
         /// Может быть <c>null</c> если сокет не указан.
         /// </summary>
         public string? Socket { get; set; }
-
-        /// <summary>
-        /// Список идентификаторов компонентов, к которым привязан процессор.
-        /// <para/>
-        /// Тип: <see cref="List{Int32}"/>
-        /// <para/>
-        /// Может быть <c>null</c> если компоненты не указаны.
-        /// </summary>
-        public List<int>? ComponentIds { get; set; }
     }
 }

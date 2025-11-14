@@ -21,13 +21,22 @@ namespace Inventory_Atlas.Core.DTOs.Technics
         public double? Diagonal { get; set; }
 
         /// <summary>
-        /// Разрешение экрана, например "1920x1080".
+        /// Разрешение экрана по вертикали.
         /// <para/>
-        /// Тип: <see langword="string"/>
+        /// Тип: <see langword="int"/>?.
         /// <para/>
-        /// Может быть <c>null</c>.
+        /// Может быть <see langword="null"/>.
         /// </summary>
-        public string? Resolution { get; set; }
+        public int? ResolutionHeight { get; set; }
+
+        /// <summary>
+        /// Разрешение экрана по горизонтали.
+        /// <para/>
+        /// Тип: <see langword="int"/>?.
+        /// <para/>
+        /// Может быть <see langword="null"/>.
+        /// </summary>
+        public int? ResolutionWidth { get; set; }
 
         /// <summary>
         /// Частота обновления экрана в Гц.

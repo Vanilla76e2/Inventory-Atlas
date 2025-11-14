@@ -8,13 +8,13 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// <summary>
     /// Сущность сканера.
     /// <para/>
-    /// Наследуется от <see cref="Equipment"/> и содержит модель, серийный номер, IP-адрес и характеристики устройства.
+    /// Наследуется от <see cref="Equipment"/> и содержит модель, серийный номер, IpAddress-адрес и характеристики устройства.
     /// </summary>
     [Table("Scanners", Schema = "Technics")]
     public class Scanner : DeviceEntity, IHasIpAddress
     {
         /// <summary>
-        /// IP-адрес сканера.
+        /// IpAddress-адрес сканера.
         /// <para/>
         /// Тип: <see cref="IPAddress"/>?.
         /// <para/>

@@ -36,31 +36,13 @@ namespace Inventory_Atlas.Core.DTOs.Audit
         public ActionType Action { get; set; }
 
         /// <summary>
-        /// Название сущности, над которой выполнено действие.
-        /// <para/>
-        /// Тип: <see langword="string"/>
-        /// <para/>
-        /// Может быть <c>null</c> если действие не связано с сущностью.
-        /// </summary>
-        public string? EntityName { get; set; }
-
-        /// <summary>
-        /// Идентификатор сущности, над которой выполнено действие.
-        /// <para/>
-        /// Тип: <see langword="int"/>
-        /// <para/>
-        /// Может быть <c>null</c> если действие не связано с сущностью.
-        /// </summary>
-        public int? EntityId { get; set; }
-
-        /// <summary>
         /// Изменения, внесённые в сущность.
         /// <para/>
         /// Тип: <see cref="Dictionary{String,Object}"/>
         /// <para/>
-        /// Может быть <c>null</c> если изменений нет или действие не связано с сущностью.
+        /// Может быть <see langword="null"/> если изменений нет или действие не связано с сущностью.
         /// </summary>
-        public Dictionary<string, object>? Changes { get; set; }
+        public Dictionary<string, object>? Details { get; set; }
     }
 
     /// <summary>

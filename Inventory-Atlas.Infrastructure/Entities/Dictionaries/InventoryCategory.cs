@@ -1,5 +1,5 @@
 ﻿using Inventory_Atlas.Infrastructure.Entities.Base;
-using Inventory_Atlas.Infrastructure.Entities.Inventory;
+using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Services
@@ -10,7 +10,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Services
     /// Содержит наименование категории и описание.
     /// </summary>
     [Table("InventoryCtegories", Schema = "Services")]
-    public class InventoryCategory : BaseEntity
+    public class InventoryCategory : AuditableEntity
     {
         /// <summary>
         /// Наименование категории.
@@ -33,20 +33,11 @@ namespace Inventory_Atlas.Infrastructure.Entities.Services
         public string Description { get; set; } = null!;
 
         /// <summary>
-        /// Список пользовательских полей для категории в формате JSON.
-        /// Пример: [{"Name":"Материал","Type":"string"},{"Name":"Вес","Type":"decimal"}]
-        /// </summary>
-        [Column("custom_fields", TypeName = "jsonb")]
-        public string CustomFields { get; set; } = "[]";
-
-        /// <summary>
-        /// Коллекция элементов инвентаря, принадлежащих данной категории.
+        /// Коллекция пользовательских полей.
         /// <para/>
-        /// Тип: <see cref="ICollection{GenericInventoryItem}"/>.
-        /// <para/>
-        /// Навигационное свойство для связи категории с её элементами.
+        /// Тип: Коллекция <see cref="CustomFieldDefenition"/>.
         /// </summary>
-        [InverseProperty(nameof(GenericInventoryItem.Category))]
-        public virtual ICollection<GenericInventoryItem> Items { get; set; } = new List<GenericInventoryItem>();
+        [InverseProperty(nameof(CustomFieldDefenition.Category))]
+        public virtual ICollection<CustomFieldDefenition> CustomFields { get; set; } = new List<CustomFieldDefenition>();
     }
 }

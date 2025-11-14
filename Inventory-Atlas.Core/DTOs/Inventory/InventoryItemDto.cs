@@ -10,25 +10,34 @@ namespace Inventory_Atlas.Core.DTOs.Inventory
     /// <para/>
     /// Наследуется от <see cref="SoftDeletableDto"/> и содержит информацию о номере, ответственном, местоположении, статусе, названии, комментарии и фотографиях.
     /// </summary>
-    public class InventoryItemDto : SoftDeletableDto
+    public class InventoryItemDto : BaseDto
     {
+        /// <summary>
+        /// Название элемента.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Не может быть <c>null</c>.
+        /// </summary>
+        public string Name { get; set; } = null!;
+
         /// <summary>
         /// Инвентарный номер элемента.
         /// <para/>
-        /// Тип: <see langword="long"/>
+        /// Тип: <see langword="string"/>
         /// <para/>
         /// Может быть <c>null</c> если номер не назначен.
         /// </summary>
-        public long? InventoryNumber { get; set; }
+        public string? InventoryNumber { get; set; }
 
         /// <summary>
-        /// Идентификатор в реестре.
+        /// Реестровый номер.
         /// <para/>
         /// Тип: <see langword="string"/>
         /// <para/>
         /// Может быть <c>null</c>.
         /// </summary>
-        public string? RegistryId { get; set; }
+        public string? RegistryNumber { get; set; }
 
         /// <summary>
         /// Идентификатор ответственного сотрудника.
@@ -62,16 +71,7 @@ namespace Inventory_Atlas.Core.DTOs.Inventory
         /// <para/>
         /// Тип: <see cref="InventoryStatus"/>
         /// </summary>
-        public InventoryStatus StatusId { get; set; }
-
-        /// <summary>
-        /// Название элемента.
-        /// <para/>
-        /// Тип: <see langword="string"/>
-        /// <para/>
-        /// Не может быть <c>null</c>.
-        /// </summary>
-        public string Name { get; set; } = null!;
+        public InventoryStatus Status { get; set; }
 
         /// <summary>
         /// Комментарий к элементу инвентаря.
@@ -81,6 +81,20 @@ namespace Inventory_Atlas.Core.DTOs.Inventory
         /// Может быть <c>null</c>.
         /// </summary>
         public string? Comment { get; set; }
+
+        /// <summary>
+        /// Идентификатор категории инвентарного объекта.
+        /// <para/>
+        /// Тип: <see langword="int"/>?.
+        /// </summary>
+        public int? CategoryId { get; set; }
+
+        /// <summary>
+        /// Имя категории инвентарного объекта.
+        /// <para/>
+        /// Тип: <see langword="string"/>?.
+        /// </summary>
+        public string? CategoryName { get; set; }
 
         /// <summary>
         /// Список фотографий элемента.

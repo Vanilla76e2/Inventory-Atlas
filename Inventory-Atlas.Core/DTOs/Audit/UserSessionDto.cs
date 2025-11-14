@@ -14,7 +14,7 @@
         /// <para/>
         /// Тип: <see langword="Guid"/>
         /// </summary>
-        public Guid Id { get; set; }
+        public string Id { get; set; } = null!;
 
         /// <summary>
         /// Имя пользователя, которому принадлежит сессия.
@@ -55,7 +55,7 @@
         /// <para/>
         /// Может быть <c>null</c> если IP неизвестен.
         /// </summary>
-        public string? IP { get; set; }
+        public string? IpAddress { get; set; }
 
         /// <summary>
         /// Список действий пользователя в рамках сессии.
@@ -72,14 +72,14 @@
     /// <para/>
     /// Тип: <see cref="UserSessionSummaryDto"/>
     /// </summary>
-    public class UserSessionSummaryDto
+    public class UserSessionListDto
     {
         /// <summary>
         /// Идентификатор сессии пользователя.
         /// <para/>
         /// Тип: <see langword="Guid"/>
         /// </summary>
-        public Guid Id { get; set; }
+        public string Id { get; set; } = null!;
 
         /// <summary>
         /// Имя пользователя, которому принадлежит сессия.
@@ -120,6 +120,6 @@
         /// <para/>
         /// Может быть <c>null</c> если IP неизвестен.
         /// </summary>
-        public string? IP { get; set; }
+        public string? IpAddress { get; set; }
     }
 }

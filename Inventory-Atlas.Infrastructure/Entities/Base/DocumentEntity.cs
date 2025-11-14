@@ -12,6 +12,16 @@ namespace Inventory_Atlas.Infrastructure.Entities.Base
     public abstract class DocumentEntity : AuditableEntity
     {
         /// <summary>
+        /// Номер документа.
+        /// <para/>
+        /// Тип: <see langword="int"/>.
+        /// <para/>
+        /// Не может быть <see langword="null"/>.
+        /// </summary>
+        [Column("document_number")]
+        public int DocumentNumber { get; set; }
+
+        /// <summary>
         /// Дата документа.
         /// <para/>
         /// Тип: <see cref="DateTime"/>.
@@ -26,7 +36,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Base
         /// <para/>
         /// Может быть <see langword="null"/>.
         /// </summary>
-        [Column("document_number")]
+        [Column("document_name")]
         public string? DocumentName { get; set; }
 
         /// <summary>
@@ -45,6 +55,6 @@ namespace Inventory_Atlas.Infrastructure.Entities.Base
         /// Тип: <see cref="DocumentStatus"/>.
         /// </summary>
         [Column("document_status")]
-        public DocumentStatus DocumentType { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
     }
 }

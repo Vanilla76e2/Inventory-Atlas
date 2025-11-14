@@ -65,15 +65,6 @@ namespace Inventory_Atlas.Core.DTOs.Dictionaries
         public short? RamSlots { get; set; }
 
         /// <summary>
-        /// Максимальный объём поддерживаемой оперативной памяти в ГБ.
-        /// <para/>
-        /// Тип: <see langword="short"/>
-        /// <para/>
-        /// Может быть <c>null</c> если не указано.
-        /// </summary>
-        public short? MaxRamGB { get; set; }
-
-        /// <summary>
         /// Количество слотов PCIe.
         /// <para/>
         /// Тип: <see langword="short"/>
@@ -90,14 +81,5 @@ namespace Inventory_Atlas.Core.DTOs.Dictionaries
         /// Может быть <c>null</c> если не указано.
         /// </summary>
         public short? M2Slots { get; set; }
-
-        /// <summary>
-        /// Список идентификаторов компонентов, к которым привязана материнская плата.
-        /// <para/>
-        /// Тип: <see cref="List{Int32}"/>
-        /// <para/>
-        /// Может быть <c>null</c> если компоненты не указаны.
-        /// </summary>
-        public List<int>? ComponentIds { get; set; }
     }
 }

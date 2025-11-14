@@ -9,10 +9,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public interface IScannerRepository : IDatabaseRepository<Scanner>
     {
         /// <summary>
-        /// Получает сканеры по IP-адресу
+        /// Получает сканеры по IpAddress-адресу
         /// </summary>
-        /// <param name="ipAddress">IP-адрес для поиска</param>
-        /// <returns>Коллекция сканеров с указанным IP-адресом</returns>
+        /// <param name="ipAddress">IpAddress-адрес для поиска</param>
+        /// <returns>Коллекция сканеров с указанным IpAddress-адресом</returns>
         Task<IEnumerable<Scanner>> GetByIpAddressAsync(string ipAddress);
 
         /// <summary>

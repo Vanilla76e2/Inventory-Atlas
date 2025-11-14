@@ -1,6 +1,5 @@
 ﻿using Inventory_Atlas.Infrastructure.Entities.References;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -37,7 +36,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
             var query = context.Set<CpuDictionary>().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(name))
-                query = query.Where(e => EF.Functions.ILike(e.Name, $"%{name}%"));
+                query = query.Where(e => EF.Functions.ILike(e.Model, $"%{name}%"));
 
             if (!string.IsNullOrWhiteSpace(vendor))
                 query = query.Where(e => EF.Functions.ILike(e.Vendor, $"%{vendor}%"));

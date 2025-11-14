@@ -20,6 +20,13 @@ namespace Inventory_Atlas.Core.DTOs.Employees
         public int EmployeeId { get; set; }
 
         /// <summary>
+        /// Полное имя сотрудника сотрудника.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// </summary>
+        public string EmployeeName { get; set; } = null!;
+
+        /// <summary>
         /// Отображаемое имя сотрудника (например, фамилия и имя).
         /// <para/>
         /// Тип: <see langword="string"/>
@@ -45,5 +52,33 @@ namespace Inventory_Atlas.Core.DTOs.Employees
         /// Может быть <c>null</c> если элементы не указаны.
         /// </summary>
         public List<InventoryItemDto>? Items { get; set; }
+    }
+
+    public class MateriallyResponsibleListDto : BaseDto
+    {
+        /// <summary>
+        /// Полное имя сотрудника сотрудника.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// </summary>
+        public int EmployeeName { get; set; }
+
+        /// <summary>
+        /// Отображаемое имя сотрудника (например, фамилия и имя).
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Не может быть <c>null</c>.
+        /// </summary>
+        public string DisplayName { get; set; } = null!;
+
+        /// <summary>
+        /// Комментарий к материально ответственному сотруднику.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Может быть <c>null</c>.
+        /// </summary>
+        public string? Comment { get; set; }
     }
 }

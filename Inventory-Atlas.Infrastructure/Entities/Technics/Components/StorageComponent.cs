@@ -16,7 +16,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
         /// Тип: <see cref="DriveType"/>.
         /// </summary>
         [Column("storage_type")]
-        public DriveType StorageType { get; set; } // e.g., SSD, HDD, NVMe
+        public Core.Enums.DriveType StorageType { get; set; } // e.g., SSD, HDD, NVMe
 
         /// <summary>
         /// Объём накопителя в гигабайтах (GB).

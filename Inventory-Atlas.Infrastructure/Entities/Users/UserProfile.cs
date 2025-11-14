@@ -25,38 +25,6 @@ namespace Inventory_Atlas.Infrastructure.Entities.Users
         public string Username { get; set; } = null!;
 
         /// <summary>
-        /// Электронная почта пользователя.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>. Максимальная длина 255 символов.
-        /// </summary>
-        [Column("email")]
-        [StringLength(255)]
-        public string? Email { get; set; }
-
-        /// <summary>
-        /// Номер телефона пользователя.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>. Максимальная длина 18 символов.
-        /// </summary>
-        [Column("phone_number")]
-        [StringLength(18)]
-        public string? PhoneNumber { get; set; }
-
-        /// <summary>
-        /// Дата рождения пользователя.
-        /// <para/>
-        /// Тип: <see cref="DateTime"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>.
-        /// </summary>
-        [Column("birth_date")]
-        public DateTime? BirthDate { get; set; }
-
-        /// <summary>
         /// Хэш пароля пользователя.
         /// <para/>
         /// Тип: <see langword="string"/>.
@@ -117,7 +85,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Users
         /// <summary>
         /// Коллекция избранных элементов пользователя.
         /// <para/>
-        /// Тип: <see cref="ICollection{Favourite}"/>.
+        /// Тип: Коллекция <see cref="Favourite"/>.
         /// <para/>
         /// Не может быть <see langword="null"/>.
         /// </summary>

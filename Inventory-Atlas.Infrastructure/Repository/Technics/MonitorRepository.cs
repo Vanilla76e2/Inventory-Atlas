@@ -24,9 +24,19 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
         /// <inheritdoc/>
         public async Task<IEnumerable<Entity.Monitor>> GetByResolutionAsync(string resolution)
         {
+            if (string.IsNullOrWhiteSpace(resolution) || !resolution.Contains("x"))
+                return new List<Entity.Monitor>();
+
+            var parts = resolution.Split('x');
+            if (parts.Length != 2
+                || !int.TryParse(parts[0], out var width)
+                || !int.TryParse(parts[1], out var height))
+                return new List<Entity.Monitor>();
+
             await using var context = await _contextProvider.GetDbContextAsync();
+
             return await context.Set<Entity.Monitor>()
-                .Where(m => m.Resolution == resolution)
+                .Where(m => m.ResolutionWidth == width && m.ResolutionHeight == height)
                 .ToListAsync();
         }
 

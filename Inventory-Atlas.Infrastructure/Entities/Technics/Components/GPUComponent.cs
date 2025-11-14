@@ -8,7 +8,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
     /// Наследуется от <see cref="ComputerComponent"/> и является конкретной моделью GPU, используемой в устройстве.
     /// </summary>
     [Table("ComputerComponents_GPU", Schema = "Technics")]
-    public class GPUComponent : ComputerComponent
+    public class GpuComponent : ComputerComponent
     {
         /// <summary>
         /// Идентификатор видеокарты, которой является данный компонент.

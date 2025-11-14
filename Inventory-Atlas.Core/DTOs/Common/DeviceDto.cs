@@ -1,4 +1,7 @@
-﻿namespace Inventory_Atlas.Core.DTOs.Common
+﻿using Inventory_Atlas.Core.DTOs.Inventory;
+using Inventory_Atlas.Core.DTOs.Technics;
+
+namespace Inventory_Atlas.Core.DTOs.Common
 {
     /// <summary>
     /// Абстрактный DTO для устройств.
@@ -7,7 +10,7 @@
     /// <para/>
     /// Содержит общие свойства устройств: модель, серийный номер и производителя.
     /// </summary>
-    public abstract class DeviceDto
+    public abstract class DeviceDto : EquipmentDto
     {
         /// <summary>
         /// Модель устройства.

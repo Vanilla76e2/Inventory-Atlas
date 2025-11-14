@@ -1,4 +1,5 @@
 ﻿using Inventory_Atlas.Core.DTOs.Inventory;
+using Inventory_Atlas.Core.Models;
 
 namespace Inventory_Atlas.Core.DTOs.Technics
 {
@@ -93,11 +94,9 @@ namespace Inventory_Atlas.Core.DTOs.Technics
         /// <summary>
         /// Имя Wi-Fi сети (SSID), если есть Wi-Fi.
         /// <para/>
-        /// Тип: <see langword="string"/>
-        /// <para/>
-        /// Может быть <c>null</c>.
+        /// Тип: Коллекция <see cref="WiFiNetworkPublicModel"/>.
         /// </summary>
-        public string? WifiName { get; set; }
+        public List<WiFiNetworkPublicModel> WifiNetworks { get; set; } = new();
     }
 
     /// <summary>
@@ -128,12 +127,10 @@ namespace Inventory_Atlas.Core.DTOs.Technics
         public string? AdminPassword { get; set; }
 
         /// <summary>
-        /// Пароль Wi-Fi сети устройства.
+        /// SSID и пароль Wi-Fi сети устройства.
         /// <para/>
-        /// Тип: <see langword="string"/>
-        /// <para/>
-        /// Может быть <c>null</c>.
+        /// Тип: Коллекция <see cref="WiFiNetworkJsonModel"/>.
         /// </summary>
-        public string? WifiPassword { get; set; }
+        public List<WiFiNetworkJsonModel> WiFiNetworks { get; set; } = new();
     }
 }

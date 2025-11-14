@@ -72,7 +72,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_time");
 
-                    b.Property<IPAddress>("IP")
+                    b.Property<IPAddress>("IpAddress")
                         .HasColumnType("inet")
                         .HasColumnName("ip_address");
 
@@ -94,6 +94,73 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.ToTable("UserSessions", "Audit");
                 });
 
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Dictionaries.CustomFieldDefenition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
+                    b.Property<int>("DataType")
+                        .HasColumnType("integer")
+                        .HasColumnName("data_type");
+
+                    b.Property<string>("FieldName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("field_name");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_required");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("CustomFieldDefenitions", "Dictionaries");
+                });
+
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Dictionaries.CustomFieldValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("FieldId")
+                        .HasColumnType("integer")
+                        .HasColumnName("field_id");
+
+                    b.Property<int>("InventoryItemId")
+                        .HasColumnType("integer")
+                        .HasColumnName("inventory_item_id");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FieldId");
+
+                    b.HasIndex("InventoryItemId");
+
+                    b.ToTable("CustomFieldValues", "Dictionaries");
+                });
+
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Dictionaries.FurnitureMaterial", b =>
                 {
                     b.Property<int>("Id")
@@ -103,14 +170,49 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
                     b.HasKey("Id");
 
                     b.ToTable("FurnitureMaterials", "Dictionaries");
+                });
+
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Dictionaries.FurnitureType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FurnitureTypes", "Dictionaries");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Dictionaries.IpDictionary", b =>
@@ -126,7 +228,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<IPAddress>("Ip")
+                    b.Property<IPAddress>("IpAddress")
                         .IsRequired()
                         .HasColumnType("inet")
                         .HasColumnName("ip");
@@ -168,9 +270,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     b.Property<string>("DocumentName")
                         .HasColumnType("text")
+                        .HasColumnName("document_name");
+
+                    b.Property<int>("DocumentNumber")
+                        .HasColumnType("integer")
                         .HasColumnName("document_number");
 
-                    b.Property<int>("DocumentType")
+                    b.Property<int>("DocumentStatus")
                         .HasColumnType("integer")
                         .HasColumnName("document_status");
 
@@ -238,9 +344,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     b.Property<string>("DocumentName")
                         .HasColumnType("text")
+                        .HasColumnName("document_name");
+
+                    b.Property<int>("DocumentNumber")
+                        .HasColumnType("integer")
                         .HasColumnName("document_number");
 
-                    b.Property<int>("DocumentType")
+                    b.Property<int>("DocumentStatus")
                         .HasColumnType("integer")
                         .HasColumnName("document_status");
 
@@ -308,9 +418,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     b.Property<string>("DocumentName")
                         .HasColumnType("text")
+                        .HasColumnName("document_name");
+
+                    b.Property<int>("DocumentNumber")
+                        .HasColumnType("integer")
                         .HasColumnName("document_number");
 
-                    b.Property<int>("DocumentType")
+                    b.Property<int>("DocumentStatus")
                         .HasColumnType("integer")
                         .HasColumnName("document_status");
 
@@ -384,9 +498,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     b.Property<string>("DocumentName")
                         .HasColumnType("text")
+                        .HasColumnName("document_name");
+
+                    b.Property<int>("DocumentNumber")
+                        .HasColumnType("integer")
                         .HasColumnName("document_number");
 
-                    b.Property<int>("DocumentType")
+                    b.Property<int>("DocumentStatus")
                         .HasColumnType("integer")
                         .HasColumnName("document_status");
 
@@ -471,6 +589,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly?>("BirthDate")
+                        .HasColumnType("date")
+                        .HasColumnName("birth_date");
 
                     b.Property<string>("Comment")
                         .HasColumnType("text")
@@ -636,6 +758,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
                     b.Property<string>("Comment")
                         .HasColumnType("text")
                         .HasColumnName("comment");
@@ -648,8 +774,8 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
-                    b.Property<long?>("InventoryNumber")
-                        .HasColumnType("bigint")
+                    b.Property<string>("InventoryNumber")
+                        .HasColumnType("text")
                         .HasColumnName("inventory_number");
 
                     b.Property<bool>("IsDeleted")
@@ -669,19 +795,21 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("registry_number");
 
-                    b.Property<int?>("ResponsibleId")
+                    b.Property<int>("ResponsibleId")
                         .HasColumnType("integer")
                         .HasColumnName("responsible_id");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
                         .HasColumnType("integer")
-                        .HasColumnName("status_id");
+                        .HasColumnName("status");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ResponsibleId");
 
@@ -736,7 +864,11 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("smallint")
                         .HasColumnName("core_count");
 
-                    b.Property<string>("Name")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
@@ -748,6 +880,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.Property<short?>("ThreadCount")
                         .HasColumnType("smallint")
                         .HasColumnName("thread_count");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<string>("Vendor")
                         .IsRequired()
@@ -767,6 +903,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<short?>("DisplayPort")
                         .HasColumnType("smallint")
@@ -792,6 +932,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("Model");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<string>("Vendor")
                         .IsRequired()
@@ -820,6 +964,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("chipset");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
                     b.Property<int>("FormFactor")
                         .HasColumnType("integer")
                         .HasColumnName("form_factor");
@@ -845,6 +993,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("socket");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
                     b.Property<string>("Vendor")
                         .IsRequired()
                         .HasColumnType("text")
@@ -853,25 +1005,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MoBos", "Dictionaries");
-                });
-
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Services.FurnitureType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FurnitureTypes", "Dictionaries");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Services.InventoryCategory", b =>
@@ -883,10 +1016,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CustomFields")
-                        .IsRequired()
-                        .HasColumnType("jsonb")
-                        .HasColumnName("custom_fields");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -898,14 +1030,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomFields")
-                        .HasDatabaseName("IX_InventoryCategory_CustomFields");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("CustomFields"), "GIN");
-
-                    b.ToTable("InventoryCategorys", "Dictionaries");
+                    b.ToTable("InventoryCategories", "Dictionaries");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.ComputerComponent", b =>
@@ -1091,18 +1222,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("birth_date");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("email");
 
                     b.Property<int?>("EmployeeId")
                         .HasColumnType("integer")
@@ -1116,11 +1238,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("password_hash");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(18)
-                        .HasColumnType("character varying(18)")
-                        .HasColumnName("phone_number");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("integer")
@@ -1206,29 +1323,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.ToTable("Furnitures", "Inventory");
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Inventory.GenericInventoryItem", b =>
-                {
-                    b.HasBaseType("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer")
-                        .HasColumnName("category_id");
-
-                    b.Property<string>("Properties")
-                        .IsRequired()
-                        .HasColumnType("jsonb")
-                        .HasColumnName("properties");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("Properties")
-                        .HasDatabaseName("IX_GenericInventoryItem_Properties");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Properties"), "GIN");
-
-                    b.ToTable("GenericInventoryItems", "Inventory");
-                });
-
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Equipment", b =>
                 {
                     b.HasBaseType("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem");
@@ -1284,18 +1378,15 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("vendor");
 
-                    b.Property<string>("WifiName")
-                        .HasColumnType("text")
-                        .HasColumnName("wifi_name");
-
-                    b.Property<string>("WifiPassword")
-                        .HasColumnType("text")
-                        .HasColumnName("wifi_password");
+                    b.Property<string>("WiFiNetworksJson")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("wifi_networks");
 
                     b.ToTable("NetworkDevices", "Technics");
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.CPUComponent", b =>
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.CpuComponent", b =>
                 {
                     b.HasBaseType("Inventory_Atlas.Infrastructure.Entities.Technics.ComputerComponent");
 
@@ -1308,7 +1399,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.ToTable("CPUComponents", "Technics");
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.GPUComponent", b =>
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.GpuComponent", b =>
                 {
                     b.HasBaseType("Inventory_Atlas.Infrastructure.Entities.Technics.ComputerComponent");
 
@@ -1374,7 +1465,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.ToTable("OtherComponents", "Technics");
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.PSUComponent", b =>
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.PsuComponent", b =>
                 {
                     b.HasBaseType("Inventory_Atlas.Infrastructure.Entities.Technics.ComputerComponent");
 
@@ -1385,7 +1476,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.ToTable("PSUComponents", "Technics");
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.RAMComponent", b =>
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.RamComponent", b =>
                 {
                     b.HasBaseType("Inventory_Atlas.Infrastructure.Entities.Technics.ComputerComponent");
 
@@ -1546,10 +1637,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("refresh_rate");
 
-                    b.Property<string>("Resolution")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("resolution");
+                    b.Property<int?>("ResolutionHeight")
+                        .HasColumnType("integer")
+                        .HasColumnName("resolution_height");
+
+                    b.Property<int?>("ResolutionWidth")
+                        .HasColumnType("integer")
+                        .HasColumnName("resolution_width");
 
                     b.Property<string>("SerialNumber")
                         .HasColumnType("text")
@@ -1677,13 +1771,16 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     b.HasBaseType("Inventory_Atlas.Infrastructure.Entities.Technics.Equipment");
 
-                    b.Property<float?>("Diagonal")
-                        .HasColumnType("real")
+                    b.Property<double?>("Diagonal")
+                        .HasColumnType("double precision")
                         .HasColumnName("diagonal");
 
                     b.Property<int?>("Drive")
                         .HasColumnType("integer")
                         .HasColumnName("drive");
+
+                    b.Property<IPAddress>("IpAddress")
+                        .HasColumnType("inet");
 
                     b.Property<string>("Model")
                         .HasColumnType("text")
@@ -1696,6 +1793,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.Property<int?>("RAM")
                         .HasColumnType("integer")
                         .HasColumnName("ram");
+
+                    b.Property<string>("Resolution")
+                        .HasColumnType("text")
+                        .HasColumnName("resolution");
 
                     b.Property<string>("SerialNumber")
                         .HasColumnType("text")
@@ -1744,10 +1845,39 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Audit.UserSession", "UserSession")
                         .WithMany("LogEntries")
                         .HasForeignKey("UserSessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("UserSession");
+                });
+
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Dictionaries.CustomFieldDefenition", b =>
+                {
+                    b.HasOne("Inventory_Atlas.Infrastructure.Entities.Services.InventoryCategory", "Category")
+                        .WithMany("CustomFields")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Dictionaries.CustomFieldValue", b =>
+                {
+                    b.HasOne("Inventory_Atlas.Infrastructure.Entities.Dictionaries.CustomFieldDefenition", "FieldDefenition")
+                        .WithMany("FieldValues")
+                        .HasForeignKey("FieldId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem", "Item")
+                        .WithMany()
+                        .HasForeignKey("InventoryItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FieldDefenition");
+
+                    b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Documents.CheckoutDocument", b =>
@@ -1755,7 +1885,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.Employee", "Employee")
                         .WithMany("CheckoutDocuments")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -1764,7 +1894,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Documents.CheckoutDocumentItem", b =>
                 {
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Documents.CheckoutDocument", "Document")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1772,7 +1902,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem", "Item")
                         .WithMany("CheckoutDocumentItems")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Document");
@@ -1785,7 +1915,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.Employee", "Employee")
                         .WithMany("ReturnDocuments")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -1794,7 +1924,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Documents.ReturnDocumentItem", b =>
                 {
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Documents.ReturnDocument", "Document")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1802,7 +1932,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem", "Item")
                         .WithMany("ReturnDocumentItems")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Document");
@@ -1815,13 +1945,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.Employee", "FromEmployee")
                         .WithMany("FromTransferDocuments")
                         .HasForeignKey("FromEmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.Employee", "ToEmployee")
                         .WithMany("ToTransferDocuments")
                         .HasForeignKey("ToEmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("FromEmployee");
@@ -1840,7 +1970,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem", "Item")
                         .WithMany("TransferDocumentItems")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Document");
@@ -1859,7 +1989,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem", "Item")
                         .WithMany("WriteOffDocumentItems")
                         .HasForeignKey("WriteOffItems")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Document");
@@ -1871,7 +2001,8 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Department");
                 });
@@ -1881,7 +2012,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.Employee", "Employee")
                         .WithMany("MateriallyResponsibles")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -1891,7 +2022,8 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.Employee", "Employee")
                         .WithMany("Workplaces")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Employee");
                 });
@@ -1901,13 +2033,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Inventory.Furniture", "Furniture")
                         .WithMany("Materials")
                         .HasForeignKey("FurnitureId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Dictionaries.FurnitureMaterial", "FurnitureMaterial")
                         .WithMany("FurnitureMaterialAssignments")
                         .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Furniture");
@@ -1917,9 +2049,18 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem", b =>
                 {
+                    b.HasOne("Inventory_Atlas.Infrastructure.Entities.Services.InventoryCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.MateriallyResponsible", "Responsible")
                         .WithMany("Items")
-                        .HasForeignKey("ResponsibleId");
+                        .HasForeignKey("ResponsibleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("Responsible");
                 });
@@ -1929,7 +2070,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem", "InventoryItem")
                         .WithMany("InventoryItemPhotos")
                         .HasForeignKey("InventoryItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("InventoryItem");
@@ -1951,12 +2092,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Technics.Equipment", "Device")
                         .WithMany("MaintenanceLogs")
                         .HasForeignKey("DeviceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.Employee", "Employee")
                         .WithMany("MaintenanceLogs")
-                        .HasForeignKey("PerformedBy");
+                        .HasForeignKey("PerformedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Device");
 
@@ -1968,7 +2110,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Technics.Equipment", "Equipment")
                         .WithMany("WorkplaceEquipments")
                         .HasForeignKey("EquipmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.Workplace", "Workplace")
@@ -2005,12 +2147,13 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 {
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Employees.Employee", "Employee")
                         .WithMany("UserProfiles")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Users.Role", "Role")
                         .WithMany("UserProfiles")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Employee");
@@ -2020,10 +2163,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Inventory.Furniture", b =>
                 {
-                    b.HasOne("Inventory_Atlas.Infrastructure.Entities.Services.FurnitureType", "FurnitureType")
+                    b.HasOne("Inventory_Atlas.Infrastructure.Entities.Dictionaries.FurnitureType", "FurnitureType")
                         .WithMany("Furnitures")
                         .HasForeignKey("FurnitureTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem", null)
@@ -2033,23 +2176,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("FurnitureType");
-                });
-
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Inventory.GenericInventoryItem", b =>
-                {
-                    b.HasOne("Inventory_Atlas.Infrastructure.Entities.Services.InventoryCategory", "Category")
-                        .WithMany("Items")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Inventory_Atlas.Infrastructure.Entities.Inventory.InventoryItem", null)
-                        .WithOne()
-                        .HasForeignKey("Inventory_Atlas.Infrastructure.Entities.Inventory.GenericInventoryItem", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Equipment", b =>
@@ -2070,34 +2196,34 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.CPUComponent", b =>
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.CpuComponent", b =>
                 {
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.References.CpuDictionary", "CPUReference")
                         .WithMany("CPUs")
                         .HasForeignKey("CPUId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Technics.ComputerComponent", null)
                         .WithOne()
-                        .HasForeignKey("Inventory_Atlas.Infrastructure.Entities.Technics.Components.CPUComponent", "Id")
+                        .HasForeignKey("Inventory_Atlas.Infrastructure.Entities.Technics.Components.CpuComponent", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CPUReference");
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.GPUComponent", b =>
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.GpuComponent", b =>
                 {
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.References.GpuDictionary", "GPUReference")
                         .WithMany("GPUs")
                         .HasForeignKey("GpuId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Technics.ComputerComponent", null)
                         .WithOne()
-                        .HasForeignKey("Inventory_Atlas.Infrastructure.Entities.Technics.Components.GPUComponent", "Id")
+                        .HasForeignKey("Inventory_Atlas.Infrastructure.Entities.Technics.Components.GpuComponent", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2115,7 +2241,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.References.MoBoDictionary", "MoBoReference")
                         .WithMany("MoBos")
                         .HasForeignKey("MoBoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("MoBoReference");
@@ -2139,20 +2265,20 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.PSUComponent", b =>
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.PsuComponent", b =>
                 {
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Technics.ComputerComponent", null)
                         .WithOne()
-                        .HasForeignKey("Inventory_Atlas.Infrastructure.Entities.Technics.Components.PSUComponent", "Id")
+                        .HasForeignKey("Inventory_Atlas.Infrastructure.Entities.Technics.Components.PsuComponent", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.RAMComponent", b =>
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Technics.Components.RamComponent", b =>
                 {
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Technics.ComputerComponent", null)
                         .WithOne()
-                        .HasForeignKey("Inventory_Atlas.Infrastructure.Entities.Technics.Components.RAMComponent", "Id")
+                        .HasForeignKey("Inventory_Atlas.Infrastructure.Entities.Technics.Components.RamComponent", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -2216,7 +2342,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Сonsumables.PrinterCartridge", "Cartridge")
                         .WithMany("Printers")
                         .HasForeignKey("CartridgeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Inventory_Atlas.Infrastructure.Entities.Technics.Equipment", null)
@@ -2269,9 +2395,29 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.Navigation("LogEntries");
                 });
 
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Dictionaries.CustomFieldDefenition", b =>
+                {
+                    b.Navigation("FieldValues");
+                });
+
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Dictionaries.FurnitureMaterial", b =>
                 {
                     b.Navigation("FurnitureMaterialAssignments");
+                });
+
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Dictionaries.FurnitureType", b =>
+                {
+                    b.Navigation("Furnitures");
+                });
+
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Documents.CheckoutDocument", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Documents.ReturnDocument", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Documents.TransferDocument", b =>
@@ -2348,14 +2494,9 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.Navigation("MoBos");
                 });
 
-            modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Services.FurnitureType", b =>
-                {
-                    b.Navigation("Furnitures");
-                });
-
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Services.InventoryCategory", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("CustomFields");
                 });
 
             modelBuilder.Entity("Inventory_Atlas.Infrastructure.Entities.Users.Role", b =>

@@ -23,10 +23,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
         Task<IEnumerable<Computer>> GetServersAsync();
 
         /// <summary>
-        /// Получает компьютеры по IP-адресу
+        /// Получает компьютеры по IpAddress-адресу
         /// </summary>
-        /// <param name="ipAddress">IP-адрес для поиска</param>
-        /// <returns>Коллекция компьютеров с указанным IP-адресом</returns>
+        /// <param name="ipAddress">IpAddress-адрес для поиска</param>
+        /// <returns>Коллекция компьютеров с указанным IpAddress-адресом</returns>
         Task<IEnumerable<Computer>> GetByIpAsync(System.Net.IPAddress ipAddress);
 
         /// <summary>

@@ -2,7 +2,7 @@
 using Inventory_Atlas.Infrastructure.Entities.Inventory;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Services
+namespace Inventory_Atlas.Infrastructure.Entities.Dictionaries
 {
     /// <summary>
     /// Тип мебели.
@@ -10,7 +10,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Services
     /// Содержит наименование типа мебели и связь с объектами мебели.
     /// </summary>
     [Table("FurnitureTypes", Schema = "Dictionaries")]
-    public class FurnitureType : BaseEntity
+    public class FurnitureType : AuditableEntity
     {
         /// <summary>
         /// Наименование типа мебели.

@@ -119,6 +119,32 @@ namespace Inventory_Atlas.Infrastructure.Entities.Employees
         public bool IsResponsible { get; set; } = false;
 
         /// <summary>
+        /// Дата рождения пользователя.
+        /// <para/>
+        /// Тип: <see cref="DateTime"/>?.
+        /// <para/>
+        /// Может быть <see langword="null"/>.
+        /// </summary>
+        [Column("birth_date")]
+        public DateOnly? BirthDate { get; set; }
+
+        /// <summary>
+        /// Полное имя сотрудника в формате "Фамилия Имя Отчество".
+        /// <para/>
+        /// Тип: <see cref="string"/>.
+        /// </summary>
+        [NotMapped]
+        public string FullName => $"{Surname} {Firstname} {(string.IsNullOrWhiteSpace(Patronymic) ? string.Empty : Patronymic)}".Trim();
+
+        /// <summary>
+        /// Инициалы сотрудника в формате "Фамилия И. О.".
+        /// <para/>
+        /// Тип: <see cref="string"/>.
+        /// </summary>
+        [NotMapped]
+        public string ShortName => $"{Surname} {Firstname[0]}. {(string.IsNullOrWhiteSpace(Patronymic) ? string.Empty : Patronymic[0] + ".")}".Trim();
+
+        /// <summary>
         /// Коллекция рабочих мест сотрудника.
         /// <para/>
         /// Тип: <see cref="ICollection{Workplace}"/>.

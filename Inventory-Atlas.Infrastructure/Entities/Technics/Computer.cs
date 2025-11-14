@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+﻿using Inventory_Atlas.Core.DTOs.Common;
+using Inventory_Atlas.Infrastructure.Entities.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
@@ -7,7 +8,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// <summary>
     /// Сущность компьютера.
     /// <para/>
-    /// Наследуется от <see cref="Equipment"/> и cодержит информацию об IP-адресе, операционной системе
+    /// Наследуется от <see cref="Equipment"/> и cодержит информацию об IpAddress-адресе, операционной системе
     /// и связанных комплектующих.
     /// </summary>
     [Table("Computers", Schema = "Technics")]
@@ -24,7 +25,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         public bool IsServer { get; set; } = false;
 
         /// <summary>
-        /// IP-адрес компьютера.
+        /// IpAddress-адрес компьютера.
         /// <para/>
         /// Тип: <see cref="IPAddress"/>?.
         /// <para/>

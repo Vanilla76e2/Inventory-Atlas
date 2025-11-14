@@ -16,13 +16,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
         Task<UserProfile?> GetByUsernameAsync(string username);
 
         /// <summary>
-        /// Получает профиль пользователя по email
-        /// </summary>
-        /// <param name="email">Email пользователя</param>
-        /// <returns>Профиль пользователя или null если не найден</returns>
-        Task<UserProfile?> GetByEmailAsync(string email);
-
-        /// <summary>
         /// Получает активных пользователей
         /// </summary>
         /// <returns>Коллекция активных пользователей</returns>

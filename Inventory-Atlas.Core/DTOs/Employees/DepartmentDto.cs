@@ -9,7 +9,7 @@ namespace Inventory_Atlas.Core.DTOs.Employees
     /// <para/>
     /// Наследуется от <see cref="AuditableDto"/> и содержит название, комментарий и список сотрудников (опционально для UI).
     /// </summary>
-    public class DepartmentDto : AuditableDto
+    public class DepartmentDto : BaseDto
     {
         /// <summary>
         /// Название подразделения.
@@ -36,6 +36,6 @@ namespace Inventory_Atlas.Core.DTOs.Employees
         /// <para/>
         /// Может быть <c>null</c>, используется опционально для UI.
         /// </summary>
-        public List<EmployeeSummaryDto>? Employees { get; set; }
+        public List<EmployeeListDto>? Employees { get; set; }
     }
 }

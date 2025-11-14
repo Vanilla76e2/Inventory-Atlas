@@ -69,15 +69,6 @@
         public short? RamSlots { get; set; }
 
         /// <summary>
-        /// Максимальный поддерживаемый объем RAM в ГБ.
-        /// <para/>
-        /// Тип: <see langword="short"/>
-        /// <para/>
-        /// Может быть <c>null</c>.
-        /// </summary>
-        public short? MaxRamGB { get; set; }
-
-        /// <summary>
         /// Количество PCIe слотов.
         /// <para/>
         /// Тип: <see langword="short"/>

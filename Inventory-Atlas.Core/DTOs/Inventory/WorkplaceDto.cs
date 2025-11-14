@@ -1,16 +1,16 @@
 ﻿using Inventory_Atlas.Core.DTOs.Common;
 using Inventory_Atlas.Core.DTOs.Technics;
 
-namespace Inventory_Atlas.Core.DTOs.Employees
+namespace Inventory_Atlas.Core.DTOs.Inventory
 {
     /// <summary>
     /// DTO для рабочего места сотрудника.
     /// <para/>
     /// Тип: <see cref="WorkplaceDto"/>
     /// <para/>
-    /// Наследуется от <see cref="AuditableDto"/> и содержит название, комментарий, информацию о сотруднике и список оборудования.
+    /// Наследуется от <see cref="BaseDto"/> и содержит название, комментарий, информацию о сотруднике и список оборудования.
     /// </summary>
-    public class WorkplaceDto : AuditableDto
+    public class WorkplaceDto : BaseDto
     {
         /// <summary>
         /// Название рабочего места.

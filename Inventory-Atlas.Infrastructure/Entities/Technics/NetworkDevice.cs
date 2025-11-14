@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+﻿using Inventory_Atlas.Core.Models;
+using Inventory_Atlas.Infrastructure.Entities.Base;
 using Inventory_Atlas.Infrastructure.Entities.Inventory;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
@@ -9,7 +10,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// Сетевое устройство.
     /// <para/>
     /// Наследуется от <see cref="DeviceEntity"/> и реализует <see cref="IHasIpAddress"/>.
-    /// Содержит информацию о модели, IP, MAC, настройках Wi-Fi, количестве портов и т.д.
+    /// Содержит информацию о модели, IpAddress, MAC, настройках Wi-Fi, количестве портов и т.д.
     /// </summary>
     [Table("NetworkDevices", Schema = "Technics")]
     public class NetworkDevice : InventoryItem, IHasIpAddress
@@ -45,7 +46,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         public string? SerialNumber { get; set; }
 
         /// <summary>
-        /// IP-адрес устройства.
+        /// IpAddress-адрес устройства.
         /// <para/>
         /// Тип: <see cref="IPAddress"/>?.
         /// <para/>
@@ -117,22 +118,10 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         /// <summary>
         /// Название Wi-Fi сети.
         /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>.
+        /// Тип: Коллекция <see cref="WiFiNetworksJsonModel"/>?.
         /// </summary>
-        [Column("wifi_name")]
-        public string? WifiName { get; set; }
-
-        /// <summary>
-        /// Пароль Wi-Fi сети.
-        /// <para/>
-        /// Тип: <see langword="string"/>?.
-        /// <para/>
-        /// Может быть <see langword="null"/>.
-        /// </summary>
-        [Column("wifi_password")]
-        public string? WifiPassword { get; set; }
+        [Column("wifi_networks")]
+        public List<WiFiNetworkJsonModel> WiFiNetworksJson { get; set; } = new();
 
         /// <summary>
         /// Пропускная способность сети (в Мбит/с).

@@ -12,7 +12,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.References
     /// портах подключения и связанных компонентах.
     /// </summary>
     [Table("GPUs", Schema = "Dictionaries")]
-    public class GpuDictionary : BaseEntity
+    public class GpuDictionary : AuditableEntity
     {
         /// <summary>
         /// Производитель видеокарты.
@@ -35,12 +35,12 @@ namespace Inventory_Atlas.Infrastructure.Entities.References
         public string Model { get; set; } = null!;
 
         /// <summary>
-        /// Объём видеопамяти в мегабайтах.
+        /// Объём видеопамяти в Гигабайтах.
         /// <para/>
         /// Тип: <see cref="int"/>.
         /// </summary>
         [Column("memory_size")]
-        public int MemorySize { get; set; } // in MB
+        public int MemorySize { get; set; } // in Gb
 
         /// <summary>
         /// Тип видеопамяти.
@@ -80,7 +80,6 @@ namespace Inventory_Atlas.Infrastructure.Entities.References
         [Column("display_port")]
         public short? DisplayPort { get; set; }
 
-
         /// <summary>
         /// Количество DVI-портов.
         /// <para/>
@@ -110,7 +109,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.References
         /// <para/>
         /// Навигационное свойство для получения всех компонентов, являющихся данным GPU.
         /// </summary>
-        [InverseProperty(nameof(GPUComponent.GPUReference))]
-        public virtual ICollection<GPUComponent> GPUs { get; set; } = new List<GPUComponent>();
+        [InverseProperty(nameof(GpuComponent.GPUReference))]
+        public virtual ICollection<GpuComponent> GPUs { get; set; } = new List<GpuComponent>();
     }
 }

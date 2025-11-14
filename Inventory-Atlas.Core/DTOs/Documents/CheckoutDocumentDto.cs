@@ -37,6 +37,25 @@ namespace Inventory_Atlas.Core.DTOs.Documents
         public List<CheckoutDocumentItemDto> Items { get; set; } = new();
     }
 
+    public class CheckoutDocumentListDto : DocumentDto
+    {
+        /// <summary>
+        /// Имя сотрудника.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Не может быть <c>null</c>.
+        /// </summary>
+        public string EmployeeName { get; set; } = null!;
+
+        /// <summary>
+        /// Количество элементов в документе.
+        /// <para/>
+        /// Тип: <see langword="int"/>
+        /// </summary>
+        public int ItemsCount { get; set; }
+    }
+
     /// <summary>
     /// DTO для отдельного элемента документа выдачи оборудования.
     /// <para/>
@@ -66,5 +85,12 @@ namespace Inventory_Atlas.Core.DTOs.Documents
         /// Не может быть <c>null</c>.
         /// </summary>
         public string ItemName { get; set; } = null!;
+
+        /// <summary>
+        /// Инвентарный номер элемента.
+        /// <para/>
+        /// Тип: <see langword="long"/>
+        /// </summary>
+        public string? ItemInventoryNumber { get; set; }
     }
 }

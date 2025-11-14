@@ -3,18 +3,18 @@
     /// <summary>
     /// DTO для процессорного компонента компьютера.
     /// <para/>
-    /// Тип: <see cref="CPUComponentDto"/>
+    /// Тип: <see cref="CpuComponentDto"/>
     /// <para/>
     /// Наследуется от <see cref="ComputerComponentDto"/> и содержит данные о процессоре: идентификатор, название, производителя, количество ядер и потоков, тактовую частоту и сокет.
     /// </summary>
-    public class CPUComponentDto : ComputerComponentDto
+    public class CpuComponentDto : ComputerComponentDto
     {
         /// <summary>
         /// Идентификатор процессора.
         /// <para/>
         /// Тип: <see langword="int"/>
         /// </summary>
-        public int CPUId { get; set; }
+        public int CpuId { get; set; }
 
         /// <summary>
         /// Название процессора.
@@ -23,7 +23,7 @@
         /// <para/>
         /// Не может быть <c>null</c>.
         /// </summary>
-        public string CPUName { get; set; } = null!;
+        public string CpuModel { get; set; } = null!;
 
         /// <summary>
         /// Производитель процессора.
@@ -32,7 +32,7 @@
         /// <para/>
         /// Может быть <c>null</c>.
         /// </summary>
-        public string? CPUManufacturer { get; set; }
+        public string? CpuVendor { get; set; }
 
         /// <summary>
         /// Количество физических ядер процессора.

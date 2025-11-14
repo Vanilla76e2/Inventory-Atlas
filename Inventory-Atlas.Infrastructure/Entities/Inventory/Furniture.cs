@@ -1,5 +1,5 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Infrastructure.Entities.Services;
+using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Inventory

@@ -30,6 +30,25 @@ namespace Inventory_Atlas.Core.DTOs.Documents
         public List<WriteOffDocumentItemDto> Items { get; set; } = new();
     }
 
+    public class WriteOffDocumentListDto : DocumentDto
+    {
+        /// <summary>
+        /// Причина списания оборудования.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Может быть <c>null</c> если причина не указана.
+        /// </summary>
+        public string? Reason { get; set; }
+
+        /// <summary>
+        /// Количество элементов в документе списания.
+        /// <para/>
+        /// Тип: <see langword="int"/>
+        /// </summary>
+        public int ItemsCount { get; set; }
+    }
+
     /// <summary>
     /// DTO для отдельного элемента документа списания оборудования.
     /// <para/>
@@ -59,5 +78,12 @@ namespace Inventory_Atlas.Core.DTOs.Documents
         /// Не может быть <c>null</c>.
         /// </summary>
         public string ItemName { get; set; } = null!;
+
+        /// <summary>
+        /// Инвентарный номер элемента документа.
+        /// <para/>
+        /// Тип: <see langword="long"/>
+        /// </summary>
+        public string? ItemInventoryNumber { get; set; }
     }
 }

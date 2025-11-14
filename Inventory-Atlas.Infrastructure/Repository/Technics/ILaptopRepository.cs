@@ -9,10 +9,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public interface ILaptopRepository : IDatabaseRepository<Laptop>
     {
         /// <summary>
-        /// Получает ноутбук по IP-адресу
+        /// Получает ноутбук по IpAddress-адресу
         /// </summary>
-        /// <param name="ipAddress">IP-адрес для поиска</param>
-        /// <returns>Ноутбук с указанным IP-адресом или null если не найден</returns>
+        /// <param name="ipAddress">IpAddress-адрес для поиска</param>
+        /// <returns>Ноутбук с указанным IpAddress-адресом или null если не найден</returns>
         Task<Laptop?> GetByIpAddressAsync(string ipAddress);
 
         /// <summary>

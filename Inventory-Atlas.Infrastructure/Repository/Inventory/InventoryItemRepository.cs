@@ -10,16 +10,16 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
     /// <summary>
     /// Репозиторий для работы с элементами инвентаря.
     /// </summary>
-    public class InventoryRepository : DatabaseRepository<InventoryItem>, IInventoryRepository
+    public class InventoryItemRepository : DatabaseRepository<InventoryItem>, IInventoryItemRepository
     {
         /// <summary>
         /// Создаёт новый экземпляр репозитория элементов инвентаря.
         /// </summary>
         /// <param name="contextProvider">Провайдер DbContext.</param>
         /// <param name="logger">Логгер репозитория.</param>
-        public InventoryRepository(
+        public InventoryItemRepository(
             IDatabaseContextProvider contextProvider,
-            ILogger<InventoryRepository> logger)
+            ILogger<InventoryItemRepository> logger)
             : base(contextProvider, logger)
         {
         }
@@ -27,7 +27,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         /// <inheritdoc/>
         public async Task<IEnumerable<InventoryItem>> SearchAsync(
             string? name = null,
-            long? inventoryNumber = null,
+            string? inventoryNumber = null,
             string? registryNumber = null,
             int? responsibleId = null,
             InventoryStatus? status = null,
@@ -39,8 +39,8 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(i => EF.Functions.ILike(i.Name, $"%{name}%"));
 
-            if (inventoryNumber.HasValue)
-                query = query.Where(i => i.InventoryNumber == inventoryNumber.Value);
+            if (!string.IsNullOrWhiteSpace(inventoryNumber))
+                query = query.Where(i => i.InventoryNumber == $"%{inventoryNumber}%");
 
             if (!string.IsNullOrWhiteSpace(registryNumber))
                 query = query.Where(i => EF.Functions.ILike(i.RegistryNumber!, $"%{registryNumber}%"));
@@ -49,7 +49,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
                 query = query.Where(i => i.ResponsibleId == responsibleId.Value);
 
             if (status.HasValue)
-                query = query.Where(i => i.StatusId == status.Value);
+                query = query.Where(i => i.Status == status.Value);
 
             if (!string.IsNullOrWhiteSpace(location))
                 query = query.Where(i => EF.Functions.ILike(i.Location!, $"%{location}%"));

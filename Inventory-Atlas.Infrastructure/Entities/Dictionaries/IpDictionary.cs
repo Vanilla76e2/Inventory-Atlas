@@ -5,23 +5,22 @@ using System.Net;
 namespace Inventory_Atlas.Infrastructure.Entities.Dictionaries
 {
     /// <summary>
-    /// Сущность для аудита IP-адресов.
+    /// Сущность для аудита IpAddress-адресов.
     /// <para/>
-    /// Наследуется от <see cref="AuditableEntity"/> и хранит IP-адрес и заметку.
+    /// Наследуется от <see cref="AuditableEntity"/> и хранит IpAddress-адрес и заметку.
     /// </summary>
     [Table("IpAddresses", Schema = "Dictionary")]
     public class IpDictionary : AuditableEntity
     {
         /// <summary>
-        /// IP-адрес устройства или пользователя.
+        /// IpAddress-адрес устройства или пользователя.
         /// <para/>
         /// Тип: <see cref="IPAddress"/>.
         /// <para/>
         /// Не может быть <see langword="null"/>.
         /// </summary>
         [Column("ip", TypeName = "inet")]
-        public IPAddress Ip { get; set; } = null!;
-
+        public IPAddress IpAddress { get; set; } = null!;
 
         /// <summary>
         /// Заметка или комментарий.

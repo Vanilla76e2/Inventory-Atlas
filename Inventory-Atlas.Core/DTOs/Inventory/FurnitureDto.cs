@@ -58,7 +58,7 @@ namespace Inventory_Atlas.Core.DTOs.Inventory
         /// <para/>
         /// Может быть <c>null</c> если материалы не указаны.
         /// </summary>
-        public List<FurnitureMaterialAssignmentDto>? Materials { get; set; }
+        public List<FurnitureMaterialAssignmentListDto>? Materials { get; set; }
     }
 
     /// <summary>
@@ -82,6 +82,21 @@ namespace Inventory_Atlas.Core.DTOs.Inventory
         /// </summary>
         public int MaterialId { get; set; }
 
+        /// <summary>
+        /// Название материала.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Не может быть <c>null</c>.
+        /// </summary>
+        public string MaterialName { get; set; } = null!;
+    }
+
+    /// <summary>
+    /// Сокращённый DTO для отображения материалов мебели в списках.
+    /// </summary>
+    public class FurnitureMaterialAssignmentListDto
+    {
         /// <summary>
         /// Название материала.
         /// <para/>

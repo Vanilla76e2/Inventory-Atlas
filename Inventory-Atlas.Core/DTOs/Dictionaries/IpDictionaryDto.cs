@@ -9,7 +9,7 @@ namespace Inventory_Atlas.Core.DTOs.Dictionaries
     /// Тип: <see cref="IpDictionaryDto"/>
     /// <para/>
     /// Наследуется от <see cref="AuditableDto"/> и содержит IP-адрес и заметку.
-    /// </summary>
+    /// </summary>0
     public class IpDictionaryDto : AuditableDto
     {
         /// <summary>
@@ -19,7 +19,7 @@ namespace Inventory_Atlas.Core.DTOs.Dictionaries
         /// <para/>
         /// Не может быть <c>null</c>.
         /// </summary>
-        public IPAddress Ip { get; set; } = null!;
+        public IPAddress IpAddress { get; set; } = null!;
 
         /// <summary>
         /// Примечание или описание для IP-адреса.

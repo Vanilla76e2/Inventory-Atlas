@@ -2,6 +2,7 @@
 using Inventory_Atlas.Infrastructure.Entities.Base;
 using Inventory_Atlas.Infrastructure.Entities.Documents;
 using Inventory_Atlas.Infrastructure.Entities.Employees;
+using Inventory_Atlas.Infrastructure.Entities.Services;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -28,12 +29,12 @@ namespace Inventory_Atlas.Infrastructure.Entities.Inventory
         /// <summary>
         /// Инвентарный номер объекта.
         /// <para/>
-        /// Тип: <see cref="long"/>?.
+        /// Тип: <see cref="string"/>?.
         /// <para/>
         /// Может быть null, если номер ещё не присвоен.
         /// </summary>
         [Column("inventory_number")]
-        public long? InventoryNumber { get; set; }
+        public string? InventoryNumber { get; set; }
 
         /// <summary>
         /// Реестровый номер номер объекта.
@@ -53,7 +54,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Inventory
         /// Может быть null, если ответственный сотрудник не назначен.
         /// </summary>
         [Column("responsible_id")]
-        public int? ResponsibleId { get; set; }
+        public int ResponsibleId { get; set; }
 
         /// <summary>
         /// Навигационное свойство на сотрудника, ответственного за объект.
@@ -82,8 +83,8 @@ namespace Inventory_Atlas.Infrastructure.Entities.Inventory
         /// <para/>
         /// Указывает текущее состояние объекта (например, в эксплуатации, списано и т.д.).
         /// </summary>
-        [Column("status_id")]
-        public InventoryStatus StatusId { get; set; }
+        [Column("status")]
+        public InventoryStatus Status { get; set; }
 
         /// <summary>
         /// Комментарий по объект.
@@ -94,6 +95,26 @@ namespace Inventory_Atlas.Infrastructure.Entities.Inventory
         /// </summary>
         [Column("comment")]
         public string? Comment { get; set; }
+
+        /// <summary>
+        /// Иеднтификатор категории инвентарного объекта.
+        /// <para/>
+        /// Тип: <see langword="int"/>?.
+        /// <para/>
+        /// Может быть <see langword="null"/>.
+        /// </summary>
+        [Column("category_id")]
+        public int? CategoryId { get; set; }
+
+        /// <summary>
+        /// Объект представляющий категорию, на которую ссылается запись.
+        /// <para/>
+        /// Тип: <see cref="InventoryCategory"/>?.
+        /// <para/>
+        /// Может быть <see langword="null"/>.
+        /// </summary>
+        [ForeignKey(nameof(CategoryId))]
+        public virtual InventoryCategory? Category { get; set; }
 
         /// <summary>
         /// Коллекция фотографий объекта.

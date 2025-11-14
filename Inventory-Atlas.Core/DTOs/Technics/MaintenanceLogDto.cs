@@ -39,6 +39,13 @@ namespace Inventory_Atlas.Core.DTOs.Technics
         public int PerformedBy { get; set; }
 
         /// <summary>
+        /// Идентификатор сотрудника, выполнившего обслуживание.
+        /// <para/>
+        /// Тип: <see langword="int"/>
+        /// </summary>
+        public string? EmployeeName { get; set; }
+
+        /// <summary>
         /// Комментарий к обслуживанию.
         /// <para/>
         /// Тип: <see langword="string"/>

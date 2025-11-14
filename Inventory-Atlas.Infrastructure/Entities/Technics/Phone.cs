@@ -7,7 +7,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// <summary>
     /// Сущность телефона.
     /// <para/>
-    /// Наследуется от <see cref="Equipment"/> и содержит модель, производителя и номер телефона.
+    /// Наследуется от <see cref="DeviceEntity"/> и содержит модель, производителя и номер телефона.
     /// </summary>
     [Table("Phones", Schema = "Technics")]
     public class Phone : DeviceEntity

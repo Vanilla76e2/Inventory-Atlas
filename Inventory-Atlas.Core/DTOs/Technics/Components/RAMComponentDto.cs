@@ -3,11 +3,11 @@
     /// <summary>
     /// DTO для оперативной памяти как компонента компьютера.
     /// <para/>
-    /// Тип: <see cref="RAMComponentDto"/>
+    /// Тип: <see cref="RamComponentDto"/>
     /// <para/>
     /// Наследуется от <see cref="ComputerComponentDto"/> и содержит информацию о типе DDR, объеме и частоте памяти.
     /// </summary>
-    public class RAMComponentDto : ComputerComponentDto
+    public class RamComponentDto : ComputerComponentDto
     {
         /// <summary>
         /// Тип DDR памяти.

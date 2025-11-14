@@ -32,14 +32,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
         }
 
         /// <inheritdoc/>
-        public async Task<UserProfile?> GetByEmailAsync(string email)
-        {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<UserProfile>()
-                .FirstOrDefaultAsync(u => u.Email == email);
-        }
-
-        /// <inheritdoc/>
         public async Task<IEnumerable<UserProfile>> GetActiveUsersAsync()
         {
             await using var context = await _contextProvider.GetDbContextAsync();

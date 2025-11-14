@@ -1,7 +1,6 @@
 ﻿using Inventory_Atlas.Infrastructure.Entities.Base;
 using Inventory_Atlas.Infrastructure.Entities.Inventory;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.Design;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Dictionaries
 {
@@ -11,7 +10,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Dictionaries
     /// Содержит наименование материала и связь с мебелью через таблицу назначений.
     /// </summary>
     [Table("FurnitureMaterials", Schema = "Dictionaries")]
-    public class FurnitureMaterial : BaseEntity
+    public class FurnitureMaterial : AuditableEntity
     {
         /// <summary>
         /// Наименование материала.

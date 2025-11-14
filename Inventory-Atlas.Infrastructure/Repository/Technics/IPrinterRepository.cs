@@ -9,10 +9,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public interface IPrinterRepository : IDatabaseRepository<Printer>
     {
         /// <summary>
-        /// Получает принтеры по IP-адресу
+        /// Получает принтеры по IpAddress-адресу
         /// </summary>
-        /// <param name="ipAddress">IP-адрес для поиска</param>
-        /// <returns>Коллекция принтеров с указанным IP-адресом</returns>
+        /// <param name="ipAddress">IpAddress-адрес для поиска</param>
+        /// <returns>Коллекция принтеров с указанным IpAddress-адресом</returns>
         Task<IEnumerable<Printer>> GetByIpAddressAsync(string ipAddress);
 
         /// <summary>

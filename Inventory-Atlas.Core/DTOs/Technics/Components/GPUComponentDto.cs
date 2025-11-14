@@ -3,11 +3,11 @@
     /// <summary>
     /// DTO для видеокарты как компонента компьютера.
     /// <para/>
-    /// Тип: <see cref="GPUComponentDto"/>
+    /// Тип: <see cref="GpuComponentDto"/>
     /// <para/>
     /// Наследуется от <see cref="ComputerComponentDto"/> и содержит данные о видеокарте: идентификатор, производителя, модель, объем памяти, тип памяти и количество портов.
     /// </summary>
-    public class GPUComponentDto : ComputerComponentDto
+    public class GpuComponentDto : ComputerComponentDto
     {
         /// <summary>
         /// Идентификатор видеокарты.

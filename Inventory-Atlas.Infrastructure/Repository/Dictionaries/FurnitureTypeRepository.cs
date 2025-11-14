@@ -1,6 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Services;
+﻿using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

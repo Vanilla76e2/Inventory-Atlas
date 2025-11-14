@@ -65,19 +65,5 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         /// </summary>
         [Column("details", TypeName = "jsonb")]
         public string? Details { get; set; } = "{}";
-
-        /// <summary>
-        /// Десириализованный список изменений.
-        /// <para/>
-        /// Тип: <see cref="Dictionary{string, object}"/>
-        /// </summary>
-        [NotMapped]
-        public Dictionary<string, object>? ParsedDetails
-        {
-            get => string.IsNullOrWhiteSpace(Details)
-                   ? null
-                   : JsonSerializer.Deserialize<Dictionary<string, object>>(Details);
-            set => Details = JsonSerializer.Serialize(value ?? new Dictionary<string, object>());
-        }
     }
 }

@@ -24,15 +24,24 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
         public double? Diagonal { get; set; } // in inches
 
         /// <summary>
-        /// Разрешение экрана.
+        /// Разрешение экрана по вертикали.
         /// <para/>
-        /// Тип: <see langword="string"/>?.
+        /// Тип: <see langword="int"/>?.
         /// <para/>
-        /// Может быть <see langword="null"/>. Ограничение длины 50 символов.
+        /// Может быть <see langword="null"/>.
         /// </summary>
-        [Column("resolution")]
-        [StringLength(50)]
-        public string? Resolution { get; set; }
+        [Column("resolution_height")]
+        public int? ResolutionHeight { get; set; }
+
+        /// <summary>
+        /// Разрешение экрана по горизонтали.
+        /// <para/>
+        /// Тип: <see langword="int"/>?.
+        /// <para/>
+        /// Может быть <see langword="null"/>.
+        /// </summary>
+        [Column("resolution_width")]
+        public int? ResolutionWidth { get; set; }
 
         /// <summary>
         /// Частота обновления экрана в герцах.

@@ -3,11 +3,11 @@
     /// <summary>
     /// DTO для блока питания компьютера.
     /// <para/>
-    /// Тип: <see cref="PSUComponentDto"/>
+    /// Тип: <see cref="PsuComponentDto"/>
     /// <para/>
     /// Наследуется от <see cref="ComputerComponentDto"/> и содержит информацию о мощности блока питания.
     /// </summary>
-    public class PSUComponentDto : ComputerComponentDto
+    public class PsuComponentDto : ComputerComponentDto
     {
         /// <summary>
         /// Мощность блока питания в ваттах.

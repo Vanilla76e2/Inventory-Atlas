@@ -19,14 +19,5 @@ namespace Inventory_Atlas.Core.DTOs.Dictionaries
         /// Не может быть <c>null</c>.
         /// </summary>
         public string Name { get; set; } = null!;
-
-        /// <summary>
-        /// Список идентификаторов мебели данного типа.
-        /// <para/>
-        /// Тип: <see cref="List{Int32}"/>
-        /// <para/>
-        /// Может быть <c>null</c> если мебель не указана.
-        /// </summary>
-        public List<int>? FurnitureIds { get; set; }
     }
 }

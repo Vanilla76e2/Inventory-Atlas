@@ -35,7 +35,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
         {
             await using var context = await _contextProvider.GetDbContextAsync();
             return await context.Set<InventoryCategory>()
-                .Include(c => c.Items)
+                .Include(c => c.CustomFields)
                 .ToListAsync();
         }
     }

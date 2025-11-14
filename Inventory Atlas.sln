@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{36D591C7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-Atlas.Server", "Inventory-Atlas\Inventory-Atlas.Server.csproj", "{56FE7334-7818-AB04-B0B8-BE70A74A2229}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Application", "Test.Application\Test.Application.csproj", "{3A83F593-152F-4CB9-B801-82A016E1A4D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,9 +37,16 @@ Global
 		{56FE7334-7818-AB04-B0B8-BE70A74A2229}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56FE7334-7818-AB04-B0B8-BE70A74A2229}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56FE7334-7818-AB04-B0B8-BE70A74A2229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A83F593-152F-4CB9-B801-82A016E1A4D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A83F593-152F-4CB9-B801-82A016E1A4D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A83F593-152F-4CB9-B801-82A016E1A4D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A83F593-152F-4CB9-B801-82A016E1A4D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3A83F593-152F-4CB9-B801-82A016E1A4D5} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33E1D34F-CA16-43B2-94C7-BC57DB368EAE}

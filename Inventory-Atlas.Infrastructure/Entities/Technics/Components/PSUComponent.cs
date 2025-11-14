@@ -8,7 +8,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
     /// Наследуется от <see cref="ComputerComponent"/> и содержит информацию о мощности блока питания, используемого в устройстве.
     /// </summary>
     [Table("ComputerComponents_PSU", Schema = "Technics")]
-    public class PSUComponent : ComputerComponent
+    public class PsuComponent : ComputerComponent
     {
         /// <summary>
         /// Мощность блока питания в ваттах.

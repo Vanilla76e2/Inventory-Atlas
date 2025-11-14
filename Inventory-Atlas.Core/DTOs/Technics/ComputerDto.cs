@@ -1,4 +1,7 @@
-﻿namespace Inventory_Atlas.Core.DTOs.Technics
+﻿using Inventory_Atlas.Core.DTOs.Common;
+using Inventory_Atlas.Core.DTOs.Inventory;
+
+namespace Inventory_Atlas.Core.DTOs.Technics
 {
     /// <summary>
     /// DTO для компьютера как оборудования.
@@ -42,5 +45,66 @@
         /// Может быть <c>null</c>.
         /// </summary>
         public List<ComputerComponentDto>? Components { get; set; }
+    }
+
+    public class ComputerDetailDto : ComputerDto
+    {
+        /// <summary>
+        /// Список привязок оборудования к рабочим местам.
+        /// <para/>
+        /// Тип: <see cref="List{WorkplaceEquipmentDto}"/>
+        /// <para/>
+        /// Инициализируется пустым списком по умолчанию.
+        /// </summary>
+        public List<WorkplaceEquipmentDto> WorkplaceEquipments { get; set; } = new();
+
+        /// <summary>
+        /// Журналы технического обслуживания оборудования.
+        /// <para/>
+        /// Тип: <see cref="List{MaintenanceLogDto}"/>
+        /// <para/>
+        /// Инициализируется пустым списком по умолчанию.
+        /// </summary>
+        public List<MaintenanceLogDto> MaintenanceLogs { get; set; } = new();
+    }
+
+    /// <summary>
+    /// DTO для компонента компьютера.
+    /// <para/>
+    /// Тип: <see cref="ComputerComponentDto"/>
+    /// <para/>
+    /// Содержит общие свойства для всех компонентов, включая идентификаторы, тип компонента, количество и серийный номер.
+    /// </summary>
+    public class ComputerComponentDto : BaseDto
+    {
+        /// <summary>
+        /// Идентификатор компьютера, к которому принадлежит компонент.
+        /// <para/>
+        /// Тип: <see langword="int"/>
+        /// </summary>
+        public int ComputerId { get; set; }
+
+        /// <summary>
+        /// Тип компонента.
+        /// <para/>
+        /// Тип: <see cref="Enums.ComponentType"/>
+        /// </summary>
+        public Core.Enums.ComponentType ComponentType { get; set; }
+
+        /// <summary>
+        /// Количество данного компонента.
+        /// <para/>
+        /// Тип: <see langword="short"/>
+        /// </summary>
+        public short Quantity { get; set; }
+
+        /// <summary>
+        /// Серийный номер компонента.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Может быть <c>null</c>.
+        /// </summary>
+        public string? SerialNumber { get; set; }
     }
 }

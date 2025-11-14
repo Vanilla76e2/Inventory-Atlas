@@ -9,7 +9,7 @@ namespace Inventory_Atlas.Core.DTOs.Consumables
     /// <para/>
     /// Наследуется от <see cref="AuditableDto"/>, содержит название, модель и количество картриджей.
     /// </summary>
-    public class PrinterCartridgeDto : AuditableDto
+    public class PrinterCartridgeDto : BaseDto
     {
         /// <summary>
         /// Название картриджа.

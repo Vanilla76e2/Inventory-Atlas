@@ -1,6 +1,5 @@
 ﻿using Inventory_Atlas.Infrastructure.Entities.Сonsumables;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.Extensions.Logging;
 
 namespace Inventory_Atlas.Infrastructure.Repository.Consumables
@@ -10,14 +9,14 @@ namespace Inventory_Atlas.Infrastructure.Repository.Consumables
     /// <para/>
     /// Наследуется от <see cref="DatabaseRepository{PrinterCartridge}"/> и реализует <see cref="IPrinterCartridgeRepository"/>.
     /// </summary>
-    public class PrinterCartridgesRepository : DatabaseRepository<PrinterCartridge>, IPrinterCartridgeRepository
+    public class PrinterCartridgeRepository : DatabaseRepository<PrinterCartridge>, IPrinterCartridgeRepository
     {
         /// <summary>
-        /// Создаёт экземпляр <see cref="PrinterCartridgesRepository"/> с указанным провайдером контекста БД и логгером.
+        /// Создаёт экземпляр <see cref="PrinterCartridgeRepository"/> с указанным провайдером контекста БД и логгером.
         /// </summary>
         /// <param name="contextProvider">Провайдер контекста базы данных.</param>
         /// <param name="logger">Логгер для записи действий репозитория.</param>
-        public PrinterCartridgesRepository(IDatabaseContextProvider contextProvider, ILogger<PrinterCartridgesRepository> logger)
+        public PrinterCartridgeRepository(IDatabaseContextProvider contextProvider, ILogger<PrinterCartridgeRepository> logger)
             : base(contextProvider, logger)
         { }
 

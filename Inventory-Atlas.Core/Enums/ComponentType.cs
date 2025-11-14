@@ -44,6 +44,18 @@ namespace Inventory_Atlas.Core.Enums
         NetCard = 6,
 
         /// <summary>
+        /// Материнская плата
+        /// </summary>
+        [Display(Name = "Материнская карта")]
+        MoBo = 7,
+
+        /// <summary>
+        /// Блок питания
+        /// </summary>
+        [Display(Name = "Блок питания")]
+        PSU = 8,
+
+        /// <summary>
         /// Прочие компоненты, не отнесённые к конкретной категории.
         /// </summary>
         [Display(Name = "Другое")]

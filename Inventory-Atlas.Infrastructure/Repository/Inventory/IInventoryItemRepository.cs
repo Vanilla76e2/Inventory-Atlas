@@ -21,7 +21,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         /// <returns>Список элементов инвентаря, соответствующих фильтрам.</returns>
         Task<IEnumerable<InventoryItem>> SearchAsync(
             string? name = null,
-            long? inventoryNumber = null,
+            string? inventoryNumber = null,
             string? registryNumber = null,
             int? responsibleId = null,
             InventoryStatus? status = null,

@@ -10,7 +10,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.References
     /// Содержит информацию о наименовании, производителе, характеристиках и связанных компонентах.
     /// </summary>
     [Table("CPUs", Schema = "Dictionaries")]
-    public class CpuDictionary : BaseEntity
+    public class CpuDictionary : AuditableEntity
     {
         /// <summary>
         /// Название процессора.
@@ -20,7 +20,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.References
         /// Обязательное поле, не может быть null.
         /// </summary>
         [Column("name")]
-        public string Name { get; set; } = null!;
+        public string Model { get; set; } = null!;
 
         /// <summary>
         /// Производитель процессора.
@@ -79,7 +79,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.References
         /// <para/>
         /// Навигационное свойство для получения всех компонентов, являющихся данным CPU.
         /// </summary>
-        [InverseProperty(nameof(CPUComponent.CPUReference))]
-        public virtual ICollection<CPUComponent> CPUs { get; set; } = new List<CPUComponent>();
+        [InverseProperty(nameof(CpuComponent.CPUReference))]
+        public virtual ICollection<CpuComponent> CPUs { get; set; } = new List<CpuComponent>();
     }
 }

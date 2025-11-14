@@ -9,14 +9,14 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// <summary>
     /// Сущность принтера.
     /// <para/>
-    /// Наследуется от <see cref="Equipment"/> и содержит модель, серийный номер, IP-адрес,
+    /// Наследуется от <see cref="DeviceEntity"/> и содержит модель, серийный номер, IpAddress-адрес,
     /// связанный картридж и характеристики устройства.
     /// </summary>
     [Table("Printers", Schema = "Technics")]
     public class Printer : DeviceEntity, IHasIpAddress
     {
         /// <summary>
-        /// IP-адрес принтера.
+        /// IpAddress-адрес принтера.
         /// <para/>
         /// Тип: <see cref="IPAddress"/>?.
         /// <para/>

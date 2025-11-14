@@ -8,7 +8,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
     /// Наследуется от <see cref="ComputerComponent"/> и cодержит информацию о принадлежности к конкретной модели CPU.
     /// </summary>
     [Table("ComputerComponents_CPU", Schema = "Technics")]
-    public class CPUComponent : ComputerComponent
+    public class CpuComponent : ComputerComponent
     {
         /// <summary>
         /// Идентификатор процессора, являющегося компонентом.

@@ -54,6 +54,37 @@ namespace Inventory_Atlas.Core.DTOs.Documents
     }
 
     /// <summary>
+    /// Сокращённый DTO для документа передачи оборудования от одного сотрудника другому.
+    /// </summary>
+    public class TransferDocumentListDto : DocumentDto
+    {
+        /// <summary>
+        /// Имя сотрудника, который передаёт оборудование.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Не может быть <c>null</c>.
+        /// </summary>
+        public string FromEmployeeName { get; set; } = null!;
+
+        /// <summary>
+        /// Имя сотрудника, который принимает оборудование.
+        /// <para/>
+        /// Тип: <see langword="string"/>
+        /// <para/>
+        /// Не может быть <c>null</c>.
+        /// </summary>
+        public string ToEmployeeName { get; set; } = null!;
+
+        /// <summary>
+        /// Количество элементов в документе передачи.
+        /// <para/>
+        /// Тип: <see langword="int"/>
+        /// </summary>
+        public int ItemsCount { get; set; }
+    }
+
+    /// <summary>
     /// DTO для отдельного элемента документа передачи оборудования.
     /// <para/>
     /// Тип: <see cref="TransferDocumentItemDto"/>
@@ -82,5 +113,12 @@ namespace Inventory_Atlas.Core.DTOs.Documents
         /// Не может быть <c>null</c>.
         /// </summary>
         public string ItemName { get; set; } = null!;
+
+        /// <summary>
+        /// Инвентарный номер элемента документа.
+        /// <para/>
+        /// Тип: <see langword="long"/>
+        /// </summary>
+        public string? ItemInventoryNumber { get; set; }
     }
 }

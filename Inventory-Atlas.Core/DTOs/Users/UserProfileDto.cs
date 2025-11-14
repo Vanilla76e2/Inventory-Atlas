@@ -9,7 +9,7 @@ namespace Inventory_Atlas.Core.DTOs.Users
     /// <para/>
     /// Наследуется от <see cref="AuditableDto"/> и содержит информацию о пользователе, контактах, статусе активности и роли.
     /// </summary>
-    public class UserProfileDto : AuditableDto
+    public class UserProfileDto : BaseDto
     {
         /// <summary>
         /// Имя пользователя (логин).
@@ -17,33 +17,6 @@ namespace Inventory_Atlas.Core.DTOs.Users
         /// Тип: <see langword="string"/>
         /// </summary>
         public string Username { get; set; } = null!;
-
-        /// <summary>
-        /// Электронная почта пользователя.
-        /// <para/>
-        /// Тип: <see langword="string"/>
-        /// <para/>
-        /// Может быть <c>null</c>.
-        /// </summary>
-        public string? Email { get; set; }
-
-        /// <summary>
-        /// Номер телефона пользователя.
-        /// <para/>
-        /// Тип: <see langword="string"/>
-        /// <para/>
-        /// Может быть <c>null</c>.
-        /// </summary>
-        public string? PhoneNumber { get; set; }
-
-        /// <summary>
-        /// Дата рождения пользователя.
-        /// <para/>
-        /// Тип: <see langword="DateTime"/>
-        /// <para/>
-        /// Может быть <c>null</c>.
-        /// </summary>
-        public DateTime? BirthDate { get; set; }
 
         /// <summary>
         /// Признак активности пользователя.
@@ -59,13 +32,13 @@ namespace Inventory_Atlas.Core.DTOs.Users
         /// <para/>
         /// Может быть <c>null</c>.
         /// </summary>
-        public string? Employee { get; set; }
+        public string? EmployeeName { get; set; }
 
         /// <summary>
         /// Роль пользователя.
         /// <para/>
         /// Тип: <see cref="RoleDto"/>
         /// </summary>
-        public RoleDto Role { get; set; } = null!;
+        public string RoleName { get; set; } = null!;
     }
 }
