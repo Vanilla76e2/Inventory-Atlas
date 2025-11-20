@@ -1,7 +1,7 @@
 ﻿using Inventory_Atlas.Core.Enums;
+using Inventory_Atlas.Infrastructure.Data;
 using Inventory_Atlas.Infrastructure.Entities.References;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -17,10 +17,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="MoBoRepository"/>.
         /// </summary>
-        /// <param name="provider">Поставщик контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для репозитория.</param>
-        public MoBoRepository(IDatabaseContextProvider provider, ILogger<MoBoRepository> logger)
-            : base(provider, logger)
+        public MoBoRepository(AppDbContext context, ILogger<MoBoRepository> logger)
+            : base(context, logger)
         { }
 
         /// <inheritdoc/>
@@ -39,10 +39,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
             string? chipset = null,
             MoBoFormFactor? formFactor = null,
             short? ramSlots = null,
-            short? m2Slots = null)
+            short? m2Slots = null,
+            CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            var query = context.Set<MoBoDictionary>().AsQueryable();
+            var query = _context.Set<MoBoDictionary>().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(vendor))
                 query = query.Where(e => e.Vendor != null && EF.Functions.ILike(e.Vendor, $"%{vendor}%"));
@@ -65,7 +65,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
             if (m2Slots.HasValue)
                 query = query.Where(e => e.M2Slots == m2Slots);
 
-            return await query.ToListAsync();
+            return await query.ToListAsync(ct);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Inventory_Atlas.Core.Enums;
+using Inventory_Atlas.Infrastructure.Data;
 using Inventory_Atlas.Infrastructure.Entities.References;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -17,10 +17,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
         /// <summary>
         /// Создаёт экземпляр <see cref="GpuRepository"/> с указанным провайдером контекста БД и логгером.
         /// </summary>
-        /// <param name="provider">Провайдер контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для записи действий репозитория.</param>
-        public GpuRepository(IDatabaseContextProvider provider, ILogger<GpuRepository> logger)
-            : base(provider, logger)
+        public GpuRepository(AppDbContext context, ILogger<GpuRepository> logger)
+            : base(context, logger)
         { }
 
         /// <inheritdoc/>
@@ -32,10 +32,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
             short? vga = null,
             short? hdmi = null,
             short? displayPort = null,
-            short? dvi = null)
+            short? dvi = null,
+            CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            var query = context.Set<GpuDictionary>().AsQueryable();
+            var query = _context.Set<GpuDictionary>().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(vendor))
                 query = query.Where(e => EF.Functions.ILike(e.Vendor, $"%{vendor}%"));
@@ -61,7 +61,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
             if (dvi.HasValue)
                 query = query.Where(e => e.Dvi == dvi);
 
-            return await query.ToListAsync();
+            return await query.ToListAsync(ct);
         }
     }
 }

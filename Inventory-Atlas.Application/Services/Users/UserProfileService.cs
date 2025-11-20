@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Inventory_Atlas.Application.Services.Common;
+using Inventory_Atlas.Application.Services.Crud.Common;
 using Inventory_Atlas.Core.DTOs.Users;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 using Inventory_Atlas.Infrastructure.Repository.Common;

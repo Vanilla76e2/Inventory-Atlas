@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Сonsumables;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Сonsumables;
 using Inventory_Atlas.Infrastructure.Repository.Common;
 using Microsoft.Extensions.Logging;
 
@@ -14,22 +15,22 @@ namespace Inventory_Atlas.Infrastructure.Repository.Consumables
         /// <summary>
         /// Создаёт экземпляр <see cref="PrinterCartridgeRepository"/> с указанным провайдером контекста БД и логгером.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для записи действий репозитория.</param>
-        public PrinterCartridgeRepository(IDatabaseContextProvider contextProvider, ILogger<PrinterCartridgeRepository> logger)
-            : base(contextProvider, logger)
+        public PrinterCartridgeRepository(AppDbContext context, ILogger<PrinterCartridgeRepository> logger)
+            : base(context, logger)
         { }
 
         /// <inheritdoc/>
-        public async Task<PrinterCartridge?> GetByModelAsync(string model)
+        public async Task<PrinterCartridge?> GetByModelAsync(string model, CancellationToken ct = default)
         {
-            return await FindAsync(e => e.Model == model);
+            return await FindAsync(e => e.Model == model, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<PrinterCartridge>> GetLowStockAsync(int threshold)
+        public async Task<IEnumerable<PrinterCartridge>> GetLowStockAsync(int threshold, CancellationToken ct = default)
         {
-            return await FindManyAsync(e => e.Quantity <= threshold);
+            return await FindManyAsync(e => e.Quantity <= threshold, ct);
         }
     }
 }

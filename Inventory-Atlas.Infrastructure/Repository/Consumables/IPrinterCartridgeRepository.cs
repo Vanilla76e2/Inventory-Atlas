@@ -18,7 +18,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Consumables
         /// Тип возвращаемого значения: <see cref="IEnumerable{PrinterCartridge}"/>
         /// </summary>
         /// <param name="threshold">Порог минимального количества картриджей.</param>
-        Task<IEnumerable<PrinterCartridge>> GetLowStockAsync(int threshold);
+        Task<IEnumerable<PrinterCartridge>> GetLowStockAsync(int threshold, CancellationToken ct = default);
 
         /// <summary>
         /// Получить картридж по модели.
@@ -28,6 +28,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Consumables
         /// Может быть <c>null</c>, если картридж с указанной моделью не найден.
         /// </summary>
         /// <param name="model">Модель картриджа.</param>
-        Task<PrinterCartridge?> GetByModelAsync(string model);
+        Task<PrinterCartridge?> GetByModelAsync(string model, CancellationToken ct = default);
     }
 }

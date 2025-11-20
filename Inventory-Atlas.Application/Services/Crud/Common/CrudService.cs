@@ -4,7 +4,7 @@ using Inventory_Atlas.Infrastructure.Repository.Common;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
-namespace Inventory_Atlas.Application.Services.Common
+namespace Inventory_Atlas.Application.Services.Crud.Common
 {
     /// <summary>
     /// Базовый сервис для CRUD-операций над сущностями.

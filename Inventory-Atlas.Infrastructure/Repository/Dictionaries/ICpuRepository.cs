@@ -28,6 +28,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
             int? threads = null,
             double? clock = null,
             double tolerance = 0.01,
-            string? socket = null);
+            string? socket = null, 
+            CancellationToken ct = default);
     }
 }

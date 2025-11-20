@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 
 namespace Inventory_Atlas.Infrastructure.Repository.Common
 {
@@ -8,26 +10,27 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ILogger<UnitOfWork> _logger;
-        private readonly IDatabaseContextProvider _contextProvider;
+        private readonly AppDbContext _context;
+        private IDbContextTransaction? _transaction;
 
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="UnitOfWork"/>.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="loggerFactory">Фабрика логгеров.</param>
-        public UnitOfWork(IDatabaseContextProvider contextProvider, ILoggerFactory loggerFactory)
+        public UnitOfWork(AppDbContext context, ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory.CreateLogger<UnitOfWork>();
-            _contextProvider = contextProvider;
+            _context = context;
         }
 
+        /// <inheritdoc/>
         public async Task SaveChangesAsync(CancellationToken ct = default)
         {
-            var dbContext = await _contextProvider.GetDbContextAsync();
             _logger.LogInformation("Saving changes to the database...");
             try
             {
-                await dbContext.SaveChangesAsync();
+                await _context.SaveChangesAsync(ct);
             }
             catch (Exception ex)
             {
@@ -35,7 +38,52 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
                 throw;
             }
             _logger.LogInformation("Changes saved successfully.");
-            _logger.LogDebug("Number of entities being saved: {Count}", dbContext.ChangeTracker.Entries().Count());
+            _logger.LogDebug("Number of entities being saved: {Count}", _context.ChangeTracker.Entries().Count());
+        }
+
+        /// <inheritdoc/>
+        public async Task BeginTransactionAsync(CancellationToken ct = default)
+        {
+            if (_transaction == null)
+                throw new InvalidOperationException("Transaction alreadt started.");
+
+            _transaction = await _context.Database.BeginTransactionAsync(ct);
+            _logger.LogDebug("Transaction started.");
+        }
+
+        /// <inheritdoc/>
+        public async Task CommitAsync(CancellationToken ct = default)
+        {
+            if (_transaction == null)
+                throw new InvalidOperationException("No active transaction to commit.");
+
+            await _context.SaveChangesAsync(ct);
+            await _transaction.CommitAsync(ct);
+            _logger.LogDebug("Transaction commited.");
+
+            await DisposeTransactionAsync();
+        }
+
+        /// <inheritdoc/>
+        public async Task RollbackAsync(CancellationToken ct = default)
+        {
+            if (_transaction == null)
+                return;
+
+            await _transaction.RollbackAsync(ct);
+            _logger.LogDebug("Transaction rolled back.");
+
+            await DisposeTransactionAsync();
+        }
+
+        /// <inheritdoc/>
+        private async Task DisposeTransactionAsync()
+        {
+            if (_transaction != null)
+            {
+                await _transaction.DisposeAsync();
+                _transaction = null;
+            }
         }
     }
 }

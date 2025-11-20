@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Inventory_Atlas.Application.Services.Common
+namespace Inventory_Atlas.Application.Services.Crud.Common
 {
     /// <summary>
     /// Базовый интерфейс CRUD-сервиса для работы с DTO.

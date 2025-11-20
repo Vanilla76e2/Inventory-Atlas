@@ -2,9 +2,11 @@ using Inventory_Atlas.Application;
 using Inventory_Atlas.Application.Services.Audit;
 using Inventory_Atlas.Application.Services.AuthMiddleware;
 using Inventory_Atlas.Application.Services.PermissionService;
+using Inventory_Atlas.Infrastructure.Data;
 using Inventory_Atlas.Infrastructure.Repository;
 using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Inventory_Atlas.Infrastructure.Services.DbInstaller;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inventory_Atlas
 {
@@ -21,10 +23,14 @@ namespace Inventory_Atlas
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseNpgsql(builder.Configuration.GetConnectionString("InventoryAtlasDatabase"));
+            });
+
             // Нужно будет сделать services.AddExceptionHandler();
 
-            RegisterInfrastructureServices(builder.Services);
-            RegisterApplicationServices(builder.Services);
+            RegisterProject(builder.Services);
 
             var app = builder.Build();
 
@@ -50,15 +56,9 @@ namespace Inventory_Atlas
             app.Run();
         }
 
-        private static void RegisterInfrastructureServices(IServiceCollection services)
+        private static void RegisterProject(IServiceCollection services)
         {
-            services.AddScoped<IDatabaseContextProvider, DatabaseContextProvider>();
-
             services.AddRepositories();
-        }
-
-        private static void RegisterApplicationServices(IServiceCollection services)
-        {
             services.AddAutoMapper(typeof(AssemblyMarker));
             services.AddApplicationServices();
             // Нужно будет сделать services.AddHeaыlthChecks

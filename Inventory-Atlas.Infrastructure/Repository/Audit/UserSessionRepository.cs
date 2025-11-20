@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Audit;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Audit;
 using Inventory_Atlas.Infrastructure.Repository.Common;
 using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore.Query.Internal;
@@ -18,32 +19,32 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         /// </summary>
         /// <param name="contextProvider">Провайдер контекста базы данных.</param>
         /// <param name="logger">Логгер для записи действий репозитория.</param>
-        public UserSessionRepository(IDatabaseContextProvider contextProvider, ILogger<UserSessionRepository> logger)
-            : base(contextProvider, logger)
+        public UserSessionRepository(AppDbContext context, ILogger<UserSessionRepository> logger)
+            : base(context, logger)
         {
         }
 
-        public async Task<UserSession?> GetSessionByToken(Guid token)
+        public async Task<UserSession?> GetSessionByToken(Guid token, CancellationToken ct = default)
         {
-            return await FindAsync(us => us.Token == token);
-        }
-
-        /// <inheritdoc/>
-        public async Task<UserSession?> GetActiveSessionByUsernameAsync(string username)
-        {
-            return await FindAsync(us => us.Username == username && us.IsActive);
+            return await FindAsync(us => us.Token == token, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<UserSession>> GetSessionsByUsernameAsync(string username)
+        public async Task<UserSession?> GetActiveSessionByUsernameAsync(string username, CancellationToken ct = default)
         {
-            return await FindManyAsync(us => us.Username == username);
+            return await FindAsync(us => us.Username == username && us.IsActive, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<UserSession>> GetSessionsInRangeAsync(DateTime fromUtc, DateTime toUtc)
+        public async Task<IEnumerable<UserSession>> GetSessionsByUsernameAsync(string username, CancellationToken ct = default)
         {
-            return await FindManyAsync(us => us.StartTime >= fromUtc && (us.EndTime ?? DateTime.MaxValue) <= toUtc);
+            return await FindManyAsync(us => us.Username == username, ct);
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<UserSession>> GetSessionsInRangeAsync(DateTime fromUtc, DateTime toUtc, CancellationToken ct = default)
+        {
+            return await FindManyAsync(us => us.StartTime >= fromUtc && (us.EndTime ?? DateTime.MaxValue) <= toUtc, ct);
         }
     }
 }

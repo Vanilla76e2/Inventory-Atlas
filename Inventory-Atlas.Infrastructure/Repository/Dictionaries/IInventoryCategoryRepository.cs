@@ -13,12 +13,12 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
         /// </summary>
         /// <param name="name">Название категории</param>
         /// <returns>Категория инвентаря или null если не найдена</returns>
-        Task<InventoryCategory?> GetByNameAsync(string name);
+        Task<InventoryCategory?> GetByNameAsync(string name, CancellationToken ct = default);
 
         /// <summary>
         /// Получает категории с связанными элементами инвентаря
         /// </summary>
         /// <returns>Коллекция категорий с элементами инвентаря</returns>
-        Task<IEnumerable<InventoryCategory>> GetWithItemsAsync();
+        Task<IEnumerable<InventoryCategory>> GetWithItemsAsync(CancellationToken ct = default);
     }
 }

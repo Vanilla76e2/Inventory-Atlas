@@ -22,14 +22,7 @@ namespace Inventory_Atlas.Application.Services.PermissionService
             _logger = logger;
         }
 
-        /// <summary>
-        /// Проверяет права пользователя по материальной ответственности.
-        /// </summary>
-        /// <param name="context">HTTP-контекст текущего запроса.</param>
-        /// <param name="resourceType">Тип ресурса.</param>
-        /// <param name="responsibleUserId">Идентификатор пользователя, ответственного за объект.</param>
-        /// <param name="requiredLevel">Минимальный уровень прав для доступа (по умолчанию Read).</param>
-        /// <returns>True, если пользователь имеет нужные права, иначе false.</returns>
+        /// <inheritdoc/>
         public bool HasPermission(HttpContext context, ResourceType resourceType, int responsibleUserId, RolePermissionEnum requiredLevel = RolePermissionEnum.Read)
         {
             _logger.LogDebug("Checking permissions for resource type {ResourceType} with required level {RequiredLevel} for responsible user ID {ResponsibleUserId}.",
@@ -38,7 +31,6 @@ namespace Inventory_Atlas.Application.Services.PermissionService
             if (IsAdmin(context, out var rolePermission))
                 return true;
 
-            // Проверка прав в зависимости от типа ресурса
             return resourceType switch
             {
                 ResourceType.InventoryItems => rolePermission.InventoryItemsPermissions
@@ -51,14 +43,7 @@ namespace Inventory_Atlas.Application.Services.PermissionService
             };
         }
 
-        /// <summary>
-        /// Проверяет права пользователя на словари.
-        /// </summary>
-        /// <param name="context">HTTP-контекст текущего запроса.</param>
-        /// <param name="resourceType">Тип ресурса (должен быть Dictionaries).</param>
-        /// <param name="dictionary">Конкретный словарь.</param>
-        /// <param name="requiredLevel">Минимальный уровень прав (по умолчанию Read).</param>
-        /// <returns>True, если пользователь имеет нужные права, иначе false.</returns>
+        /// <inheritdoc/>
         public bool HasPermission(HttpContext context, ResourceType resourceType, DictionariesEnum dictionary, RolePermissionEnum requiredLevel = RolePermissionEnum.Read)
         {
             _logger.LogDebug("Checking dictionary permissions for resource type {ResourceType} with required level {RequiredLevel} for dictionary {Dictionary}.",
@@ -75,13 +60,7 @@ namespace Inventory_Atlas.Application.Services.PermissionService
             };
         }
 
-        /// <summary>
-        /// Проверяет права пользователя на глобальные ресурсы.
-        /// </summary>
-        /// <param name="context">HTTP-контекст текущего запроса.</param>
-        /// <param name="resourceType">Тип ресурса.</param>
-        /// <param name="requiredLevel">Минимальный уровень прав (по умолчанию Read).</param>
-        /// <returns>True, если пользователь имеет нужные права, иначе false.</returns>
+        /// <inheritdoc/>
         public bool HasPermission(HttpContext context, ResourceType resourceType, RolePermissionEnum requiredLevel = RolePermissionEnum.Read)
         {
             _logger.LogDebug("Checking global permissions for resource type {ResourceType} with required level {RequiredLevel}.",
@@ -98,11 +77,7 @@ namespace Inventory_Atlas.Application.Services.PermissionService
             };
         }
 
-        /// <summary>
-        /// Проверяет, является ли текущий пользователь администратором.
-        /// </summary>
-        /// <param name="context">HTTP-контекст текущего запроса.</param>
-        /// <returns>True, если пользователь администратор, иначе false.</returns>
+        /// <inheritdoc/>
         public bool HasAdminPermission(HttpContext context)
         {
             _logger.LogDebug("Checking if user has admin permissions.");
@@ -110,11 +85,7 @@ namespace Inventory_Atlas.Application.Services.PermissionService
             return IsAdmin(context, out _);
         }
 
-        /// <summary>
-        /// Получает объект <see cref="RolePermission"/> из контекста запроса.
-        /// </summary>
-        /// <param name="context">HTTP-контекст текущего запроса.</param>
-        /// <returns>Объект прав роли пользователя.</returns>
+        /// <inheritdoc/>
         private RolePermission GetPermissions(HttpContext context)
         {
             _logger.LogDebug("Retrieving RolePermission from HttpContext.Items.");
@@ -140,12 +111,7 @@ namespace Inventory_Atlas.Application.Services.PermissionService
             return rolePermission;
         }
 
-        /// <summary>
-        /// Проверяет, является ли текущий пользователь администратором.
-        /// </summary>
-        /// <param name="context">HTTP-контекст текущего запроса.</param>
-        /// <param name="rolePermission">Выходной параметр с правами пользователя.</param>
-        /// <returns>True, если пользователь администратор, иначе false.</returns>
+        /// <inheritdoc/>
         private bool IsAdmin(HttpContext context, out RolePermission rolePermission)
         {
             rolePermission = GetPermissions(context);

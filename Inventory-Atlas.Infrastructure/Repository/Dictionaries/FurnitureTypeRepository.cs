@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
 using Inventory_Atlas.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -15,27 +16,26 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
         /// <summary>
         /// Создаёт экземпляр <see cref="FurnitureTypeRepository"/> с указанным провайдером контекста БД и логгером.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для записи действий репозитория.</param>
         public FurnitureTypeRepository(
-            IDatabaseContextProvider contextProvider,
+            AppDbContext context,
             ILogger<FurnitureTypeRepository> logger)
-            : base(contextProvider, logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<FurnitureType>> SearchAsync(string? name = null)
+        public async Task<IEnumerable<FurnitureType>> SearchAsync(string? name = null, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            var query = context.Set<FurnitureType>().AsQueryable();
+            var query = _context.Set<FurnitureType>().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(ft => EF.Functions.ILike(ft.Name, $"%{name}%"));
 
             return await query
                 .Include(ft => ft.Furnitures)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

@@ -32,12 +32,7 @@ namespace Inventory_Atlas.Application.Services.Audit
             _httpContext = httpContext;
         }
 
-        /// <summary>
-        /// Асинхронно добавляет запись лога для текущей сессии в контекст.
-        /// </summary>
-        /// <param name="action">Тип действия пользователя.</param>
-        /// <param name="details">Описание действия.</param>
-        /// <param name="ct">Токен отмены операции.</param>
+        /// <inheritdoc/>
         public async Task LogAsync(ActionType action, string? details, CancellationToken ct = default)
         {
             _logger.LogDebug("Adding log entry: Action={Action}, Details={Details}", action, details);
@@ -61,7 +56,9 @@ namespace Inventory_Atlas.Application.Services.Audit
             _logger.LogDebug("Log entry added successfully: {LogEntry}", entry);
         }
 
-        public async Task LogLoginAsync(ActionType action, int UserSessionId, CancellationToken ct = default)
+        /// <inheritdoc/>
+
+        public async Task LogAndSaveAsync(ActionType action, int UserSessionId, CancellationToken ct = default)
         {
             _logger.LogDebug("Adding log entry: Action={Action}", action);
             var entry = new LogEntry
@@ -76,58 +73,37 @@ namespace Inventory_Atlas.Application.Services.Audit
             await _uow.SaveChangesAsync(ct);
         }
 
-        /// <summary>
-        /// Асинхронно добавляет запись лога в контекст и сразу сохраняет изменения в базе.
-        /// Используется для критичных действий, которые нельзя потерять.
-        /// </summary>
-        /// <param name="action">Тип действия пользователя.</param>
-        /// <param name="details">Описание действия.</param>
-        /// <param name="ct">Токен отмены операции.</param>
+        /// <inheritdoc/>
+
         public async Task LogAndSaveAsync(ActionType action, string? details, CancellationToken ct = default)
         {
             await LogAsync(action, details, ct);
             await _uow.SaveChangesAsync(ct);
         }
 
-        /// <summary>
-        /// Получает все записи логов.
-        /// </summary>
-        /// <param name="ct">Токен отмены операции.</param>
-        /// <returns>Список всех записей логов.</returns>
+        /// <inheritdoc/>
+
         public async Task<IReadOnlyList<LogEntry>> GetAllAsync(CancellationToken ct = default)
         {
             return await _repo.GetAllAsync(ct);
         }
 
-        /// <summary>
-        /// Получает записи логов по идентификатору сессии пользователя.
-        /// </summary>
-        /// <param name="userSessionId">Идентификатор сессии пользователя.</param>
-        /// <param name="ct">Токен отмены операции.</param>
-        /// <returns>Список записей логов для указанной сессии.</returns>
+        /// <inheritdoc/>
+
         public async Task<IReadOnlyList<LogEntry>> GetByUserAsync(int userSessionId, CancellationToken ct = default)
         {
             return await _repo.GetBySessionAsync(userSessionId, ct);
         }
 
-        /// <summary>
-        /// Получает записи логов по типу действия.
-        /// </summary>
-        /// <param name="action">Тип действия пользователя.</param>
-        /// <param name="ct">Токен отмены операции.</param>
-        /// <returns>Список записей логов с указанным типом действия.</returns>
+        /// <inheritdoc/>
+
         public async Task<IReadOnlyList<LogEntry>> GetByActionAsync(ActionType action, CancellationToken ct = default)
         {
             return await _repo.GetByActionType(action, ct);
         }
 
-        /// <summary>
-        /// Получает записи логов за указанный период времени.
-        /// </summary>
-        /// <param name="from">Начало периода (включительно).</param>
-        /// <param name="to">Конец периода (включительно).</param>
-        /// <param name="ct">Токен отмены операции.</param>
-        /// <returns>Список записей логов за указанный период.</returns>
+        /// <inheritdoc/>
+
         public async Task<IReadOnlyList<LogEntry>> GetByDateRangeAsync(DateTime from, DateTime to, CancellationToken ct = default)
         {
             return await _repo.GetByDateRangeAsync(from, to, ct);

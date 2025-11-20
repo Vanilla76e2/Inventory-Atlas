@@ -16,6 +16,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
         /// </summary>
         /// <param name="name">Название типа мебели (опционально, поиск по подстроке, нечувствительно к регистру).</param>
         /// <returns>Список объектов <see cref="FurnitureType"/>, удовлетворяющих фильтру.</returns>
-        Task<IEnumerable<FurnitureType>> SearchAsync(string? name = null);
+        Task<IEnumerable<FurnitureType>> SearchAsync(string? name = null, CancellationToken ct = default);
     }
 }

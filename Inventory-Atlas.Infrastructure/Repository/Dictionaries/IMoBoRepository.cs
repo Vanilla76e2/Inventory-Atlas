@@ -29,6 +29,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
             string? chipset = null,
             MoBoFormFactor? formFactor = null,
             short? ramSlots = null,
-            short? m2Slots = null);
+            short? m2Slots = null,
+            CancellationToken ct = default);
     }
 }

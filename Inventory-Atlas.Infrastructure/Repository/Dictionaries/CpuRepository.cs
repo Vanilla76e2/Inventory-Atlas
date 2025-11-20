@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.References;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.References;
 using Inventory_Atlas.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -17,8 +18,8 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
         /// </summary>
         /// <param name="provider">Провайдер контекста базы данных.</param>
         /// <param name="logger">Логгер для записи действий репозитория.</param>
-        public CpuRepository(IDatabaseContextProvider provider, ILogger<CpuRepository> logger)
-            : base(provider, logger)
+        public CpuRepository(AppDbContext context, ILogger<CpuRepository> logger)
+            : base(context, logger)
         { }
 
         /// <inheritdoc/>
@@ -29,11 +30,11 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
             int? threads = null,
             double? clock = null,
             double tolerance = 0.01,
-            string? socket = null)
+            string? socket = null,
+            CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
 
-            var query = context.Set<CpuDictionary>().AsQueryable();
+            var query = _context.Set<CpuDictionary>().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(e => EF.Functions.ILike(e.Model, $"%{name}%"));
@@ -55,7 +56,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
             if (!string.IsNullOrWhiteSpace(socket))
                 query = query.Where(e => e.Socket != null && EF.Functions.ILike(e.Socket, $"%{socket}%"));
 
-            return await query.ToListAsync();
+            return await query.ToListAsync(ct);
         }
     }
 }

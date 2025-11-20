@@ -15,6 +15,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
         /// </summary>
         /// <param name="name">Название материала (опционально, поиск по подстроке, нечувствительно к регистру).</param>
         /// <returns>Список объектов <see cref="FurnitureMaterial"/>, удовлетворяющих фильтру.</returns>
-        Task<IEnumerable<FurnitureMaterial>> SearchAsync(string? name = null);
+        Task<IEnumerable<FurnitureMaterial>> SearchAsync(string? name = null, CancellationToken ct = default);
     }
 }

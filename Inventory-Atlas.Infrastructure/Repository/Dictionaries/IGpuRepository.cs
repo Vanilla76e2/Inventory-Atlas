@@ -31,6 +31,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
             short? vga = null,
             short? hdmi = null,
             short? displayPort = null,
-            short? dvi = null);
+            short? dvi = null,
+            CancellationToken ct = default);
     }
 }

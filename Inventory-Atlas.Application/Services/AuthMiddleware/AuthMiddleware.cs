@@ -90,7 +90,7 @@ namespace Inventory_Atlas.Application.Services.AuthMiddleware
             if (string.IsNullOrWhiteSpace(header))
                 return null;
 
-            const string bearerPrefix = "Bearer";
+            const string bearerPrefix = "Bearer ";
 
             if (!header.StartsWith(bearerPrefix, StringComparison.OrdinalIgnoreCase))
                 return null;

@@ -34,18 +34,18 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         /// <summary>
         /// Асинхронно добавляет сущность в базу данных.
         /// </summary>
-        Task AddAsync(T entity, CancellationToken ct = default);
+        void Add(T entity);
 
         /// <summary>
         /// Асинхронно обновляет сущность в базе данных.
         /// </summary>
         /// <param name="id">Идентификатор сущности.</param>
-        Task UpdateAsync(T entity, CancellationToken ct = default);
+        void Update(T entity);
 
         /// <summary>
         /// Асинхронно удаляет сущность из базы данных.
         /// </summary>
         /// <param name="entity">Обновляемая сущность.</param>
-        Task DeleteAsync(T entity, CancellationToken ct = default);
+        void Delete(T entity);
     }
 }

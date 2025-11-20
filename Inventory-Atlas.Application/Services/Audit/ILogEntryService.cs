@@ -8,7 +8,7 @@ namespace Inventory_Atlas.Application.Services.Audit
     {
         Task LogAsync(ActionType action, string? details, CancellationToken ct = default);
         Task LogAndSaveAsync(ActionType action, string? details, CancellationToken ct = default);
-        Task LogLoginAsync(ActionType action, int UserSessionId, CancellationToken ct = default);
+        Task LogAndSaveAsync(ActionType action, int UserSessionId, CancellationToken ct = default);
         Task<IReadOnlyList<LogEntry>> GetAllAsync(CancellationToken ct = default);
         Task<IReadOnlyList<LogEntry>> GetByUserAsync(int userSessionId, CancellationToken ct = default);
         Task<IReadOnlyList<LogEntry>> GetByActionAsync(ActionType action, CancellationToken ct = default);
