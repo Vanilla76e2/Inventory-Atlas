@@ -13,6 +13,13 @@ namespace Inventory_Atlas.Application.Mappings.Audit
 
             // Упрощённая DTO без логов
             CreateMap<UserSession, UserSessionListDto>();
+
+            // DTO для сервисного слоя
+            CreateMap<UserSession, UserSeesionServiceDto>()
+                .ForMember(dst => dst.RoleName,
+                            opt => opt.MapFrom(src => src.UserProfile == null ? null : src.UserProfile.Role.Name))
+                .ForMember(dst => dst.PermissionJson,
+                            opt => opt.MapFrom(src => src.UserProfile == null ? null : src.UserProfile.Role.PermissionJson));
         }
     }
 }

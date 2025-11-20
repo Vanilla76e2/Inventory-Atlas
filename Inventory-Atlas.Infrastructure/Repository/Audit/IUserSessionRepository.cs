@@ -12,6 +12,8 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
     /// </summary>
     public interface IUserSessionRepository : IDatabaseRepository<UserSession>
     {
+        Task<UserSession?> GetSessionByToken(Guid token);
+
         /// <summary>
         /// Получить активную сессию пользователя по имени пользователя.
         /// <para/>

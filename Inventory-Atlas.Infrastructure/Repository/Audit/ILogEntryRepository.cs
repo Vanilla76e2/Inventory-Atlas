@@ -19,7 +19,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         /// Тип возвращаемого значения: <see cref="IEnumerable{LogEntry}"/>
         /// </summary>
         /// <param name="userSessionId">Идентификатор сессии пользователя.</param>
-        Task<IEnumerable<LogEntry>> GetBySessionAsync(Guid userSessionId);
+        Task<List<LogEntry>> GetBySessionAsync(int userSessionId, CancellationToken ct = default);
 
         /// <summary>
         /// Получить все записи лога по типу действия.
@@ -27,7 +27,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         /// Тип возвращаемого значения: <see cref="IEnumerable{LogEntry}"/>
         /// </summary>
         /// <param name="actionType">Тип действия из <see cref="ActionType"/>.</param>
-        Task<IEnumerable<LogEntry>> GetByActionType(ActionType actionType);
+        Task<List<LogEntry>> GetByActionType(ActionType actionType, CancellationToken ct = default);
 
         /// <summary>
         /// Получить все записи лога за указанный диапазон дат.
@@ -36,6 +36,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         /// </summary>
         /// <param name="fromUtc">Начальная дата диапазона (UTC).</param>
         /// <param name="toUtc">Конечная дата диапазона (UTC).</param>
-        Task<IEnumerable<LogEntry>> GetByDateRangeAsync(DateTime fromUtc, DateTime toUtc);
+        Task<List<LogEntry>> GetByDateRangeAsync(DateTime fromUtc, DateTime toUtc, CancellationToken ct = default);
     }
 }

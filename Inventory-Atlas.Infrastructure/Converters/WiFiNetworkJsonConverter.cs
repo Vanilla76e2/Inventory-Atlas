@@ -8,7 +8,7 @@ namespace Inventory_Atlas.Infrastructure.Converters
     {
         public static readonly ValueConverter<List<WiFiNetworkJsonModel>, string> Convert =
         new(
-            v => v == null ? "[]" : JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+            v => v == null ? "{}" : JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
             v => string.IsNullOrEmpty(v) ? new List<WiFiNetworkJsonModel>() : JsonSerializer.Deserialize<List<WiFiNetworkJsonModel>>(v, (JsonSerializerOptions?)null) ?? new List<WiFiNetworkJsonModel>()
         );
     }

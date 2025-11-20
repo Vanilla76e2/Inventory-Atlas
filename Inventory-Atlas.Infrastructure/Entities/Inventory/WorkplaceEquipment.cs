@@ -9,7 +9,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Technics
     /// <para/>
     /// Сущность указывает, какое оборудование закреплено за конкретным рабочим местом.
     /// </summary>
-    [Table("WorkplaceEquipment", Schema = "Inventory")]
+    [Table("WorkplaceEquipmentRepository", Schema = "Inventory")]
     public class WorkplaceEquipment : BaseEntity
     {
         /// <summary>

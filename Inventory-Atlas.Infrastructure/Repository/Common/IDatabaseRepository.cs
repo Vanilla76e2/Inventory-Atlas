@@ -8,48 +8,44 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
     public interface IDatabaseRepository<T> where T : class
     {
         /// <summary>
-        /// Асинхронно добавляет сущность в базу данных.
+        /// Асинхронно получает сущность по идентификатору.
         /// </summary>
-        /// <param name="entity">Добавляемая сущность.</param>
-        Task<T?> GetByIdAsync(params object[] id);
+        Task<T?> GetByIdAsync(int id, CancellationToken ct = default);
 
         /// <summary>
-        /// Асинхронно удаляет сущность из базы данных.
+        /// Асинхронно получает все сущности типа <typeparamref name="T"/>.
         /// </summary>
-        /// <param name="entity">Удаляемая сущность.</param>
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<List<T>> GetAllAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Асинхронно ищет первую сущность, удовлетворяющую условию.
         /// </summary>
         /// <param name="predicate">Условие поиска.</param>
         /// <returns>Сущность или null, если не найдена.</returns>
-        Task<T?> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<T?> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
 
         /// <summary>
         /// Асинхронно ищет все сущности, удовлетворяющие условию.
         /// </summary>
         /// <param name="predicate">Условие поиска.</param>
         /// <returns>Список сущностей.</returns>
-        Task<IEnumerable<T>> FindManyAsync(Expression<Func<T, bool>> predicate);
+        Task<List<T>> FindManyAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
 
         /// <summary>
-        /// Асинхронно получает все сущности типа <typeparamref name="T"/>.
+        /// Асинхронно добавляет сущность в базу данных.
         /// </summary>
-        /// <returns>Список всех сущностей.</returns>
-        Task AddAsync(T entity);
-
-        /// <summary>
-        /// Асинхронно получает сущность по идентификатору.
-        /// </summary>
-        /// <param name="id">Идентификатор сущности.</param>
-        /// <returns>Сущность или null, если не найдена.</returns>
-        Task UpdateAsync(T entity);
+        Task AddAsync(T entity, CancellationToken ct = default);
 
         /// <summary>
         /// Асинхронно обновляет сущность в базе данных.
         /// </summary>
+        /// <param name="id">Идентификатор сущности.</param>
+        Task UpdateAsync(T entity, CancellationToken ct = default);
+
+        /// <summary>
+        /// Асинхронно удаляет сущность из базы данных.
+        /// </summary>
         /// <param name="entity">Обновляемая сущность.</param>
-        Task DeleteAsync(T entity);
+        Task DeleteAsync(T entity, CancellationToken ct = default);
     }
 }

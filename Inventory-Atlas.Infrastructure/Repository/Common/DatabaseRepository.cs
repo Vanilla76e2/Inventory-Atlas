@@ -28,7 +28,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         /// Асинхронно добавляет сущность в базу данных.
         /// </summary>
         /// <param name="entity">Добавляемая сущность.</param>
-        public async Task AddAsync(T entity)
+        public async Task AddAsync(T entity, CancellationToken ct = default)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         /// Асинхронно удаляет сущность из базы данных.
         /// </summary>
         /// <param name="entity">Удаляемая сущность.</param>
-        public async Task DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity, CancellationToken ct = default)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         /// </summary>
         /// <param name="predicate">Условие поиска.</param>
         /// <returns>Сущность или null, если не найдена.</returns>
-        public async Task<T?> FindAsync(Expression<Func<T, bool>> predicate)
+        public async Task<T?> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         /// </summary>
         /// <param name="predicate">Условие поиска.</param>
         /// <returns>Список сущностей.</returns>
-        public async Task<IEnumerable<T>> FindManyAsync(Expression<Func<T, bool>> predicate)
+        public async Task<List<T>> FindManyAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         /// Асинхронно получает все сущности типа <typeparamref name="T"/>.
         /// </summary>
         /// <returns>Список всех сущностей.</returns>
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<List<T>> GetAllAsync(CancellationToken ct = default)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         /// </summary>
         /// <param name="id">Идентификатор сущности.</param>
         /// <returns>Сущность или null, если не найдена.</returns>
-        public async Task<T?> GetByIdAsync(params object[] id)
+        public async Task<T?> GetByIdAsync(int id, CancellationToken ct = default)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         /// Асинхронно обновляет сущность в базе данных.
         /// </summary>
         /// <param name="entity">Обновляемая сущность.</param>
-        public async Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity, CancellationToken ct = default)
         {
             try
             {

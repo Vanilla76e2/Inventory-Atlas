@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
 {
-    public class CustomFieldValueRepository : DatabaseRepository<CustomFieldValue>, ICustomFieldValueRepositiry
+    public class CustomFieldValueRepository : DatabaseRepository<CustomFieldValue>, ICustomFieldValueRepository
     {
         public CustomFieldValueRepository(IDatabaseContextProvider provider, ILogger<CustomFieldValueRepository> logger)
             : base(provider, logger) 

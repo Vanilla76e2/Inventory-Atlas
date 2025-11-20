@@ -21,14 +21,18 @@ namespace Inventory_Atlas.Application.Mappings.Documents
                 .ForMember(dest => dest.EmployeeName,
                             opt => opt.MapFrom(src => src.Employee.FullName))
                 .ForMember(dest => dest.Items,
-                            opt => opt.MapFrom(src => src.Items));
+                            opt => opt.MapFrom(src => src.Items))
+                .ForMember(dist => dist.MatriallyResponibleDisplayName,
+                            opt => opt.MapFrom(src => src.MateriallyResponsible == null ? string.Empty : src.MateriallyResponsible.DisplayName)); ;
 
             CreateMap<ReturnDocument, ReturnDocumentListDto>()
                 .IncludeBase<DocumentEntity, DocumentDto>()
                 .ForMember(dest => dest.EmployeeName,
                             opt => opt.MapFrom(src => src.Employee.ShortName))
                 .ForMember(dest => dest.ItemsCount,
-                            opt => opt.MapFrom(src => src.Items.Count()));
+                            opt => opt.MapFrom(src => src.Items.Count()))
+                .ForMember(dist => dist.MatriallyResponibleDisplayName,
+                            opt => opt.MapFrom(src => src.MateriallyResponsible == null ? string.Empty : src.MateriallyResponsible.DisplayName)); ;
         }
     }
 }

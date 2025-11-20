@@ -1,4 +1,5 @@
 ﻿using Inventory_Atlas.Core.Enums;
+using Inventory_Atlas.Infrastructure.Entities.Employees;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_Atlas.Infrastructure.Entities.Base
@@ -38,6 +39,22 @@ namespace Inventory_Atlas.Infrastructure.Entities.Base
         /// </summary>
         [Column("document_name")]
         public string? DocumentName { get; set; }
+
+        /// <summary>
+        /// Идентификатор материально ответственного лица.
+        /// <para/>
+        /// Тип: <see langword="int"/>.
+        /// </summary>
+        [Column("materially_responsible_id")]
+        public int MateriallyResponsibleId { get; set; }
+
+        /// <summary>
+        /// Объект представляющий материально ответственное лицо.
+        /// <para/>
+        /// Тип: <see cref="MateriallyResponsible"/>?.
+        /// </summary>
+        [ForeignKey(nameof(MateriallyResponsibleId))]
+        public virtual MateriallyResponsible? MateriallyResponsible { get; set; }
 
         /// <summary>
         /// Комментарий к документу.

@@ -19,12 +19,16 @@ namespace Inventory_Atlas.Application.Mappings.Documents
             CreateMap<WriteOffDocument, WriteOffDocumentDto>()
                 .IncludeBase<DocumentEntity, DocumentDto>()
                 .ForMember(dest => dest.Items,
-                            opt => opt.MapFrom(src => src.Items));
+                            opt => opt.MapFrom(src => src.Items))
+                .ForMember(dist => dist.MatriallyResponibleDisplayName,
+                            opt => opt.MapFrom(src => src.MateriallyResponsible == null ? string.Empty : src.MateriallyResponsible.DisplayName)); ;
 
             CreateMap<WriteOffDocument, WriteOffDocumentListDto>()
                 .IncludeBase<DocumentEntity, DocumentDto>()
                 .ForMember(dest => dest.ItemsCount,
-                            opt => opt.MapFrom(src => src.Items.Count()));
+                            opt => opt.MapFrom(src => src.Items.Count()))
+                .ForMember(dist => dist.MatriallyResponibleDisplayName,
+                            opt => opt.MapFrom(src => src.MateriallyResponsible == null ? string.Empty : src.MateriallyResponsible.DisplayName)); ;
         }
     }
 }

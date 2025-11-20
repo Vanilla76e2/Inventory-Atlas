@@ -3,7 +3,7 @@ using Inventory_Atlas.Infrastructure.Repository.Common;
 
 namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
 {
-    public interface ICustomFieldValueRepositiry : IDatabaseRepository<CustomFieldValue>
+    public interface ICustomFieldValueRepository : IDatabaseRepository<CustomFieldValue>
     {
 
     }

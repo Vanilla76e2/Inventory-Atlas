@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Inventory_Atlas.Infrastructure.Entities.Users;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
@@ -14,15 +15,23 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
     public class UserSession
     {
         /// <summary>
-        /// Уникальный идентификатор сессии.
+        /// Идентификатор сессии.
         /// <para/>
-        /// Тип: <see cref="Guid"/>.
+        /// Тип: <see langword="int"/>.
         /// <para/>
         /// Является первичным ключом таблицы.
         /// </summary>
         [Key]
         [Column("id")]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Уникальный токен сессии.
+        /// <para/>
+        /// Тип: <see cref="Guid"/>.
+        /// </summary>
+        [Column("token")]
+        public Guid Token { get; set; }
 
         /// <summary>
         /// Имя пользователя, которому принадлежит сессия.
@@ -33,6 +42,26 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         /// </summary>
         [Column("username")]
         public string Username { get; set; } = null!;
+
+        /// <summary>
+        /// Идентификатор пользователя, которому принадлежит сессия.
+        /// <para/>
+        /// Тип: <see langword="int"/>?.
+        /// <para/>
+        /// Может быть null, если пользователь удалён.
+        /// </summary>
+        [Column("user_id")]
+        public int? UserId { get; set; }
+
+        /// <summary>
+        /// Объект профиля пользователя, которому принадлежит сессия.
+        /// <para/> 
+        /// Тип: <see cref="UserProfile"/>?.
+        /// <para/>
+        /// Может быть null, если пользователь удалён.
+        /// </summary>
+        [ForeignKey("UserId")]
+        public virtual UserProfile? UserProfile { get; set; }
 
         /// <summary>
         /// Время начала сессии.
@@ -73,6 +102,16 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         /// </summary>
         [Column("ip_address")]
         public IPAddress? IpAddress {  get; set; }
+
+        /// <summary>
+        /// Агент пользователя (User-Agent) при создании сессии.
+        /// <para/>
+        /// Тип: <see langword="string"/>?.
+        /// <para/>
+        /// Может быть null, если информация не предоставлена.
+        /// </summary>
+        [Column("user_agent")]
+        public string? UserAgent { get; set; }
 
         /// <summary>
         /// Коллекция записей журнала аудита, связанных с данной сессией.

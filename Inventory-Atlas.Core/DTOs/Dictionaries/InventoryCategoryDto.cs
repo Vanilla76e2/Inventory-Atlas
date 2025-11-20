@@ -32,9 +32,9 @@ namespace Inventory_Atlas.Core.DTOs.Dictionaries
         /// <para/>
         /// Тип: <see langword="string"/>
         /// <para/>
-        /// По умолчанию пустой массив <c>"[]"</c>.
+        /// По умолчанию пустой массив <c>"{}"</c>.
         /// </summary>
-        public string CustomFields { get; set; } = "[]";
+        public string CustomFields { get; set; } = "{}";
 
         /// <summary>
         /// Идентификаторы элементов инвентаря, принадлежащих категории.

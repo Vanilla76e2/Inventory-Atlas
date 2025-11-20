@@ -1,6 +1,10 @@
+using Inventory_Atlas.Application;
+using Inventory_Atlas.Application.Services.Audit;
+using Inventory_Atlas.Application.Services.AuthMiddleware;
+using Inventory_Atlas.Application.Services.PermissionService;
+using Inventory_Atlas.Infrastructure.Repository;
 using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Inventory_Atlas.Infrastructure.Services.DbInstaller;
-using Inventory_Atlas.Infrastructure.Repository;
 
 namespace Inventory_Atlas
 {
@@ -17,12 +21,16 @@ namespace Inventory_Atlas
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Нужно будет сделать services.AddExceptionHandler();
+
             RegisterInfrastructureServices(builder.Services);
-            builder.Services.AddRepositories();
+            RegisterApplicationServices(builder.Services);
 
             var app = builder.Build();
 
-            DbInitializer.InstallOrUpdateDatabase(app.Services);
+            // DB initialization
+            using var scope = app.Services.CreateScope();
+            DbInitializer.InstallOrUpdateDatabase(scope.ServiceProvider);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -32,6 +40,8 @@ namespace Inventory_Atlas
             }
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<AuthMiddleware>();
 
             app.UseAuthorization();
 
@@ -43,6 +53,15 @@ namespace Inventory_Atlas
         private static void RegisterInfrastructureServices(IServiceCollection services)
         {
             services.AddScoped<IDatabaseContextProvider, DatabaseContextProvider>();
+
+            services.AddRepositories();
+        }
+
+        private static void RegisterApplicationServices(IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(AssemblyMarker));
+            services.AddApplicationServices();
+            // Нужно будет сделать services.AddHeaыlthChecks
         }
     }
 }

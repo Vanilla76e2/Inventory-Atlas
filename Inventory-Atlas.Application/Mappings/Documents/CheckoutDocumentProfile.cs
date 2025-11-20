@@ -23,13 +23,17 @@ namespace Inventory_Atlas.Application.Mappings.Documents
                 .ForMember(dist => dist.EmployeeName,
                             opt => opt.MapFrom(src => src.Employee.FullName))
                 .ForMember(dist => dist.Items,
-                            opt => opt.MapFrom(src => src.Items));
+                            opt => opt.MapFrom(src => src.Items))
+                .ForMember(dist => dist.MatriallyResponibleDisplayName,
+                            opt => opt.MapFrom(src => src.MateriallyResponsible == null ? string.Empty : src.MateriallyResponsible.DisplayName));
 
             CreateMap<CheckoutDocument, CheckoutDocumentListDto>()
                 .ForMember(dest => dest.EmployeeName, 
                             opt => opt.MapFrom(src => src.Employee.ShortName))
                 .ForMember(dest => dest.ItemsCount, 
-                            opt => opt.MapFrom(src => src.Items.Count()));
+                            opt => opt.MapFrom(src => src.Items.Count()))
+                .ForMember(dist => dist.MatriallyResponibleDisplayName,
+                            opt => opt.MapFrom(src => src.MateriallyResponsible == null ? string.Empty : src.MateriallyResponsible.DisplayName)); ;
         }
     }
 }

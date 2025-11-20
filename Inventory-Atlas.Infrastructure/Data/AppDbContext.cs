@@ -11,7 +11,6 @@ using Inventory_Atlas.Infrastructure.Entities.Technics.Components;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 using Inventory_Atlas.Infrastructure.Entities.Сonsumables;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace Inventory_Atlas.Infrastructure.Data
 {
@@ -288,7 +287,7 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .HasKey(x => x.Id);
 
             mb.Entity<WorkplaceEquipment>()
-                .ToTable("WorkplaceEquipment", "Inventory")
+                .ToTable("WorkplaceEquipmentRepository", "Inventory")
                 .HasKey(x => x.Id);
 
             mb.Entity<WorkplaceEquipment>()

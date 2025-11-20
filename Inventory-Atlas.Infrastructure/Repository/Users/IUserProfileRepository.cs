@@ -13,12 +13,12 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
         /// </summary>
         /// <param name="username">Имя пользователя</param>
         /// <returns>Профиль пользователя или null если не найден</returns>
-        Task<UserProfile?> GetByUsernameAsync(string username);
+        Task<UserProfile?> GetByUsernameAsync(string username, CancellationToken ct = default);
 
         /// <summary>
         /// Получает активных пользователей
         /// </summary>
         /// <returns>Коллекция активных пользователей</returns>
-        Task<IEnumerable<UserProfile>> GetActiveUsersAsync();
+        Task<IEnumerable<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default);
     }
 }

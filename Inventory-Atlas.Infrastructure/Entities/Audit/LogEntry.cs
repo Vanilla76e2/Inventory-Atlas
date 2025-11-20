@@ -33,7 +33,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         /// Используется для связи с сущностью <see cref="Audit.UserSession"/>.
         /// </summary>
         [Column("user_session")]
-        public Guid UserSessionId { get; set; }
+        public int UserSessionId { get; set; }
 
         /// <summary>
         /// Навигационное свойство на сессию пользователя, совершившего действие.

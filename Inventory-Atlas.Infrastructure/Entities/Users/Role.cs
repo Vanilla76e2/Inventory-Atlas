@@ -52,7 +52,6 @@ namespace Inventory_Atlas.Infrastructure.Entities.Users
         /// Не может быть <see langword="null"/>. По умолчанию пустой объект JSON.
         /// </summary>
         [Column("permissions", TypeName = "jsonb")]
-        public string PermissionJson { get; set; } = "[]";
-
+        public string PermissionJson { get; set; } = "{}";
     }
 }

@@ -5,7 +5,7 @@ namespace Inventory_Atlas.Core.Enums
     /// <summary>
     /// Права роли или пользователя относительно ресурса.
     /// </summary>
-    public enum RolePermission
+    public enum RolePermissionEnum
     {
         /// <summary>
         /// Нет доступа — пользователь не может просматривать или изменять ресурс.

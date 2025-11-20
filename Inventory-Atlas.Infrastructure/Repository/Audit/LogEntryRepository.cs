@@ -22,19 +22,19 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<LogEntry>> GetByActionType(ActionType actionType)
+        public async Task<List<LogEntry>> GetByActionType(ActionType actionType, CancellationToken ct = default)
         {
             return await FindManyAsync(le => le.Action == actionType);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<LogEntry>> GetByDateRangeAsync(DateTime fromUtc, DateTime toUtc)
+        public async Task<List<LogEntry>> GetByDateRangeAsync(DateTime fromUtc, DateTime toUtc, CancellationToken ct = default)
         {
             return await FindManyAsync(le => le.ActionTime >= fromUtc && le.ActionTime <= toUtc);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<LogEntry>> GetBySessionAsync(Guid userSessionId)
+        public async Task<List<LogEntry>> GetBySessionAsync(int userSessionId, CancellationToken ct = default)
         {
             return await FindManyAsync(le => le.UserSessionId == userSessionId);
         }

@@ -9,7 +9,7 @@ namespace Inventory_Atlas.Application.Mappings.Audit
     {
         public LogEntryProfile()
         {
-            // Mapping LogEntry -> LogEntryDto
+            // Mapping LogEntryService -> LogEntryDto
             CreateMap<LogEntry, LogEntryDto>()
                 .ForMember(dest => dest.Username,
                            opt => opt.MapFrom(src => src.UserSession.Username))

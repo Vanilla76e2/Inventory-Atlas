@@ -56,8 +56,8 @@ namespace Inventory_Atlas.Core.DTOs.Users
         /// <para/>
         /// Тип: <see langword="string"/>
         /// <para/>
-        /// Значение по умолчанию: <c>"[]"</c>.
+        /// Значение по умолчанию: <c>"{}"</c>.
         /// </summary>
-        public string PermissionJson { get; set; } = "[]";
+        public string PermissionJson { get; set; } = "{}";
     }
 }

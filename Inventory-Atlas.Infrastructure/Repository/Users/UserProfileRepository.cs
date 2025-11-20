@@ -1,6 +1,5 @@
 ﻿using Inventory_Atlas.Infrastructure.Entities.Users;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -24,20 +23,22 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
         }
 
         /// <inheritdoc/>
-        public async Task<UserProfile?> GetByUsernameAsync(string username)
+        public async Task<UserProfile?> GetByUsernameAsync(string username, CancellationToken ct = default)
         {
             await using var context = await _contextProvider.GetDbContextAsync();
             return await context.Set<UserProfile>()
-                .FirstOrDefaultAsync(u => u.Username == username);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Username == username, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<UserProfile>> GetActiveUsersAsync()
+        public async Task<IEnumerable<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default)
         {
             await using var context = await _contextProvider.GetDbContextAsync();
             return await context.Set<UserProfile>()
+                .AsNoTracking()             
                 .Where(u => u.IsActive)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

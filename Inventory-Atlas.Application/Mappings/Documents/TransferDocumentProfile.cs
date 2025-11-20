@@ -23,7 +23,9 @@ namespace Inventory_Atlas.Application.Mappings.Documents
                 .ForMember(dest => dest.ToEmployeeName,
                             opt => opt.MapFrom(src => src.ToEmployee.FullName))
                 .ForMember(dest => dest.Items,
-                            opt => opt.MapFrom(src => src.Items));
+                            opt => opt.MapFrom(src => src.Items))
+                .ForMember(dist => dist.MatriallyResponibleDisplayName,
+                            opt => opt.MapFrom(src => src.MateriallyResponsible == null ? string.Empty : src.MateriallyResponsible.DisplayName)); ;
 
             CreateMap<TransferDocument, TransferDocumentListDto>()
                 .IncludeBase<DocumentEntity, DocumentDto>()
@@ -32,7 +34,9 @@ namespace Inventory_Atlas.Application.Mappings.Documents
                 .ForMember(dest => dest.ToEmployeeName,
                             opt => opt.MapFrom(src => src.ToEmployee.ShortName))
                 .ForMember(dest => dest.ItemsCount,
-                            opt => opt.MapFrom(src => src.Items.Count()));
+                            opt => opt.MapFrom(src => src.Items.Count()))
+                .ForMember(dist => dist.MatriallyResponibleDisplayName,
+                            opt => opt.MapFrom(src => src.MateriallyResponsible == null ? string.Empty : src.MateriallyResponsible.DisplayName)); ;
         }
     }
 }
