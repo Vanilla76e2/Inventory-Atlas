@@ -13,13 +13,13 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
         /// </summary>
         /// <param name="ipAddress">IpAddress-адрес для поиска</param>
         /// <returns>Коллекция принтеров с указанным IpAddress-адресом</returns>
-        Task<IEnumerable<Printer>> GetByIpAddressAsync(string ipAddress);
+        Task<IEnumerable<Printer>> GetByIpAddressAsync(string ipAddress, CancellationToken ct = default);
 
         /// <summary>
         /// Получает принтеры по типу печати
         /// </summary>
         /// <param name="isColor">Признак цветной печати (true - цветные, false - черно-белые)</param>
         /// <returns>Коллекция принтеров с указанным типом печати</returns>
-        Task<IEnumerable<Printer>> GetByColorPrintingAsync(bool isColor);
+        Task<IEnumerable<Printer>> GetByColorPrintingAsync(bool isColor, CancellationToken ct = default);
     }
 }

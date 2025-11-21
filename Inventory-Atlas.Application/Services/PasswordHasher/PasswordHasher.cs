@@ -8,13 +8,13 @@
         /// <inheritdoc/>
         public string Hash(string password)
         {
-            return BCrypt.Net.BCrypt.HashPassword(password);
+            return BCrypt.Net.BCrypt.EnhancedHashPassword(password);
         }
 
         /// <inheritdoc/>
         public bool Verify(string password, string storedHash)
         {
-            return BCrypt.Net.BCrypt.Verify(password, storedHash);
+            return BCrypt.Net.BCrypt.EnhancedVerify(password, storedHash);
         }
     }
 }

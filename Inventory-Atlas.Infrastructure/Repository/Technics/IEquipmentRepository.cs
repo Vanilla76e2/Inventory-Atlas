@@ -13,13 +13,13 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
         /// </summary>
         /// <param name="equipmentId">Идентификатор оборудования</param>
         /// <returns>Оборудование с связанными данными или null если не найден</returns>
-        Task<Equipment?> GetWithWorkplacesAndMaintenanceAsync(int equipmentId);
+        Task<Equipment?> GetWithWorkplacesAndMaintenanceAsync(int equipmentId, CancellationToken ct = default);
 
         /// <summary>
         /// Получает оборудование по идентификатору рабочего места
         /// </summary>
         /// <param name="workplaceId">Идентификатор рабочего места</param>
         /// <returns>Коллекция оборудования на указанном рабочем месте</returns>
-        Task<IEnumerable<Equipment>> GetByWorkplaceIdAsync(int workplaceId);
+        Task<IEnumerable<Equipment>> GetByWorkplaceIdAsync(int workplaceId, CancellationToken ct = default);
     }
 }

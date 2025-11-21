@@ -1,7 +1,7 @@
 ﻿using Inventory_Atlas.Core.Enums;
+using Inventory_Atlas.Infrastructure.Data;
 using Inventory_Atlas.Infrastructure.Entities.Inventory;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -15,10 +15,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="FurnitureRepository"/>.
         /// </summary>
-        /// <param name="contextProvider">Поставщик контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для ведения логов.</param>
-        public FurnitureRepository(IDatabaseContextProvider contextProvider, ILogger<FurnitureRepository> logger)
-            : base(contextProvider, logger)
+        public FurnitureRepository(AppDbContext context, ILogger<FurnitureRepository> logger)
+            : base(context, logger)
         {
         }
 
@@ -28,10 +28,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
             FurnitureOrientation? orientation = null,
             double? minWeight = null,
             double? maxWeight = null,
-            string? dimensionsContains = null)
+            string? dimensionsContains = null,
+            CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            var query = context.Set<Furniture>().AsQueryable();
+            var query = _context.Set<Furniture>().AsQueryable();
 
             if (typeId.HasValue)
                 query = query.Where(e => e.FurnitureTypeId == typeId);
@@ -48,7 +48,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
             if (!string.IsNullOrWhiteSpace(dimensionsContains))
                 query = query.Where(e => e.Dimensions != null && EF.Functions.ILike(e.Dimensions!, $"%{dimensionsContains}%"));
 
-            return await query.ToListAsync();
+            return await query.ToListAsync(ct);
         }
     }
 
@@ -61,33 +61,31 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="FurnitureMaterialAssignmentRepository"/>.
         /// </summary>
-        /// <param name="contextProvider">Поставщик контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для ведения логов.</param>
-        public FurnitureMaterialAssignmentRepository(IDatabaseContextProvider contextProvider, ILogger<FurnitureMaterialAssignmentRepository> logger)
-            : base(contextProvider, logger)
+        public FurnitureMaterialAssignmentRepository(AppDbContext context, ILogger<FurnitureMaterialAssignmentRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<FurnitureMaterialAssignment>> GetByFurnitureIdAsync(int furnitureId)
+        public async Task<IEnumerable<FurnitureMaterialAssignment>> GetByFurnitureIdAsync(int furnitureId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<FurnitureMaterialAssignment>()
+            return await _context.Set<FurnitureMaterialAssignment>()
                 .Where(a => a.FurnitureId == furnitureId)
                 .Include(a => a.Furniture)
                 .Include(a => a.FurnitureMaterial)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<FurnitureMaterialAssignment>> GetByMaterialIdAsync(int materialId)
+        public async Task<IEnumerable<FurnitureMaterialAssignment>> GetByMaterialIdAsync(int materialId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<FurnitureMaterialAssignment>()
+            return await _context.Set<FurnitureMaterialAssignment>()
                 .Where(a => a.MaterialId == materialId)
                 .Include(a => a.Furniture)
                 .Include(a => a.FurnitureMaterial)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

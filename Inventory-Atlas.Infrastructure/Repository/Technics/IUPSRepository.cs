@@ -14,7 +14,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
         /// <param name="minWatts">Минимальная мощность (Вт)</param>
         /// <param name="maxWatts">Максимальная мощность (Вт)</param>
         /// <returns>Коллекция ИБП в указанном диапазоне мощности</returns>
-        Task<IEnumerable<UPS>> GetByCapacityAsync(int minWatts, int maxWatts);
+        Task<IEnumerable<UPS>> GetByCapacityAsync(int minWatts, int maxWatts, CancellationToken ct = default);
 
         /// <summary>
         /// Получает ИБП по диапазону автономной работы
@@ -22,6 +22,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
         /// <param name="minMinutes">Минимальное время автономной работы (минуты)</param>
         /// <param name="maxMinutes">Максимальное время автономной работы (минуты)</param>
         /// <returns>Коллекция ИБП в указанном диапазоне автономной работы</returns>
-        Task<IEnumerable<UPS>> GetByAutonomyAsync(int minMinutes, int maxMinutes);
+        Task<IEnumerable<UPS>> GetByAutonomyAsync(int minMinutes, int maxMinutes, CancellationToken ct = default);
     }
 }

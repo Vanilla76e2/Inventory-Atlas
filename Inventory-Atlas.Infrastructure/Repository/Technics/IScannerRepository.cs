@@ -13,13 +13,13 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
         /// </summary>
         /// <param name="ipAddress">IpAddress-адрес для поиска</param>
         /// <returns>Коллекция сканеров с указанным IpAddress-адресом</returns>
-        Task<IEnumerable<Scanner>> GetByIpAddressAsync(string ipAddress);
+        Task<IEnumerable<Scanner>> GetByIpAddressAsync(string ipAddress, CancellationToken ct = default);
 
         /// <summary>
         /// Получает сканеры по типу сканирования
         /// </summary>
         /// <param name="isColor">Признак цветного сканирования (true - цветные, false - черно-белые)</param>
         /// <returns>Коллекция сканеров с указанным типом сканирования</returns>
-        Task<IEnumerable<Scanner>> GetByColorScanningAsync(bool isColor);
+        Task<IEnumerable<Scanner>> GetByColorScanningAsync(bool isColor, CancellationToken ct = default);
     }
 }

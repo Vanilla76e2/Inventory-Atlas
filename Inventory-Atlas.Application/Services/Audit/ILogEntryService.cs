@@ -1,13 +1,14 @@
 ﻿
 using Inventory_Atlas.Core.Enums;
+using Inventory_Atlas.Core.Models;
 using Inventory_Atlas.Infrastructure.Entities.Audit;
 
 namespace Inventory_Atlas.Application.Services.Audit
 {
-    public interface ILogEntryService
+    public interface ILogEntryService<T>
     {
-        Task LogAsync(ActionType action, string? details, CancellationToken ct = default);
-        Task LogAndSaveAsync(ActionType action, string? details, CancellationToken ct = default);
+        void Log(ActionType action, LogDetails<T>? details);
+        Task LogAndSaveAsync(ActionType action, LogDetails<T>? details, CancellationToken ct = default);
         Task LogAndSaveAsync(ActionType action, int UserSessionId, CancellationToken ct = default);
         Task<IReadOnlyList<LogEntry>> GetAllAsync(CancellationToken ct = default);
         Task<IReadOnlyList<LogEntry>> GetByUserAsync(int userSessionId, CancellationToken ct = default);

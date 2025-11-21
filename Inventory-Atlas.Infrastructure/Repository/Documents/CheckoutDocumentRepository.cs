@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Documents;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Documents;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -14,31 +14,27 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
     public class CheckoutDocumentRepository : DatabaseRepository<CheckoutDocument>, ICheckoutDocumentRepository
     {
         /// <inheritdoc/>
-        public CheckoutDocumentRepository(IDatabaseContextProvider contextProvider, ILogger<CheckoutDocumentRepository> logger)
-            : base(contextProvider, logger)
+        public CheckoutDocumentRepository(AppDbContext context, ILogger<CheckoutDocumentRepository> logger)
+            : base(context, logger)
         { }
 
         /// <inheritdoc/>
-        public async Task<CheckoutDocument?> GetWithItemsAsync(int documentId)
+        public async Task<CheckoutDocument?> GetWithItemsAsync(int documentId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<CheckoutDocument>()
+            return await _context.Set<CheckoutDocument>()
                 .Include(d => d.Employee)
                 .Include(d => d.Items)
                     .ThenInclude(i => i.Item)
-                .FirstOrDefaultAsync(d => d.Id == documentId);
+                .FirstOrDefaultAsync(d => d.Id == documentId, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<CheckoutDocument>> GetByEmployeeAsync(int employeeId)
+        public async Task<IEnumerable<CheckoutDocument>> GetByEmployeeAsync(int employeeId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<CheckoutDocument>()
+            return await _context.Set<CheckoutDocument>()
                 .Include(d => d.Items)
                 .Where(d => d.EmployeeId == employeeId)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 
@@ -50,19 +46,17 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
     public class CheckoutDocumentItemRepository : DatabaseRepository<CheckoutDocumentItem>, ICheckoutDocumentItemRepository
     {
         /// <inheritdoc/>
-        public CheckoutDocumentItemRepository(IDatabaseContextProvider contextProvider, ILogger<CheckoutDocumentItemRepository> logger)
-            : base(contextProvider, logger)
+        public CheckoutDocumentItemRepository(AppDbContext context, ILogger<CheckoutDocumentItemRepository> logger)
+            : base(context, logger)
         { }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<CheckoutDocumentItem>> GetByDocumentIdAsync(int documentId)
+        public async Task<IEnumerable<CheckoutDocumentItem>> GetByDocumentIdAsync(int documentId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<CheckoutDocumentItem>()
+            return await _context.Set<CheckoutDocumentItem>()
                 .Include(i => i.Item)
                 .Where(i => i.DocumentId == documentId)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

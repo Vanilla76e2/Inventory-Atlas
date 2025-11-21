@@ -16,6 +16,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
         /// <param name="ip">IpAddress-адрес (опционально, поиск по подстроке, нечувствительно к регистру).</param>
         /// <param name="note">Комментарий или описание IpAddress (опционально, поиск по подстроке, нечувствительно к регистру).</param>
         /// <returns>Список объектов <see cref="IpDictionary"/>, удовлетворяющих фильтрам.</returns>
-        Task<IEnumerable<IpDictionary>> SearchAsync(string? ip = null, string? note = null);
+        Task<IEnumerable<IpDictionary>> SearchAsync(string? ip = null, string? note = null, CancellationToken ct = default);
     }
 }

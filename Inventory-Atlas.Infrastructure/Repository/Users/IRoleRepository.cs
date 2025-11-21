@@ -13,12 +13,12 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
         /// </summary>
         /// <param name="roleName">Название роли</param>
         /// <returns>Роль с указанным названием или null если не найдена</returns>
-        Task<Role?> GetByNameAsync(string roleName);
+        Task<Role?> GetByNameAsync(string roleName, CancellationToken ct = default);
 
         /// <summary>
         /// Получает системные роли
         /// </summary>
         /// <returns>Коллекция системных ролей</returns>
-        Task<IEnumerable<Role>> GetSystemRolesAsync();
+        Task<List<Role>> GetSystemRolesAsync(CancellationToken ct = default);
     }
 }

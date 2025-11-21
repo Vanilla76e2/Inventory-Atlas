@@ -13,6 +13,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Employees
         /// </summary>
         /// <param name="name">Частичное или полное имя отдела для поиска.</param>
         /// <returns>Список отделов, соответствующих критерию поиска.</returns>
-        Task<IEnumerable<Department>> SearchByNameAsync(string name);
+        Task<IEnumerable<Department>> SearchByNameAsync(string name, CancellationToken ct = default);
     }
 }

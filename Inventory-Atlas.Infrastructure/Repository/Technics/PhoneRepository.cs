@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Technics;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -12,31 +12,29 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public class PhoneRepository : DatabaseRepository<Phone>, IPhoneRepository
     {
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория телефонов
+        /// Инициализирует новый экземпляр репозитория телефонов.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных</param>
-        /// <param name="logger">Логгер для записи событий</param>
-        public PhoneRepository(IDatabaseContextProvider contextProvider, ILogger<PhoneRepository> logger)
-            : base(contextProvider, logger)
+        /// <param name="context">Контекст базы данных.</param>
+        /// <param name="logger">Логгер для записи событий.</param>
+        public PhoneRepository(AppDbContext context, ILogger<PhoneRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Phone>> GetByPhoneNumberAsync(string phoneNumber)
+        public async Task<IEnumerable<Phone>> GetByPhoneNumberAsync(string phoneNumber, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Phone>()
+            return await _context.Set<Phone>()
                 .Where(p => p.PhoneNumber != null && p.PhoneNumber.Contains(phoneNumber))
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Phone>> GetByModelAsync(string model)
+        public async Task<IEnumerable<Phone>> GetByModelAsync(string model, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Phone>()
+            return await _context.Set<Phone>()
                 .Where(p => p.Model != null && p.Model.ToLower().Contains(model.ToLower()))
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

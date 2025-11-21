@@ -1,8 +1,9 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Technics;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Runtime.CompilerServices;
 
 namespace Inventory_Atlas.Infrastructure.Repository.Technics
 {
@@ -12,31 +13,29 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public class UPSRepository : DatabaseRepository<UPS>, IUPSRepository
     {
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория ИБП
+        /// Инициализирует новый экземпляр репозитория ИБП.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных</param>
-        /// <param name="logger">Логгер для записи событий</param>
-        public UPSRepository(IDatabaseContextProvider contextProvider, ILogger<UPSRepository> logger)
-            : base(contextProvider, logger)
+        /// <param name="context">Контекст базы данных.</param>
+        /// <param name="logger">Логгер для записи событий.</param>
+        public UPSRepository(AppDbContext context, ILogger<UPSRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<UPS>> GetByCapacityAsync(int minWatts, int maxWatts)
+        public async Task<IEnumerable<UPS>> GetByCapacityAsync(int minWatts, int maxWatts, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<UPS>()
+            return await _context.Set<UPS>()
                 .Where(u => u.CapacityWatts.HasValue && u.CapacityWatts.Value >= minWatts && u.CapacityWatts.Value <= maxWatts)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<UPS>> GetByAutonomyAsync(int minMinutes, int maxMinutes)
+        public async Task<IEnumerable<UPS>> GetByAutonomyAsync(int minMinutes, int maxMinutes, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<UPS>()
+            return await _context.Set<UPS>()
                 .Where(u => u.Autonomy.HasValue && u.Autonomy.Value >= minMinutes && u.Autonomy.Value <= maxMinutes)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

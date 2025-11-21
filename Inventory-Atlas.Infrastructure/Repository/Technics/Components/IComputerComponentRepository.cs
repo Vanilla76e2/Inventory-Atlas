@@ -16,20 +16,20 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics.Components
         /// </summary>
         /// <param name="computerId">Идентификатор компьютера</param>
         /// <returns>Коллекция компонентов компьютера</returns>
-        Task<IEnumerable<TComponent>> GetByComputerIdAsync(int computerId);
+        Task<IEnumerable<TComponent>> GetByComputerIdAsync(int computerId, CancellationToken ct = default);
 
         /// <summary>
         /// Получает компоненты по типу
         /// </summary>
         /// <param name="type">Тип компонента</param>
         /// <returns>Коллекция компонентов указанного типа</returns>
-        Task<IEnumerable<TComponent>> GetByTypeAsync(ComponentType type);
+        Task<IEnumerable<TComponent>> GetByTypeAsync(ComponentType type, CancellationToken ct = default);
 
         /// <summary>
         /// Находит компонент по серийному номеру
         /// </summary>
         /// <param name="serialNumber">Серийный номер</param>
         /// <returns>Компонент или null если не найден</returns>
-        Task<TComponent?> GetBySerialNumberAsync(string serialNumber);
+        Task<TComponent?> GetBySerialNumberAsync(string serialNumber, CancellationToken ct = default);
     }
 }

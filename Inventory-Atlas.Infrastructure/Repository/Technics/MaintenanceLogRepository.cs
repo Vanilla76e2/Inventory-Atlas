@@ -1,7 +1,7 @@
 ﻿using Inventory_Atlas.Core.Enums;
+using Inventory_Atlas.Infrastructure.Data;
 using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -13,57 +13,53 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public class MaintenanceLogRepository : DatabaseRepository<MaintenanceLog>, IMaintenanceLogRepository
     {
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория журнала обслуживания
+        /// Инициализирует новый экземпляр репозитория журнала обслуживания.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных</param>
-        /// <param name="logger">Логгер для записи событий</param>
-        public MaintenanceLogRepository(IDatabaseContextProvider contextProvider, ILogger<MaintenanceLogRepository> logger)
-            : base(contextProvider, logger)
+        /// <param name="context">Контекст базы данных.</param>
+        /// <param name="logger">Логгер для записи событий.</param>
+        public MaintenanceLogRepository(AppDbContext context, ILogger<MaintenanceLogRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<MaintenanceLog>> GetByDeviceIdAsync(int deviceId)
+        public async Task<IEnumerable<MaintenanceLog>> GetByDeviceIdAsync(int deviceId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<MaintenanceLog>()
+            return await _context.Set<MaintenanceLog>()
                 .Where(x => x.DeviceId == deviceId)
                 .Include(x => x.Device)
                 .Include(x => x.Employee)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<MaintenanceLog>> GetByEmployeeIdAsync(int employeeId)
+        public async Task<IEnumerable<MaintenanceLog>> GetByEmployeeIdAsync(int employeeId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<MaintenanceLog>()
+            return await _context.Set<MaintenanceLog>()
                 .Where(x => x.PerformedBy == employeeId)
                 .Include(x => x.Device)
                 .Include(x => x.Employee)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<MaintenanceLog>> GetByDateRangeAsync(DateTime from, DateTime to)
+        public async Task<IEnumerable<MaintenanceLog>> GetByDateRangeAsync(DateTime from, DateTime to, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<MaintenanceLog>()
+            return await _context.Set<MaintenanceLog>()
                 .Where(x => x.MaintenanceDate >= from && x.MaintenanceDate <= to)
                 .Include(x => x.Device)
                 .Include(x => x.Employee)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<MaintenanceLog>> GetByMaintenanceTypeAsync(MaintenanceType type)
+        public async Task<IEnumerable<MaintenanceLog>> GetByMaintenanceTypeAsync(MaintenanceType type, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<MaintenanceLog>()
+            return await _context.Set<MaintenanceLog>()
                 .Where(x => x.MaintenanceType == type)
                 .Include(x => x.Device)
                 .Include(x => x.Employee)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

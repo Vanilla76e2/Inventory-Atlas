@@ -1,7 +1,7 @@
 ﻿using Inventory_Atlas.Core.Enums;
+using Inventory_Atlas.Infrastructure.Data;
 using Inventory_Atlas.Infrastructure.Entities.Inventory;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -15,12 +15,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         /// <summary>
         /// Создаёт новый экземпляр репозитория элементов инвентаря.
         /// </summary>
-        /// <param name="contextProvider">Провайдер DbContext.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер репозитория.</param>
-        public InventoryItemRepository(
-            IDatabaseContextProvider contextProvider,
-            ILogger<InventoryItemRepository> logger)
-            : base(contextProvider, logger)
+        public InventoryItemRepository(AppDbContext context, ILogger<InventoryItemRepository> logger)
+            : base(context, logger)
         {
         }
 
@@ -31,10 +29,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
             string? registryNumber = null,
             int? responsibleId = null,
             InventoryStatus? status = null,
-            string? location = null)
+            string? location = null,
+            CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            var query = context.Set<InventoryItem>().AsQueryable();
+            var query = _context.Set<InventoryItem>().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(name))
                 query = query.Where(i => EF.Functions.ILike(i.Name, $"%{name}%"));
@@ -56,7 +54,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
 
             return await query
                 .Include(i => i.Responsible)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

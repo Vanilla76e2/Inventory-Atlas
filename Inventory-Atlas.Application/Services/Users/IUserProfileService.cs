@@ -1,13 +1,11 @@
-﻿using Inventory_Atlas.Application.Services.Common;
-using Inventory_Atlas.Core.DTOs.Users;
-using Inventory_Atlas.Infrastructure.Entities.Users;
+﻿using Inventory_Atlas.Infrastructure.Entities.Users;
 
 namespace Inventory_Atlas.Application.Services.Users
 {
     public interface IUserProfileService
     {
-        Task<UserProfile?> GetByUsernameAsync(string username);
+        Task<UserProfile?> GetByUsernameAsync(string username, CancellationToken ct = default);
 
-        Task<IEnumerable<UserProfile>> GetActiveUsersAsync();
+        Task<List<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default);
     }
 }

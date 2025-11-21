@@ -27,7 +27,7 @@ namespace Inventory_Atlas.Application.Services.Audit
                 IpAddress = ip,
                 UserAgent = userAgent
             };
-            await _sessionRepo.AddAsync(session, ct);
+            _sessionRepo.Add(session);
             await _uow.SaveChangesAsync(ct);
             return session;
         }
@@ -46,7 +46,7 @@ namespace Inventory_Atlas.Application.Services.Audit
             session.IsActive = false;
             session.EndTime = DateTime.UtcNow;
 
-            await _sessionRepo.UpdateAsync(session, ct);
+            _sessionRepo.Update(session);
             await _uow.SaveChangesAsync(ct);
         }
     }

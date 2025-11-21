@@ -1,7 +1,7 @@
 ﻿using Inventory_Atlas.Core.Enums;
+using Inventory_Atlas.Infrastructure.Data;
 using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -19,39 +19,34 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics.Components
         /// <summary>
         /// Создаёт экземпляр репозитория компонентов компьютера.
         /// </summary>
-        /// <param name="contextProvider">Провайдер DbContext.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер репозитория.</param>
-        public ComputerComponentRepository(
-            IDatabaseContextProvider contextProvider,
-            ILogger<ComputerComponentRepository<TComponent>> logger)
-            : base(contextProvider, logger)
+        public ComputerComponentRepository(AppDbContext context, ILogger<ComputerComponentRepository<TComponent>> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<TComponent>> GetByComputerIdAsync(int computerId)
+        public async Task<IEnumerable<TComponent>> GetByComputerIdAsync(int computerId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<TComponent>()
+            return await _context.Set<TComponent>()
                 .Where(c => c.ComputerId == computerId)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<TComponent>> GetByTypeAsync(ComponentType type)
+        public async Task<IEnumerable<TComponent>> GetByTypeAsync(ComponentType type, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<TComponent>()
+            return await _context.Set<TComponent>()
                 .Where(c => c.ComponentType == type)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<TComponent?> GetBySerialNumberAsync(string serialNumber)
+        public async Task<TComponent?> GetBySerialNumberAsync(string serialNumber, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<TComponent>()
-                .FirstOrDefaultAsync(c => c.SerialNumber == serialNumber);
+            return await _context.Set<TComponent>()
+                .FirstOrDefaultAsync(c => c.SerialNumber == serialNumber, ct);
         }
     }
 }

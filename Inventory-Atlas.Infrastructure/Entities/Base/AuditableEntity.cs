@@ -18,7 +18,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Base
         /// Указывается в UTC. Должно устанавливаться при создании сущности.
         /// </summary>
         [Column("created_at")]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
         /// Время последнего обновления записи.
@@ -28,7 +28,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Base
         /// Указывается в UTC. Обновляется при каждом изменении сущности.
         /// </summary>
         [Column("updated_at")]
-        public DateTime UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     }
 }

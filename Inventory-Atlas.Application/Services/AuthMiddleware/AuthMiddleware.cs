@@ -47,6 +47,8 @@ namespace Inventory_Atlas.Application.Services.AuthMiddleware
         /// <returns>Задача <see cref="Task"/>.</returns>
         public async Task InvokeAsync(HttpContext context)
         {
+            var ct = context.RequestAborted;
+
             var token = ExtractToken(context);
             UserSession? session = null;
             UserProfile? user = null;
@@ -54,10 +56,10 @@ namespace Inventory_Atlas.Application.Services.AuthMiddleware
 
             if (token != null)
             {
-                session = await _sessionService.ValidateTokenAsync(token.Value);
+                session = await _sessionService.ValidateTokenAsync(token.Value, ct);
                 if (session != null)
                 {
-                    user = await _userService.GetByUsernameAsync(session.Username);
+                    user = await _userService.GetByUsernameAsync(session.Username, ct);
                     if (user?.Role != null)
                     {
                         permissions = user.Role.PermissionJson ?? "{}";

@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Technics;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -12,39 +12,36 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public class LaptopRepository : DatabaseRepository<Laptop>, ILaptopRepository
     {
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория ноутбуков
+        /// Инициализирует новый экземпляр репозитория ноутбуков.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных</param>
-        /// <param name="logger">Логгер для записи событий</param>
-        public LaptopRepository(IDatabaseContextProvider contextProvider, ILogger<LaptopRepository> logger)
-            : base(contextProvider, logger)
+        /// <param name="context">Контекст базы данных.</param>
+        /// <param name="logger">Логгер для записи событий.</param>
+        public LaptopRepository(AppDbContext context, ILogger<LaptopRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<Laptop?> GetByIpAddressAsync(string ipAddress)
+        public async Task<Laptop?> GetByIpAddressAsync(string ipAddress, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Laptop>()
-                .FirstOrDefaultAsync(l => l.IpAddress != null && l.IpAddress.ToString() == ipAddress);
+            return await _context.Set<Laptop>()
+                .FirstOrDefaultAsync(l => l.IpAddress != null && l.IpAddress.ToString() == ipAddress, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Laptop>> GetByProcessorAsync(string processor)
+        public async Task<IEnumerable<Laptop>> GetByProcessorAsync(string processor, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Laptop>()
+            return await _context.Set<Laptop>()
                 .Where(l => l.Processor != null && l.Processor.Contains(processor))
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Laptop>> GetByRAMAsync(int ram)
+        public async Task<IEnumerable<Laptop>> GetByRAMAsync(int ram, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Laptop>()
+            return await _context.Set<Laptop>()
                 .Where(l => l.RAM == ram)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

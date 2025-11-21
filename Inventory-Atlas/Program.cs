@@ -1,10 +1,8 @@
 using Inventory_Atlas.Application;
 using Inventory_Atlas.Application.Services.Audit;
 using Inventory_Atlas.Application.Services.AuthMiddleware;
-using Inventory_Atlas.Application.Services.PermissionService;
 using Inventory_Atlas.Infrastructure.Data;
 using Inventory_Atlas.Infrastructure.Repository;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Inventory_Atlas.Infrastructure.Services.DbInstaller;
 using Microsoft.EntityFrameworkCore;
 

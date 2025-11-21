@@ -13,13 +13,13 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         /// </summary>
         /// <param name="inventoryItemId">Идентификатор элемента инвентаря.</param>
         /// <returns>Список фотографий, связанных с элементом.</returns>
-        Task<IEnumerable<InventoryPhoto>> GetByInventoryItemIdAsync(int inventoryItemId);
+        Task<IEnumerable<InventoryPhoto>> GetByInventoryItemIdAsync(int inventoryItemId, CancellationToken ct = default);
 
         /// <summary>
         /// Получает основную (главную) фотографию элемента инвентаря.
         /// </summary>
         /// <param name="inventoryItemId">Идентификатор элемента инвентаря.</param>
         /// <returns>Главная фотография элемента инвентаря или <c>null</c>, если фотографий нет.</returns>
-        Task<InventoryPhoto?> GetPrimaryPhotoAsync(int inventoryItemId);
+        Task<InventoryPhoto?> GetPrimaryPhotoAsync(int inventoryItemId, CancellationToken ct = default);
     }
 }

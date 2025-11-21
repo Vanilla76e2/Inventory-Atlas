@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Inventory;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Inventory;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -14,30 +14,26 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         /// <summary>
         /// Создаёт новый экземпляр репозитория фотографий элементов инвентаря.
         /// </summary>
-        /// <param name="contextProvider">Провайдер DbContext.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер репозитория.</param>
-        public InventoryPhotoRepository(
-            IDatabaseContextProvider contextProvider,
-            ILogger<InventoryPhotoRepository> logger)
-            : base(contextProvider, logger)
+        public InventoryPhotoRepository( AppDbContext context, ILogger<InventoryPhotoRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<InventoryPhoto>> GetByInventoryItemIdAsync(int inventoryItemId)
+        public async Task<IEnumerable<InventoryPhoto>> GetByInventoryItemIdAsync(int inventoryItemId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<InventoryPhoto>()
+            return await _context.Set<InventoryPhoto>()
                 .Where(p => p.InventoryItemId == inventoryItemId)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<InventoryPhoto?> GetPrimaryPhotoAsync(int inventoryItemId)
+        public async Task<InventoryPhoto?> GetPrimaryPhotoAsync(int inventoryItemId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<InventoryPhoto>()
-                .FirstOrDefaultAsync(p => p.InventoryItemId == inventoryItemId && p.IsPrimary);
+            return await _context.Set<InventoryPhoto>()
+                .FirstOrDefaultAsync(p => p.InventoryItemId == inventoryItemId && p.IsPrimary, ct);
         }
     }
 }

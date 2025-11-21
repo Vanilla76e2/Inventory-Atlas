@@ -13,13 +13,13 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
         /// </summary>
         /// <param name="licenceKey">Лицензионный ключ для поиска</param>
         /// <returns>Коллекция программного обеспечения с указанным лицензионным ключом</returns>
-        Task<IEnumerable<Software>> GetByLicenceKeyAsync(string licenceKey);
+        Task<IEnumerable<Software>> GetByLicenceKeyAsync(string licenceKey, CancellationToken ct = default);
 
         /// <summary>
         /// Получает программное обеспечение по производителю
         /// </summary>
         /// <param name="vendor">Производитель программного обеспечения</param>
         /// <returns>Коллекция программного обеспечения указанного производителя</returns>
-        Task<IEnumerable<Software>> GetByVendorAsync(string vendor);
+        Task<IEnumerable<Software>> GetByVendorAsync(string vendor, CancellationToken ct = default);
     }
 }

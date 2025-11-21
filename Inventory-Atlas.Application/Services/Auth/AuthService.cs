@@ -48,17 +48,24 @@ namespace Inventory_Atlas.Application.Services.Auth
         }
 
         /// <inheritdoc/>
-        public async Task<LoginResponse?> LoginAsync(string username, string password, string? userAgent, string? ip)
+        public async Task<LoginResponse?> LoginAsync(string username, string password, string? userAgent, 
+                                                     string? ip, CancellationToken ct = default)
         {
             _logger.LogDebug("Attempting to log in user {Username}", username);
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
                 return null;
 
-            var user = await _userRepo.GetByUsernameAsync(username);
+            var user = await _userRepo.GetByUsernameAsync(username, ct);
             if (user == null)
             {
                 _logger.LogDebug("User {Username} not found during login attempt", username);
+                return null;
+            }
+
+            if (!user.IsActive)
+            {
+                _logger.LogDebug($"User {username} is not active.");
                 return null;
             }
 
@@ -84,10 +91,10 @@ namespace Inventory_Atlas.Application.Services.Auth
 
             try
             {
-                await _sessionRepo.AddAsync(session);
-                await _uow.SaveChangesAsync();
+                _sessionRepo.Add(session);
+                await _uow.SaveChangesAsync(ct);
 
-                await _logService.LogAndSaveAsync(ActionType.Login, session.Id);
+                await _logService.LogAndSaveAsync(ActionType.Login, session.Id, ct);
 
                 _logger.LogDebug("User {Username} logged in successfully with session token {Token}", username, token);
                 return new LoginResponse { Token = token.ToString() };
@@ -100,7 +107,7 @@ namespace Inventory_Atlas.Application.Services.Auth
         }
 
         /// <inheritdoc/>
-        public async Task<bool> LogoutAsync(string token)
+        public async Task<bool> LogoutAsync(string token, CancellationToken ct = default)
         {
             _logger.LogDebug("Attempting to logout session with token {Token}", token);
             if (!Guid.TryParse(token, out var tokenGuid))
@@ -127,8 +134,8 @@ namespace Inventory_Atlas.Application.Services.Auth
             session.EndTime = DateTime.UtcNow;
             try
             {
-                await _uow.SaveChangesAsync();
-                await _logService.LogAndSaveAsync(ActionType.Logout, session.Id);
+                await _uow.SaveChangesAsync(ct);
+                await _logService.LogAndSaveAsync(ActionType.Logout, session.Id, ct);
                 _logger.LogDebug("Successfully logged out session with token {Token}", token);
             }
             catch (Exception ex)

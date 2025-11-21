@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Employees;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Employees;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -14,10 +14,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Employees
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="MateriallyResponsibleRepository"/>.
         /// </summary>
-        /// <param name="contextProvider">Поставщик контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для ведения логов.</param>
-        public MateriallyResponsibleRepository(IDatabaseContextProvider contextProvider, ILogger<MateriallyResponsibleRepository> logger)
-            : base(contextProvider, logger)
+        public MateriallyResponsibleRepository(AppDbContext context, ILogger<MateriallyResponsibleRepository> logger)
+            : base(context, logger)
         {
         }
 
@@ -25,10 +25,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Employees
         public async Task<IEnumerable<MateriallyResponsible>> SearchAsync(
             int? employeeId = null,
             string? displayName = null,
-            string? comment = null)
+            string? comment = null,
+            CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            var query = context.Set<MateriallyResponsible>().AsQueryable();
+            var query = _context.Set<MateriallyResponsible>().AsQueryable();
 
             if (employeeId.HasValue)
                 query = query.Where(e => e.EmployeeId == employeeId);
@@ -39,7 +39,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Employees
             if (!string.IsNullOrWhiteSpace(comment))
                 query = query.Where(e => e.Comment != null && EF.Functions.ILike(e.Comment, $"%{comment}%"));
 
-            return await query.ToListAsync();
+            return await query.ToListAsync(ct);
         }
     }
 }

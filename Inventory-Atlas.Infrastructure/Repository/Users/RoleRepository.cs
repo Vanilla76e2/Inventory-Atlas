@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Users;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -12,32 +12,28 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
     public class RoleRepository : DatabaseRepository<Role>, IRoleRepository
     {
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория ролей
+        /// Инициализирует новый экземпляр репозитория ролей.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных</param>
-        /// <param name="logger">Логгер для записи событий</param>
-        public RoleRepository(
-            IDatabaseContextProvider contextProvider,
-            ILogger<RoleRepository> logger)
-            : base(contextProvider, logger)
+        /// <param name="context">Контекст базы данных.</param>
+        /// <param name="logger">Логгер для записи событий.</param>
+        public RoleRepository(AppDbContext context, ILogger<RoleRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<Role?> GetByNameAsync(string roleName)
+        public async Task<Role?> GetByNameAsync(string roleName, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Role>()
+            return await _context.Set<Role>()
                 .FirstOrDefaultAsync(r => r.Name == roleName);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Role>> GetSystemRolesAsync()
+        public async Task<List<Role>> GetSystemRolesAsync(CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Role>()
+            return await _context.Set<Role>()
                 .Where(r => r.IsSystem)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

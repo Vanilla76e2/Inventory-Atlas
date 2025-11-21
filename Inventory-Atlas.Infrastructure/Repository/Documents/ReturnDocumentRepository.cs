@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Documents;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Documents;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -14,33 +14,29 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
         /// <summary>
         /// Создаёт экземпляр репозитория возвратных документов с использованием поставщика контекста базы данных и логгера.
         /// </summary>
-        /// <param name="contextProvider">Поставщик контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для репозитория.</param>
-        public ReturnDocumentRepository(IDatabaseContextProvider contextProvider, ILogger<ReturnDocumentRepository> logger)
-            : base(contextProvider, logger)
+        public ReturnDocumentRepository(AppDbContext context, ILogger<ReturnDocumentRepository> logger)
+            : base(context, logger)
         { }
 
         /// <inheritdoc/>
-        public async Task<ReturnDocument?> GetWithItemsAsync(int documentId)
+        public async Task<ReturnDocument?> GetWithItemsAsync(int documentId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<ReturnDocument>()
+            return await _context.Set<ReturnDocument>()
                 .Include(d => d.Employee)
                 .Include(d => d.Items)
                     .ThenInclude(i => i.Item)
-                .FirstOrDefaultAsync(d => d.Id == documentId);
+                .FirstOrDefaultAsync(d => d.Id == documentId, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<ReturnDocument>> GetByEmployeeAsync(int employeeId)
+        public async Task<IEnumerable<ReturnDocument>> GetByEmployeeAsync(int employeeId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<ReturnDocument>()
+            return await _context.Set<ReturnDocument>()
                 .Include(d => d.Items)
                 .Where(d => d.EmployeeId == employeeId)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 
@@ -52,21 +48,19 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
         /// <summary>
         /// Создаёт экземпляр репозитория элементов документа возврата с использованием поставщика контекста базы данных и логгера.
         /// </summary>
-        /// <param name="contextProvider">Поставщик контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для репозитория.</param>
-        public ReturnDocumentItemRepository(IDatabaseContextProvider contextProvider, ILogger<ReturnDocumentItemRepository> logger)
-            : base(contextProvider, logger)
+        public ReturnDocumentItemRepository(AppDbContext context, ILogger<ReturnDocumentItemRepository> logger)
+            : base(context, logger)
         { }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<ReturnDocumentItem>> GetByDocumentIdAsync(int documentId)
+        public async Task<IEnumerable<ReturnDocumentItem>> GetByDocumentIdAsync(int documentId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<ReturnDocumentItem>()
+            return await _context.Set<ReturnDocumentItem>()
                 .Include(i => i.Item)
                 .Where(i => i.DocumentId == documentId)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

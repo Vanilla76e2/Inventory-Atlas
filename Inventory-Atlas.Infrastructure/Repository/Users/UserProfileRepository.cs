@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Users;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 using Inventory_Atlas.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,31 +12,27 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
     public class UserProfileRepository : DatabaseRepository<UserProfile>, IUserProfileRepository
     {
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория профилей пользователей
+        /// Инициализирует новый экземпляр репозитория профилей пользователей.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных</param>
-        /// <param name="logger">Логгер для записи событий</param>
-        public UserProfileRepository(
-            IDatabaseContextProvider contextProvider,
-            ILogger<UserProfileRepository> logger)
-            : base(contextProvider, logger)
+        /// <param name="context">Контекст базы данных.</param>
+        /// <param name="logger">Логгер для записи событий.</param>
+        public UserProfileRepository(AppDbContext context, ILogger<UserProfileRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
         public async Task<UserProfile?> GetByUsernameAsync(string username, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<UserProfile>()
+            return await _context.Set<UserProfile>()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Username == username, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default)
+        public async Task<List<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<UserProfile>()
+            return await _context.Set<UserProfile>()
                 .AsNoTracking()             
                 .Where(u => u.IsActive)
                 .ToListAsync(ct);

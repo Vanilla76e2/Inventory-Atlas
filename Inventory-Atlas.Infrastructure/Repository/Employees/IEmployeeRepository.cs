@@ -25,6 +25,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Employees
             string? patronymic = null,
             int? departmentId = null,
             string? position = null,
-            bool? isResponsible = null);
+            bool? isResponsible = null,
+            CancellationToken ct = default);
     }
 }

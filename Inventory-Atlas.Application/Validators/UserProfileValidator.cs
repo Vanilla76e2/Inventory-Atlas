@@ -1,0 +1,61 @@
+﻿using Inventory_Atlas.Core.DTOs.Users;
+using Inventory_Atlas.Core.Models;
+
+namespace Inventory_Atlas.Application.Validators
+{
+    /// <summary>
+    /// Валидатор данных профиля пользователей.
+    /// </summary>
+    public static class UserProfileValidator
+    {
+        /// <summary>
+        /// Валидация при создании пользователя.
+        /// </summary>
+        /// <param name="dto">Данные профиля пользователя.</param>
+        /// <returns><see cref="ValidationResult"/></returns>
+        public static ValidationResult ValidateCreate(UserProfileCreateDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Username))
+            {
+                return new(false, UserValidationMessages.UsernameEmpty);
+            }
+
+            if (string.IsNullOrEmpty(dto.Password))
+            {
+                return new(false, UserValidationMessages.PasswordEmpty);
+            }
+
+            if (dto.Username.Length < 3)
+            {
+                return new(false, UserValidationMessages.UsernameTooShort);
+            }
+
+            if (dto.Password.Length < 8)
+            {
+                return new(false, UserValidationMessages.PasswordTooShort);
+            }
+
+            return new(true);
+        }
+
+        /// <summary>
+        /// Валидация при изменении профиля пользователя.
+        /// </summary>
+        /// <param name="dto">Новые данные для профиля пользователя.</param>
+        /// <returns><see cref="ValidationResult"/>.</returns>
+        public static ValidationResult ValidateUpdate(UserProfileUpdateDto dto)
+        {
+            if (!string.IsNullOrWhiteSpace(dto.Username) && dto.Username.Length < 3)
+            {
+                return new(false, UserValidationMessages.UsernameTooShort);
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.Password) && dto.Password.Length < 8)
+            {
+                return new(false, UserValidationMessages.PasswordTooShort);
+            }
+
+            return new(true);
+        }
+    }
+}

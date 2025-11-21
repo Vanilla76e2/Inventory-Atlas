@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Employees;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Employees;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -14,21 +14,19 @@ namespace Inventory_Atlas.Infrastructure.Repository.Employees
         /// <summary>
         /// Создаёт экземпляр репозитория отделов с использованием поставщика контекста базы данных и логгера.
         /// </summary>
-        /// <param name="contextProvider">Поставщик контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для репозитория.</param>
-        public DepartmentRepository(IDatabaseContextProvider contextProvider, ILogger<DepartmentRepository> logger)
-            : base(contextProvider, logger)
+        public DepartmentRepository(AppDbContext context, ILogger<DepartmentRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Department>> SearchByNameAsync(string name)
+        public async Task<IEnumerable<Department>> SearchByNameAsync(string name, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<Department>()
+            return await _context.Set<Department>()
                 .Where(d => EF.Functions.ILike(d.Name, $"%{name}%"))
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

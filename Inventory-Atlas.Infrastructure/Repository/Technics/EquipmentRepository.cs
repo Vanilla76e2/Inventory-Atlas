@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Technics;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -12,34 +12,30 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public class EquipmentRepository : DatabaseRepository<Equipment>, IEquipmentRepository
     {
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория оборудования
+        /// Инициализирует новый экземпляр репозитория оборудования.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных</param>
-        /// <param name="logger">Логгер для записи событий</param>
-        public EquipmentRepository(
-            IDatabaseContextProvider contextProvider,
-            ILogger<EquipmentRepository> logger)
-            : base(contextProvider, logger)
+        /// <param name="context">Контекст базы данных.</param>
+        /// <param name="logger">Логгер для записи событий.</param>
+        public EquipmentRepository(AppDbContext context, ILogger<EquipmentRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<Equipment?> GetWithWorkplacesAndMaintenanceAsync(int equipmentId)
+        public async Task<Equipment?> GetWithWorkplacesAndMaintenanceAsync(int equipmentId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Equipment>()
+            return await _context.Set<Equipment>()
                 .Include(e => e.WorkplaceEquipments)
                 .Include(e => e.MaintenanceLogs)
-                .FirstOrDefaultAsync(e => e.Id == equipmentId);
+                .FirstOrDefaultAsync(e => e.Id == equipmentId, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Equipment>> GetByWorkplaceIdAsync(int workplaceId)
+        public async Task<IEnumerable<Equipment>> GetByWorkplaceIdAsync(int workplaceId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Equipment>()
+            return await _context.Set<Equipment>()
                 .Where(e => e.WorkplaceEquipments.Any(w => w.WorkplaceId == workplaceId))
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

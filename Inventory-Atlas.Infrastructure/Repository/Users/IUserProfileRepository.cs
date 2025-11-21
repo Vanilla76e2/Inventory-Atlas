@@ -19,6 +19,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
         /// Получает активных пользователей
         /// </summary>
         /// <returns>Коллекция активных пользователей</returns>
-        Task<IEnumerable<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default);
+        Task<List<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default);
     }
 }

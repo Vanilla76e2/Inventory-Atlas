@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Documents;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Documents;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -14,46 +14,40 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
         /// <summary>
         /// Создаёт экземпляр репозитория документов передачи с использованием поставщика контекста базы данных и логгера.
         /// </summary>
-        /// <param name="contextProvider">Поставщик контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для репозитория.</param>
-        public TransferDocumentRepository(IDatabaseContextProvider contextProvider, ILogger<TransferDocumentRepository> logger)
-            : base(contextProvider, logger)
+        public TransferDocumentRepository(AppDbContext context, ILogger<TransferDocumentRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<TransferDocument?> GetWithItemsAsync(int documentId)
+        public async Task<TransferDocument?> GetWithItemsAsync(int documentId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<TransferDocument>()
+            return await _context.Set<TransferDocument>()
                 .Include(d => d.FromEmployee)
                 .Include(d => d.ToEmployee)
                 .Include(d => d.Items)
                     .ThenInclude(i => i.Item)
-                .FirstOrDefaultAsync(d => d.Id == documentId);
+                .FirstOrDefaultAsync(d => d.Id == documentId, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<TransferDocument>> GetByFromEmployeeAsync(int employeeId)
+        public async Task<IEnumerable<TransferDocument>> GetByFromEmployeeAsync(int employeeId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<TransferDocument>()
+            return await _context.Set<TransferDocument>()
                 .Include(d => d.Items)
                 .Where(d => d.FromEmployeeId == employeeId)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<TransferDocument>> GetByToEmployeeAsync(int employeeId)
+        public async Task<IEnumerable<TransferDocument>> GetByToEmployeeAsync(int employeeId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<TransferDocument>()
+            return await _context.Set<TransferDocument>()
                 .Include(d => d.Items)
                 .Where(d => d.ToEmployeeId == employeeId)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 
@@ -65,22 +59,20 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
         /// <summary>
         /// Создаёт экземпляр репозитория элементов документа передачи с использованием поставщика контекста базы данных и логгера.
         /// </summary>
-        /// <param name="contextProvider">Поставщик контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для репозитория.</param>
-        public TransferDocumentItemRepository(IDatabaseContextProvider contextProvider, ILogger<TransferDocumentItemRepository> logger)
-            : base(contextProvider, logger)
+        public TransferDocumentItemRepository(AppDbContext context, ILogger<TransferDocumentItemRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<TransferDocumentItem>> GetByDocumentIdAsync(int documentId)
+        public async Task<IEnumerable<TransferDocumentItem>> GetByDocumentIdAsync(int documentId, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-
-            return await context.Set<TransferDocumentItem>()
+            return await _context.Set<TransferDocumentItem>()
                 .Include(i => i.Item)
                 .Where(i => i.DocumentId == documentId)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

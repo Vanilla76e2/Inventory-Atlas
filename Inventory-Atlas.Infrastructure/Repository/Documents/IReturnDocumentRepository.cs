@@ -13,14 +13,14 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
         /// </summary>
         /// <param name="documentId">Id документа.</param>
         /// <returns>Документ с его позициями или null, если не найден.</returns>
-        Task<ReturnDocument?> GetWithItemsAsync(int documentId);
+        Task<ReturnDocument?> GetWithItemsAsync(int documentId, CancellationToken ct = default);
 
         /// <summary>
         /// Получает все документы возврата для указанного сотрудника.
         /// </summary>
         /// <param name="employeeId">Id сотрудника.</param>
         /// <returns>Список документов.</returns>
-        Task<IEnumerable<ReturnDocument>> GetByEmployeeAsync(int employeeId);
+        Task<IEnumerable<ReturnDocument>> GetByEmployeeAsync(int employeeId, CancellationToken ct = default);
     }
 
     /// <summary>
@@ -33,6 +33,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
         /// </summary>
         /// <param name="documentId">Id документа.</param>
         /// <returns>Список позиций документа.</returns>
-        Task<IEnumerable<ReturnDocumentItem>> GetByDocumentIdAsync(int documentId);
+        Task<IEnumerable<ReturnDocumentItem>> GetByDocumentIdAsync(int documentId, CancellationToken ct = default);
     }
 }

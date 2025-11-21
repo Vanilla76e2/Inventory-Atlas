@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Technics;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -12,31 +12,29 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public class PrinterRepository : DatabaseRepository<Printer>, IPrinterRepository
     {
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория принтеров
+        /// Инициализирует новый экземпляр репозитория принтеров.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных</param>
-        /// <param name="logger">Логгер для записи событий</param>
-        public PrinterRepository(IDatabaseContextProvider contextProvider, ILogger<PrinterRepository> logger)
-            : base(contextProvider, logger)
+        /// <param name="context">Контекст базы данных.</param>
+        /// <param name="logger">Логгер для записи событий.</param>
+        public PrinterRepository(AppDbContext context, ILogger<PrinterRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Printer>> GetByIpAddressAsync(string ipAddress)
+        public async Task<IEnumerable<Printer>> GetByIpAddressAsync(string ipAddress, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Printer>()
+            return await _context.Set<Printer>()
                 .Where(p => p.IpAddress != null && p.IpAddress.ToString() == ipAddress)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Printer>> GetByColorPrintingAsync(bool isColor)
+        public async Task<IEnumerable<Printer>> GetByColorPrintingAsync(bool isColor, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Printer>()
+            return await _context.Set<Printer>()
                 .Where(p => p.Color == isColor)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

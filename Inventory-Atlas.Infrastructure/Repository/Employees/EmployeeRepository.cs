@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Employees;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Employees;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -16,8 +16,8 @@ namespace Inventory_Atlas.Infrastructure.Repository.Employees
         /// </summary>
         /// <param name="contextProvider">Поставщик контекста базы данных.</param>
         /// <param name="logger">Логгер для репозитория.</param>
-        public EmployeeRepository(IDatabaseContextProvider contextProvider, ILogger<EmployeeRepository> logger)
-            : base(contextProvider, logger)
+        public EmployeeRepository(AppDbContext context, ILogger<EmployeeRepository> logger)
+            : base(context, logger)
         {
         }
 
@@ -28,10 +28,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Employees
             string? patronymic = null,
             int? departmentId = null,
             string? position = null,
-            bool? isResponsible = null)
+            bool? isResponsible = null,
+            CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            var query = context.Set<Employee>().AsQueryable();
+            var query = _context.Set<Employee>().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(surname))
                 query = query.Where(e => EF.Functions.ILike(e.Surname, $"%{surname}%"));
@@ -51,7 +51,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Employees
             if (isResponsible.HasValue)
                 query = query.Where(e => e.IsResponsible == isResponsible);
 
-            return await query.ToListAsync();
+            return await query.ToListAsync(ct);
         }
     }
 }

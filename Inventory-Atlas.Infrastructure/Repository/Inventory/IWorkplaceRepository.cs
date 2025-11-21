@@ -19,6 +19,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         Task<IEnumerable<Workplace>> SearchAsync(
             int? employeeId = null,
             string? name = null,
-            string? comment = null);
+            string? comment = null,
+            CancellationToken ct = default);
     }
 }

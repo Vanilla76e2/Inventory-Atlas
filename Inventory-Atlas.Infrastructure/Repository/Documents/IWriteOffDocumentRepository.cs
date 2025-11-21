@@ -13,7 +13,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
         /// </summary>
         /// <param name="documentId">Id документа.</param>
         /// <returns>Документ списания с элементами, либо <c>null</c> если не найден.</returns>
-        Task<WriteOffDocument?> GetWithItemsAsync(int documentId);
+        Task<WriteOffDocument?> GetWithItemsAsync(int documentId, CancellationToken ct = default);
     }
 
     /// <summary>
@@ -26,6 +26,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
         /// </summary>
         /// <param name="documentId">Id документа.</param>
         /// <returns>Список элементов документа.</returns>
-        Task<IEnumerable<WriteOffDocumentItem>> GetByDocumentIdAsync(int documentId);
+        Task<IEnumerable<WriteOffDocumentItem>> GetByDocumentIdAsync(int documentId, CancellationToken ct = default);
     }
 }

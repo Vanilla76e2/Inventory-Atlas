@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Technics;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -12,31 +12,29 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public class SoftwareRepository : DatabaseRepository<Software>, ISoftwareRepository
     {
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория программного обеспечения
+        /// Инициализирует новый экземпляр репозитория программного обеспечения.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных</param>
-        /// <param name="logger">Логгер для записи событий</param>
-        public SoftwareRepository(IDatabaseContextProvider contextProvider, ILogger<SoftwareRepository> logger)
-            : base(contextProvider, logger)
+        /// <param name="context">Контекст базы данных.</param>
+        /// <param name="logger">Логгер для записи событий.</param>
+        public SoftwareRepository(AppDbContext context, ILogger<SoftwareRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Software>> GetByLicenceKeyAsync(string licenceKey)
+        public async Task<IEnumerable<Software>> GetByLicenceKeyAsync(string licenceKey, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Software>()
+            return await _context.Set<Software>()
                 .Where(s => s.LicenceKey != null && s.LicenceKey == licenceKey)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Software>> GetByVendorAsync(string vendor)
+        public async Task<IEnumerable<Software>> GetByVendorAsync(string vendor, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Software>()
+            return await _context.Set<Software>()
                 .Where(s => s.Vendor != null && s.Vendor == vendor)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

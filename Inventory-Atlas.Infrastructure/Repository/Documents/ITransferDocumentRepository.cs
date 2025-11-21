@@ -13,21 +13,21 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
         /// </summary>
         /// <param name="documentId">Id документа.</param>
         /// <returns>Документ передачи с заполненными элементами, либо <c>null</c> если не найден.</returns>
-        Task<TransferDocument?> GetWithItemsAsync(int documentId);
+        Task<TransferDocument?> GetWithItemsAsync(int documentId, CancellationToken ct = default);
 
         /// <summary>
         /// Получает документы передачи, отправленные указанным сотрудником.
         /// </summary>
         /// <param name="employeeId">Id сотрудника-отправителя.</param>
         /// <returns>Список документов передачи.</returns>
-        Task<IEnumerable<TransferDocument>> GetByFromEmployeeAsync(int employeeId);
+        Task<IEnumerable<TransferDocument>> GetByFromEmployeeAsync(int employeeId, CancellationToken ct = default);
 
         /// <summary>
         /// Получает документы передачи, полученные указанным сотрудником.
         /// </summary>
         /// <param name="employeeId">Id сотрудника-получателя.</param>
         /// <returns>Список документов передачи.</returns>
-        Task<IEnumerable<TransferDocument>> GetByToEmployeeAsync(int employeeId);
+        Task<IEnumerable<TransferDocument>> GetByToEmployeeAsync(int employeeId, CancellationToken ct = default);
     }
 
     /// <summary>
@@ -40,6 +40,6 @@ namespace Inventory_Atlas.Infrastructure.Repository.Documents
         /// </summary>
         /// <param name="documentId">Id документа.</param>
         /// <returns>Список позиций документа.</returns>
-        Task<IEnumerable<TransferDocumentItem>> GetByDocumentIdAsync(int documentId);
+        Task<IEnumerable<TransferDocumentItem>> GetByDocumentIdAsync(int documentId, CancellationToken ct = default);
     }
 }

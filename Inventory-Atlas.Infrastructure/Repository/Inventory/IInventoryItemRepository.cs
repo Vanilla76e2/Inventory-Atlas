@@ -25,6 +25,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
             string? registryNumber = null,
             int? responsibleId = null,
             InventoryStatus? status = null,
-            string? location = null);
+            string? location = null,
+            CancellationToken ct = default);
     }
 }

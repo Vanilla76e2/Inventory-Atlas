@@ -23,7 +23,8 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
             FurnitureOrientation? orientation = null,
             double? minWeight = null,
             double? maxWeight = null,
-            string? dimensionsContains = null);
+            string? dimensionsContains = null,
+            CancellationToken ct = default);
     }
 
     /// <summary>
@@ -36,13 +37,13 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         /// </summary>
         /// <param name="furnitureId">Идентификатор мебели.</param>
         /// <returns>Список назначений материалов.</returns>
-        Task<IEnumerable<FurnitureMaterialAssignment>> GetByFurnitureIdAsync(int furnitureId);
+        Task<IEnumerable<FurnitureMaterialAssignment>> GetByFurnitureIdAsync(int furnitureId, CancellationToken ct = default);
 
         /// <summary>
         /// Получает назначения мебели, в которых используется указанный материал.
         /// </summary>
         /// <param name="materialId">Идентификатор материала.</param>
         /// <returns>Список назначений мебели с данным материалом.</returns>
-        Task<IEnumerable<FurnitureMaterialAssignment>> GetByMaterialIdAsync(int materialId);
+        Task<IEnumerable<FurnitureMaterialAssignment>> GetByMaterialIdAsync(int materialId, CancellationToken ct = default);
     }
 }

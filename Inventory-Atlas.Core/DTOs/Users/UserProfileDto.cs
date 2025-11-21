@@ -41,4 +41,23 @@ namespace Inventory_Atlas.Core.DTOs.Users
         /// </summary>
         public string RoleName { get; set; } = null!;
     }
+
+    public class UserProfileCreateDto
+    {
+        public string Username { get; set; } = null!;
+        public int? EmployeeId { get; set; }
+        public string? Email { get; set; }
+        public int RoleId { get; set; }
+        public string Password { get; set; } = null!;
+    }
+
+    public class UserProfileUpdateDto : BaseDto
+    {
+        public string? Username { get; set; }
+        public int? EmployeeId{ get; set; }
+        public string? Email { get; set; }
+        public int? RoleId { get; set; }
+        public bool? IsActive { get; set; }
+        public string? Password { get; set; }
+    }
 }

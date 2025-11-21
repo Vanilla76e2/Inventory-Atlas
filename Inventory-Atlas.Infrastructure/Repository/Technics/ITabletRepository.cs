@@ -13,13 +13,13 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
         /// </summary>
         /// <param name="operatingSystem">Операционная система для поиска</param>
         /// <returns>Коллекция планшетов с указанной операционной системой</returns>
-        Task<IEnumerable<Tablet>> GetByOperatingSystemAsync(string operatingSystem);
+        Task<IEnumerable<Tablet>> GetByOperatingSystemAsync(string operatingSystem, CancellationToken ct = default);
 
         /// <summary>
         /// Получает планшеты по диагонали экрана
         /// </summary>
         /// <param name="diagonal">Диагональ экрана в дюймах</param>
         /// <returns>Коллекция планшетов с указанной диагональю экрана</returns>
-        Task<IEnumerable<Tablet>> GetByDiagonalAsync(float diagonal);
+        Task<IEnumerable<Tablet>> GetByDiagonalAsync(float diagonal, CancellationToken ct = default);
     }
 }

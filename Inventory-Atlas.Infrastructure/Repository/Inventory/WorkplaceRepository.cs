@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Employees;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Employees;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -14,10 +14,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="WorkplaceRepository"/>.
         /// </summary>
-        /// <param name="contextProvider">Поставщик контекста базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         /// <param name="logger">Логгер для ведения логов.</param>
-        public WorkplaceRepository(IDatabaseContextProvider contextProvider, ILogger<WorkplaceRepository> logger)
-            : base(contextProvider, logger)
+        public WorkplaceRepository(AppDbContext context, ILogger<WorkplaceRepository> logger)
+            : base(context, logger)
         {
         }
 
@@ -25,10 +25,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
         public async Task<IEnumerable<Workplace>> SearchAsync(
             int? employeeId = null,
             string? name = null,
-            string? comment = null)
+            string? comment = null,
+            CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            var query = context.Set<Workplace>().AsQueryable();
+            var query = _context.Set<Workplace>().AsQueryable();
 
             if (employeeId.HasValue)
                 query = query.Where(e => e.EmployeeId == employeeId);
@@ -39,7 +39,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Inventory
             if (!string.IsNullOrWhiteSpace(comment))
                 query = query.Where(e => e.Comment != null && EF.Functions.ILike(e.Comment, $"%{comment}%"));
 
-            return await query.ToListAsync();
+            return await query.ToListAsync(ct);
         }
     }
 }

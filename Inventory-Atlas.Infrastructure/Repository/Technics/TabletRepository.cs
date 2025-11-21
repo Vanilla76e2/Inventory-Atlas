@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Technics;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Services.DatabaseContextProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -12,31 +12,29 @@ namespace Inventory_Atlas.Infrastructure.Repository.Technics
     public class TabletRepository : DatabaseRepository<Tablet>, ITabletRepository
     {
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория планшетов
+        /// Инициализирует новый экземпляр репозитория планшетов.
         /// </summary>
-        /// <param name="contextProvider">Провайдер контекста базы данных</param>
-        /// <param name="logger">Логгер для записи событий</param>
-        public TabletRepository(IDatabaseContextProvider contextProvider, ILogger<TabletRepository> logger)
-            : base(contextProvider, logger)
+        /// <param name="context">Контекст базы данных.</param>
+        /// <param name="logger">Логгер для записи событий.</param>
+        public TabletRepository(AppDbContext context, ILogger<TabletRepository> logger)
+            : base(context, logger)
         {
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Tablet>> GetByOperatingSystemAsync(string operatingSystem)
+        public async Task<IEnumerable<Tablet>> GetByOperatingSystemAsync(string operatingSystem, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Tablet>()
+            return await _context.Set<Tablet>()
                 .Where(t => t.OperatingSystem != null && t.OperatingSystem == operatingSystem)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Tablet>> GetByDiagonalAsync(float diagonal)
+        public async Task<IEnumerable<Tablet>> GetByDiagonalAsync(float diagonal, CancellationToken ct = default)
         {
-            await using var context = await _contextProvider.GetDbContextAsync();
-            return await context.Set<Tablet>()
+            return await _context.Set<Tablet>()
                 .Where(t => t.Diagonal.HasValue && t.Diagonal.Value == diagonal)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
     }
 }

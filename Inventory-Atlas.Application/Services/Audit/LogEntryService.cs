@@ -1,19 +1,21 @@
 ﻿using Inventory_Atlas.Core.Enums;
+using Inventory_Atlas.Core.Models;
 using Inventory_Atlas.Infrastructure.Entities.Audit;
 using Inventory_Atlas.Infrastructure.Repository.Audit;
 using Inventory_Atlas.Infrastructure.Repository.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace Inventory_Atlas.Application.Services.Audit
 {
     /// <summary>
     /// Сервис для логирования действий пользователей в системе.
     /// </summary>
-    public class LogEntryService : ILogEntryService
+    public class LogEntryService<T> : ILogEntryService<T>
     {
         private readonly IUnitOfWork _uow;
-        private readonly ILogger<LogEntryService> _logger;
+        private readonly ILogger _logger;
         private readonly ILogEntryRepository _repo;
         private readonly IHttpContextAccessor _httpContext;
 
@@ -24,7 +26,7 @@ namespace Inventory_Atlas.Application.Services.Audit
         /// <param name="logger">Системный логгер.</param>
         /// <param name="repo">Репозиторий логов.</param>
         /// <param name="httpContext">Доступ к текущему HttpContext для извлечения сессии пользователя.</param>
-        public LogEntryService(IUnitOfWork uow, ILogger<LogEntryService> logger, ILogEntryRepository repo, IHttpContextAccessor httpContext)
+        public LogEntryService(IUnitOfWork uow, ILogger<LogEntryService<T>> logger, ILogEntryRepository repo, IHttpContextAccessor httpContext)
         {
             _uow = uow;
             _logger = logger;
@@ -33,7 +35,7 @@ namespace Inventory_Atlas.Application.Services.Audit
         }
 
         /// <inheritdoc/>
-        public async Task LogAsync(ActionType action, string? details, CancellationToken ct = default)
+        public void Log(ActionType action, LogDetails<T>? details)
         {
             _logger.LogDebug("Adding log entry: Action={Action}, Details={Details}", action, details);
 
@@ -49,10 +51,10 @@ namespace Inventory_Atlas.Application.Services.Audit
                 UserSessionId = session.Id,
                 Action = action,
                 ActionTime = DateTime.UtcNow,
-                Details = details
+                Details = JsonSerializer.Serialize(details)
             };
 
-            await _repo.AddAsync(entry, ct);
+            _repo.Add(entry);
             _logger.LogDebug("Log entry added successfully: {LogEntry}", entry);
         }
 
@@ -68,16 +70,16 @@ namespace Inventory_Atlas.Application.Services.Audit
                 ActionTime = DateTime.UtcNow
             };
 
-            await _repo.AddAsync(entry, ct);
+            _repo.Add(entry);
             _logger.LogDebug("Log entry added successfully: {LogEntry}", entry);
             await _uow.SaveChangesAsync(ct);
         }
 
         /// <inheritdoc/>
 
-        public async Task LogAndSaveAsync(ActionType action, string? details, CancellationToken ct = default)
+        public async Task LogAndSaveAsync(ActionType action, LogDetails<T>? details, CancellationToken ct = default)
         {
-            await LogAsync(action, details, ct);
+            Log(action, details);
             await _uow.SaveChangesAsync(ct);
         }
 
