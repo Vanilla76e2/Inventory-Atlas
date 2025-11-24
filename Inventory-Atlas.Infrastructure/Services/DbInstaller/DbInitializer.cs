@@ -72,7 +72,7 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
 
                 var userRole = new Role
                 {
-                    Name = "User",
+                    Name = "None",
                     PermissionJson = JsonSerializer.Serialize(new RolePermission()),
                     IsSystem = true
                 };

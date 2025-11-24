@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Core.DTOs.Users;
+﻿using Inventory_Atlas.Core;
+using Inventory_Atlas.Core.DTOs.Users;
 using Inventory_Atlas.Core.Models;
 
 namespace Inventory_Atlas.Application.Validators
@@ -17,22 +18,22 @@ namespace Inventory_Atlas.Application.Validators
         {
             if (string.IsNullOrWhiteSpace(dto.Username))
             {
-                return new(false, UserValidationMessages.UsernameEmpty);
+                return new(false, ErrorCodes.UsernameInvalid);
             }
 
             if (string.IsNullOrEmpty(dto.Password))
             {
-                return new(false, UserValidationMessages.PasswordEmpty);
+                return new(false, ErrorCodes.PasswordInvalid);
             }
 
             if (dto.Username.Length < 3)
             {
-                return new(false, UserValidationMessages.UsernameTooShort);
+                return new(false, ErrorCodes.UsernameTooShort);
             }
 
             if (dto.Password.Length < 8)
             {
-                return new(false, UserValidationMessages.PasswordTooShort);
+                return new(false, ErrorCodes.PasswordTooShort);
             }
 
             return new(true);
@@ -47,12 +48,12 @@ namespace Inventory_Atlas.Application.Validators
         {
             if (!string.IsNullOrWhiteSpace(dto.Username) && dto.Username.Length < 3)
             {
-                return new(false, UserValidationMessages.UsernameTooShort);
+                return new(false, ErrorCodes.UsernameTooShort);
             }
 
             if (!string.IsNullOrWhiteSpace(dto.Password) && dto.Password.Length < 8)
             {
-                return new(false, UserValidationMessages.PasswordTooShort);
+                return new(false, ErrorCodes.PasswordTooShort);
             }
 
             return new(true);

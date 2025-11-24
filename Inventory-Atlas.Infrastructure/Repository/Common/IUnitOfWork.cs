@@ -38,7 +38,5 @@ namespace Inventory_Atlas.Infrastructure.Repository.Common
         /// <param name="ct">Токен отмены для асинхронной операции.</param>
         /// <returns>Задача, представляющая асинхронный откат транзакции.</returns>
         Task RollbackAsync(CancellationToken ct = default);
-
-
     }
 }

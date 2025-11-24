@@ -25,7 +25,7 @@
         /// <para/>
         /// Может быть null <see langword="null"/>.
         /// </summary>
-        public T? Old { get; set; }
+        public Dictionary<string, object>? Old { get; set; }
 
         /// <summary>
         /// Новое состояние объекта.
@@ -34,7 +34,7 @@
         /// <para/>
         /// Может быть <see langword="null"/>.
         /// </summary>
-        public T? New { get; set; }
+        public Dictionary<string, object>? New { get; set; }
         
         /// <summary>
         /// Дополнительные данные.

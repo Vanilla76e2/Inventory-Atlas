@@ -29,6 +29,5 @@ namespace Inventory_Atlas.Infrastructure.Entities.Base
         /// </summary>
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
     }
 }
