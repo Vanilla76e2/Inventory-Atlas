@@ -6,7 +6,7 @@ namespace Inventory_Atlas.Application.Mappings.Dictionaries
 {
     public class CustomFieldDefenitionProfile : Profile
     {
-        CustomFieldDefenitionProfile() 
+        public CustomFieldDefenitionProfile() 
         {
             CreateMap<CustomFieldDefenition, CustomFieldDefenitionDto>()
                 .ForMember(dest => dest.CategoryName,

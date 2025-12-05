@@ -39,7 +39,6 @@ namespace Inventory_Atlas.Infrastructure.Repository
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Специализированные репозитории
-            services.AddScoped<ILogEntryRepository, LogEntryRepository>();
             services.AddScoped<IUserSessionRepository, UserSessionRepository>();
             // Consumables
             services.AddScoped<IPrinterRepository, PrinterRepository>();
@@ -52,7 +51,7 @@ namespace Inventory_Atlas.Infrastructure.Repository
             services.AddScoped<IGpuRepository, GpuRepository>();
             services.AddScoped<IInventoryCategoryRepository, InventoryCategoryRepository>();
             services.AddScoped<IIpAddressRepository, IpAddressRepository>();
-            services.AddScoped<IMoBoRepository, IMoBoRepository>();
+            services.AddScoped<IMoBoRepository, MoBoRepository>();
             // Documents
             services.AddScoped<ICheckoutDocumentRepository, CheckoutDocumentRepository>();
             services.AddScoped<ICheckoutDocumentItemRepository, CheckoutDocumentItemRepository>();

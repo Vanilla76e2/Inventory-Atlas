@@ -1,5 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Users;
-using System.ComponentModel.DataAnnotations;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
@@ -12,26 +12,15 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
     /// активности и связанных действиях в журнале аудита.
     /// </summary>
     [Table("User_Sessions", Schema = "Audit")]
-    public class UserSession
+    public class UserSession : BaseEntity
     {
-        /// <summary>
-        /// Идентификатор сессии.
-        /// <para/>
-        /// Тип: <see langword="int"/>.
-        /// <para/>
-        /// Является первичным ключом таблицы.
-        /// </summary>
-        [Key]
-        [Column("id")]
-        public int Id { get; set; }
-
         /// <summary>
         /// Уникальный токен сессии.
         /// <para/>
-        /// Тип: <see cref="Guid"/>.
+        /// Тип: <see cref="string"/>.
         /// </summary>
         [Column("token")]
-        public Guid Token { get; set; }
+        public string Token { get; set; } = null!;
 
         /// <summary>
         /// Имя пользователя, которому принадлежит сессия.
@@ -101,7 +90,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         /// Может быть null, если IpAddress-адрес не определён.
         /// </summary>
         [Column("ip_address")]
-        public IPAddress? IpAddress {  get; set; }
+        public string? IpAddress {  get; set; }
 
         /// <summary>
         /// Агент пользователя (User-Agent) при создании сессии.
@@ -112,15 +101,5 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         /// </summary>
         [Column("user_agent")]
         public string? UserAgent { get; set; }
-
-        /// <summary>
-        /// Коллекция записей журнала аудита, связанных с данной сессией.
-        /// <para/>
-        /// Тип: <see cref="ICollection{LogEntry}"/>.
-        /// <para/>
-        /// Используется для навигации к действиям пользователя в системе.
-        /// </summary>
-        [InverseProperty(nameof(LogEntry.UserSession))]
-        public virtual ICollection<LogEntry> LogEntries { get; set; } = new List<LogEntry>();
     }
 }

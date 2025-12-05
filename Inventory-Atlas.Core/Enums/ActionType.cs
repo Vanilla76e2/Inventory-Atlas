@@ -8,6 +8,12 @@ namespace Inventory_Atlas.Core.Enums
     public enum ActionType
     {
         /// <summary>
+        /// Неизвентое действие.
+        /// </summary>
+        [Display(Name = "Unknown")]
+        Unknown = 0,
+
+        /// <summary>
         /// Создание записи.
         /// </summary>
         [Display(Name = "Создание записи")]

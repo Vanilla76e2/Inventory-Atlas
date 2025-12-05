@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Inventory_Atlas.Attributes
+namespace Inventory_Atlas.Server.Attributes
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class AdminOnlyAttribute : Attribute, IAsyncActionFilter

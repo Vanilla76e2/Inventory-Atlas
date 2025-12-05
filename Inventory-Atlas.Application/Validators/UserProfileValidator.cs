@@ -17,24 +17,22 @@ namespace Inventory_Atlas.Application.Validators
         public static ValidationResult ValidateCreate(UserProfileCreateDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Username))
-            {
-                return new(false, ErrorCodes.UsernameInvalid);
-            }
+                return new(false, ErrorCodes.InvalidUsername);
 
             if (string.IsNullOrEmpty(dto.Password))
-            {
-                return new(false, ErrorCodes.PasswordInvalid);
-            }
+                return new(false, ErrorCodes.InvalidPassword);
 
             if (dto.Username.Length < 3)
-            {
                 return new(false, ErrorCodes.UsernameTooShort);
-            }
 
             if (dto.Password.Length < 8)
-            {
                 return new(false, ErrorCodes.PasswordTooShort);
-            }
+
+            if (dto.EmployeeId.HasValue && dto.EmployeeId <= 0)
+                return new(false, ErrorCodes.InvalidEmployeeId);
+
+            if (dto.RoleId <= 0)
+                return new(false, ErrorCodes.InvalidRoleId);
 
             return new(true);
         }
@@ -47,14 +45,16 @@ namespace Inventory_Atlas.Application.Validators
         public static ValidationResult ValidateUpdate(UserProfileUpdateDto dto)
         {
             if (!string.IsNullOrWhiteSpace(dto.Username) && dto.Username.Length < 3)
-            {
                 return new(false, ErrorCodes.UsernameTooShort);
-            }
 
             if (!string.IsNullOrWhiteSpace(dto.Password) && dto.Password.Length < 8)
-            {
                 return new(false, ErrorCodes.PasswordTooShort);
-            }
+
+            if (dto.EmployeeId.HasValue && dto.EmployeeId < 0)
+                return new(false, ErrorCodes.InvalidEmployeeId);
+
+            if (dto.RoleId.HasValue && dto.RoleId <= 0)
+                return new(false, ErrorCodes.InvalidRoleId);
 
             return new(true);
         }

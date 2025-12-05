@@ -18,7 +18,7 @@ namespace Inventory_Atlas.Application.Services.Audit
         /// <param name="userAgent">User-Agent клиента. Может быть null.</param>
         /// <param name="ct">Токен отмены операции.</param>
         /// <returns>Созданная сессия с уникальным токеном.</returns>
-        Task<UserSession> CreateSessionAsync(UserProfileDto user, IPAddress? ip, string? userAgent, CancellationToken ct = default);
+        Task<UserSession> CreateSessionAsync(string username, string? ip, string? userAgent, CancellationToken ct = default);
 
         /// <summary>
         /// Проверяет токен сессии и возвращает сессию, если она действительна.
@@ -29,7 +29,7 @@ namespace Inventory_Atlas.Application.Services.Audit
         /// Сессию пользователя, если токен найден и сессия активна/не истекла; 
         /// иначе <see langword="null"/>.
         /// </returns>
-        Task<UserSession?> ValidateTokenAsync(Guid token, CancellationToken ct = default);
+        Task<UserSession?> ValidateTokenAsync(string token, CancellationToken ct = default);
 
         /// <summary>
         /// Аннулирует (удаляет или помечает неактивной) сессию по токену.
@@ -37,6 +37,14 @@ namespace Inventory_Atlas.Application.Services.Audit
         /// </summary>
         /// <param name="token">Токен сессии, которая должна быть завершена.</param>
         /// <param name="ct">Токен отмены операции.</param>
-        Task InvalidateSessionAsync(Guid token, CancellationToken ct = default);
+        Task InvalidateSessionAsync(string token, CancellationToken ct = default);
+
+        /// <summary>
+        /// Ищет сессию по токену сессии.
+        /// </summary>
+        /// <param name="token">Токен сессии.</param>
+        /// <param name="ct">Токен отмены.</param>
+        /// <returns><see cref="UserSession"/> с заданным токеном или <see langword="null"/> если такой сессии нет.</returns>
+        Task<UserSession?> GetSessionByToken(string token, CancellationToken ct = default);
     }
 }

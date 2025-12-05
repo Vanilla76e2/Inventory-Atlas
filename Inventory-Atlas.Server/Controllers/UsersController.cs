@@ -1,9 +1,9 @@
 ﻿using Inventory_Atlas.Application.Services.PermissionService;
-using Inventory_Atlas.Attributes;
+using Inventory_Atlas.Server.Attributes;
 using Inventory_Atlas.Core.Enums;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Inventory_Atlas.Controllers
+namespace Inventory_Atlas.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -3,7 +3,7 @@ using Inventory_Atlas.Core.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Inventory_Atlas.Attributes
+namespace Inventory_Atlas.Server.Attributes
 {
     /// <summary>
     /// Атрибут для проверки прав пользователя на конкретный ресурс перед выполнением метода контроллера.

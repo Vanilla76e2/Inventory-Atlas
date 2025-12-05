@@ -20,12 +20,10 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
         /// </summary>
         /// <param name="serviceProvider">Провайдер служб приложения</param>
         /// <exception cref="Exception">Исключение при ошибке применения миграций</exception>
-        public async static void InstallOrUpdateDatabase(IServiceProvider serviceProvider)
+        public async static Task InstallOrUpdateDatabase(IServiceProvider serviceProvider)
         {
-            using var scope = serviceProvider.CreateScope();
-
-            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+            var context = serviceProvider.GetRequiredService<AppDbContext>();
+            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
             var logger = loggerFactory.CreateLogger("DbInitializer");
 
             try

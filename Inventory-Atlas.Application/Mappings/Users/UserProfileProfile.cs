@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Inventory_Atlas.Application.Services.PasswordHasher;
 using Inventory_Atlas.Core.DTOs.Users;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 
@@ -14,7 +15,9 @@ namespace Inventory_Atlas.Application.Mappings.Users
                 .ForMember(dest => dest.RoleName,
                             opt => opt.MapFrom(src => src.Role.Name));
 
-
+            CreateMap<UserProfile, UserProfileUpdateDto>();
         }
+
+        
     }
 }

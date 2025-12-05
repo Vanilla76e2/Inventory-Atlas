@@ -1,4 +1,6 @@
-﻿using Inventory_Atlas.Core.DTOs.Users;
+﻿using Inventory_Atlas.Application.Services.TokenService;
+using Inventory_Atlas.Core.DTOs.Users;
+using Inventory_Atlas.Core.Models;
 using Inventory_Atlas.Infrastructure.Entities.Audit;
 using Inventory_Atlas.Infrastructure.Repository.Audit;
 using Inventory_Atlas.Infrastructure.Repository.Common;
@@ -10,34 +12,49 @@ namespace Inventory_Atlas.Application.Services.Audit
     {
         private readonly IUnitOfWork _uow;
         private readonly IUserSessionRepository _sessionRepo;
+        private readonly ITokenGenerator _tokenGenerator;
+
         public UserSessionService(IUserSessionRepository sessionRepo,
+                                  ITokenGenerator tokenGenerator,
                                   IUnitOfWork uow)
         {
+            _tokenGenerator = tokenGenerator;
             _sessionRepo = sessionRepo;
             _uow = uow;
         }
-        public async Task<UserSession> CreateSessionAsync(UserProfileDto user, IPAddress? ip, string? userAgent, CancellationToken ct = default)
+
+        /// <inheritdoc/>
+        public async Task<UserSession> CreateSessionAsync(string username, string? ip, string? userAgent, CancellationToken ct = default)
         {
             var session = new UserSession
             {
-                Token = Guid.NewGuid(),
-                Username = user.Username,
+                Token = _tokenGenerator.GenerateToken(username),
+                Username = username,
                 StartTime = DateTime.UtcNow,
                 IsActive = true,
                 IpAddress = ip,
                 UserAgent = userAgent
             };
+
+            // Устанавливаем текущий токен сессии для AuditContext, чтобы Audit.NET мог корректно связать действия с пользователем.
+            // Это небольшое нарушение слоёв (инфраструктурный сервис влияет на кросс-срезовый контекст), но оправдано для корректного логирования. 
+            AuditContext.SessionToken = session.Token;
+
             _sessionRepo.Add(session);
             await _uow.SaveChangesAsync(ct);
             return session;
         }
-        public async Task<UserSession?> ValidateTokenAsync(Guid token, CancellationToken ct = default)
+
+        /// <inheritdoc/>
+        public async Task<UserSession?> ValidateTokenAsync(string token, CancellationToken ct = default)
         {
             return await _sessionRepo.FindAsync(
                 s => s.Token == token && s.IsActive,
                 ct);
         }
-        public async Task InvalidateSessionAsync(Guid token, CancellationToken ct = default)
+
+        /// <inheritdoc/>
+        public async Task InvalidateSessionAsync(string token, CancellationToken ct = default)
         {
             var session = await _sessionRepo.FindAsync(s => s.Token == token, ct);
             if (session == null)
@@ -48,6 +65,12 @@ namespace Inventory_Atlas.Application.Services.Audit
 
             _sessionRepo.Update(session);
             await _uow.SaveChangesAsync(ct);
+        }
+
+        /// <inheritdoc/>
+        public async Task<UserSession?> GetSessionByToken(string token, CancellationToken ct = default)
+        {
+            return await _sessionRepo.GetSessionByToken(token, ct);
         }
     }
 }

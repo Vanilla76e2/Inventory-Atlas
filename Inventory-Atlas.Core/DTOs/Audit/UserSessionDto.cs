@@ -75,14 +75,6 @@ namespace Inventory_Atlas.Core.DTOs.Audit
         /// </summary>
         public string? UserAgent { get; set; }
 
-        /// <summary>
-        /// Список действий пользователя в рамках сессии.
-        /// <para/>
-        /// Тип: <see cref="List{LogEntryDto}"/>
-        /// <para/>
-        /// Может быть <c>null</c> если логов нет.
-        /// </summary>
-        public List<LogEntryDto>? LogEntries { get; set; }
     }
 
     /// <summary>

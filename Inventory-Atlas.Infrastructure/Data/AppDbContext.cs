@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Converters;
+﻿using Audit.EntityFramework;
+using Inventory_Atlas.Infrastructure.Converters;
 using Inventory_Atlas.Infrastructure.Entities.Audit;
 using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
 using Inventory_Atlas.Infrastructure.Entities.Documents;
@@ -11,25 +12,18 @@ using Inventory_Atlas.Infrastructure.Entities.Technics.Components;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 using Inventory_Atlas.Infrastructure.Entities.Сonsumables;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Inventory_Atlas.Infrastructure.Data
 {
     /// <summary>
     /// Контекст базы данных приложения Inventory Atlas.
     /// </summary>
-    public partial class AppDbContext : DbContext
+    public partial class AppDbContext : AuditDbContext
     {
-        /// <summary>
-        /// Конструктор контекста базы данных.
-        /// </summary>
-        /// <param name="options">Параметры конфигурации DbContext.</param>
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
-        { }
-
         // Audit
-        public DbSet<LogEntry> LogEntries { get; set; }
         public DbSet<UserSession> UserSessions { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
 
         // Documents
         public DbSet<CheckoutDocument> CheckoutDocuments { get; set; }
@@ -102,6 +96,14 @@ namespace Inventory_Atlas.Infrastructure.Data
         public DbSet<PrinterCartridge> PrinterCartridges { get; set; }
 
         /// <summary>
+        /// Конструктор контекста базы данных.
+        /// </summary>
+        /// <param name="options">Параметры конфигурации DbContext.</param>
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options)
+        { }
+
+        /// <summary>
         /// Конфигурирует модель сущностей для базы данных.
         /// </summary>
         /// <param name="modelBuilder">Построитель модели.</param>
@@ -137,18 +139,19 @@ namespace Inventory_Atlas.Infrastructure.Data
 
         private void AuditBuilder(ModelBuilder mb)
         {
-            mb.Entity<LogEntry>()
-                .ToTable("LogEntrys", "Audit")
-                .HasKey(x => x.Id);
+            mb.Entity<AuditLog>(entity =>
+            {
+                entity.Property(x => x.Id).ValueGeneratedOnAdd();
+                entity.Property(x => x.ActionDate)
+                        .HasDefaultValueSql("NOW()");
+                entity.Property(x => x.Details)
+                        .HasColumnType("jsonb")
+                        .IsRequired();
+            });
 
             mb.Entity<UserSession>()
                 .ToTable("UserSessions", "Audit")
                 .HasKey(x => x.Id);
-
-            mb.Entity<LogEntry>()
-                .HasIndex(p => p.Details)
-                .HasMethod("GIN")
-                .HasDatabaseName("IX_LogEntry_Changes");
         }
 
         private void DictionariesBuilder(ModelBuilder mb)

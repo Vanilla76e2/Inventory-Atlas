@@ -12,7 +12,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
     /// </summary>
     public interface IUserSessionRepository : IDatabaseRepository<UserSession>
     {
-        Task<UserSession?> GetSessionByToken(Guid token, CancellationToken ct = default);
+        Task<UserSession?> GetSessionByToken(string token, CancellationToken ct = default);
 
         /// <summary>
         /// Получить активную сессию пользователя по имени пользователя.

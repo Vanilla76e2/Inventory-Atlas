@@ -1,9 +1,11 @@
 using Inventory_Atlas.Application.Services.Auth;
+using Inventory_Atlas.Core.Enums;
 using Inventory_Atlas.Core.Models;
+using Inventory_Atlas.Server.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace Inventory_Atlas.Controllers
+namespace Inventory_Atlas.Server.Controllers
 {
     /// <summary>
     /// Контроллер для аутентификации пользователей.
@@ -30,6 +32,7 @@ namespace Inventory_Atlas.Controllers
         /// <param name="request">Запрос.</param>
         /// <returns><see cref="IActionResult"/>.</returns>
         [HttpPost("login")]
+        [AuditAction(ActionType.Login)]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             _logger.LogInformation("Login attempt for user: {Username}", request.Username);
@@ -57,7 +60,9 @@ namespace Inventory_Atlas.Controllers
         /// Метод для выхода пользователя из системы по токену сессии.
         /// </summary>
         /// <returns><see cref="IActionResult"/>.</returns>
+        [Authorize]
         [HttpPost("logout")]
+        [AuditAction(ActionType.Logout)]
         public async Task<IActionResult> Logout()
         {
             var userAgent = Request.Headers["User-Agent"].ToString();

@@ -22,7 +22,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         {
         }
 
-        public async Task<UserSession?> GetSessionByToken(Guid token, CancellationToken ct = default)
+        public async Task<UserSession?> GetSessionByToken(string token, CancellationToken ct = default)
         {
             return await FindAsync(us => us.Token == token, ct);
         }
