@@ -99,7 +99,7 @@ public class MappersTest
     public void PagedLogEntry_Should_Map_Correctly()
     {
         //Arrange
-        var logEntries = new List<Inventory_Atlas.Infrastructure.Entities.Audit.LogEntry>
+        var logEntries = new List<Inventory_Atlas.Application.Entities.Audit.LogEntry>
         {
             _dataSet.LogEntryTest,
             _dataSet.LogEntryTest

@@ -1,8 +1,8 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Infrastructure.Entities.Employees;
+using Inventory_Atlas.Application.Entities.Employees;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Base
+namespace Inventory_Atlas.Application.Entities.Base
 {
     /// <summary>
     /// Абстрактная сущность документа.

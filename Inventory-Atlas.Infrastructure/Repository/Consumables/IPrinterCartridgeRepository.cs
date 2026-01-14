@@ -1,7 +1,7 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Сonsumables;
-using Inventory_Atlas.Infrastructure.Repository.Common;
+﻿using Inventory_Atlas.Application.Entities.Сonsumables;
+using Inventory_Atlas.Application.Repository.Common;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Consumables
+namespace Inventory_Atlas.Application.Repository.Consumables
 {
     /// <summary>
     /// Репозиторий для работы с картриджами принтеров.

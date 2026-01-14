@@ -1,12 +1,12 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Infrastructure.Entities.Base;
-using Inventory_Atlas.Infrastructure.Entities.Documents;
-using Inventory_Atlas.Infrastructure.Entities.Employees;
-using Inventory_Atlas.Infrastructure.Entities.Services;
-using Inventory_Atlas.Infrastructure.Entities.Users;
+using Inventory_Atlas.Application.Entities.Base;
+using Inventory_Atlas.Application.Entities.Documents;
+using Inventory_Atlas.Application.Entities.Employees;
+using Inventory_Atlas.Application.Entities.Services;
+using Inventory_Atlas.Application.Entities.Users;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Inventory
+namespace Inventory_Atlas.Application.Entities.Inventory
 {
     /// <summary>
     /// Базовый инвентарный объект.

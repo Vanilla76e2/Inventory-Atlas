@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Inventory_Atlas.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitInventoryAtlas : Migration
+    public partial class InitialInventoryAtlas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,8 +43,11 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
                     action_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
+                    duration = table.Column<int>(type: "integer", nullable: false),
+                    session_token = table.Column<string>(type: "text", nullable: true),
+                    action_type = table.Column<int>(type: "integer", nullable: false),
                     details = table.Column<string>(type: "jsonb", nullable: false)
                 },
                 constraints: table =>

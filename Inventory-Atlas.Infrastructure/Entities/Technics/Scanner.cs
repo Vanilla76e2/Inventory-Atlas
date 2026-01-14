@@ -1,9 +1,9 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+﻿using Inventory_Atlas.Application.Entities.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Technics
+namespace Inventory_Atlas.Application.Entities.Technics
 {
     /// <summary>
     /// Сущность сканера.

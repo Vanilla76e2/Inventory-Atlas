@@ -1,5 +1,6 @@
-﻿using Audit.Core;
+﻿using Inventory_Atlas.Application.Auditor.Service;
 using Inventory_Atlas.Application.Services.Audit;
+using Inventory_Atlas.Application.Services.Auditor;
 using Inventory_Atlas.Application.Services.Auth;
 using Inventory_Atlas.Application.Services.JwtKeyProvider;
 using Inventory_Atlas.Application.Services.PasswordHasher;
@@ -27,6 +28,8 @@ namespace Inventory_Atlas.Application
             services.AddSingleton<IJwtKeyProvider, FileJwtKeyProvider>();
             services.AddScoped<PasswordHashCreateResolver>();
             services.AddScoped<PasswordHashUpdateResolver>();
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IAuditService, AuditService>();
 
             // CRUD services
             // Audit

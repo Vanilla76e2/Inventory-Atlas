@@ -1,7 +1,7 @@
 ﻿using Inventory_Atlas.Core.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
+namespace Inventory_Atlas.Application.Entities.Technics.Components
 {
     /// <summary>
     /// Компонент компьютера, представляющий модуль оперативной памяти (RAM).

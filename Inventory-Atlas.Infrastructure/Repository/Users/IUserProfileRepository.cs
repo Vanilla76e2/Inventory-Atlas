@@ -1,7 +1,7 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Users;
-using Inventory_Atlas.Infrastructure.Repository.Common;
+﻿using Inventory_Atlas.Application.Entities.Users;
+using Inventory_Atlas.Application.Repository.Common;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Users
+namespace Inventory_Atlas.Application.Repository.Users
 {
     /// <summary>
     /// Репозиторий для работы с профилями пользователей

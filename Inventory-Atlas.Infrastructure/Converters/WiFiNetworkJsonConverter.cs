@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Text.Json;
 
-namespace Inventory_Atlas.Infrastructure.Converters
+namespace Inventory_Atlas.Application.Converters
 {
     public static class WiFiNetworkJsonConverter
     {

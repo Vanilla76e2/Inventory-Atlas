@@ -1,8 +1,8 @@
-﻿using Inventory_Atlas.Infrastructure.Data;
+﻿using Inventory_Atlas.Application.Data;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Common
+namespace Inventory_Atlas.Application.Repository.Common
 {
     /// <summary>
     /// Реализация Unit of Work для работы с репозиториями.

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Common;
-using Inventory_Atlas.Infrastructure.Entities.Base;
-using Inventory_Atlas.Infrastructure.Entities.Documents;
+using Inventory_Atlas.Application.Entities.Base;
+using Inventory_Atlas.Application.Entities.Documents;
 
 namespace Inventory_Atlas.Application.Mappings.Common
 {

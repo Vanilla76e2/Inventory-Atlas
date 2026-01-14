@@ -1,8 +1,8 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
-using Inventory_Atlas.Infrastructure.Entities.Services;
-using Inventory_Atlas.Infrastructure.Repository.Common;
+﻿using Inventory_Atlas.Application.Entities.Dictionaries;
+using Inventory_Atlas.Application.Entities.Services;
+using Inventory_Atlas.Application.Repository.Common;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
+namespace Inventory_Atlas.Application.Repository.Dictionaries
 {
     /// <summary>
     /// Репозиторий для работы с типами мебели.

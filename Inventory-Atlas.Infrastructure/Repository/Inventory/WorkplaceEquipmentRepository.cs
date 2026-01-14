@@ -1,8 +1,8 @@
-﻿using Inventory_Atlas.Infrastructure.Data;
-using Inventory_Atlas.Infrastructure.Repository.Common;
+﻿using Inventory_Atlas.Application.Data;
+using Inventory_Atlas.Application.Repository.Common;
 using Microsoft.Extensions.Logging;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Inventory
+namespace Inventory_Atlas.Application.Repository.Inventory
 {
     public class WorkplaceEquipmentRepository : DatabaseRepository<WorkplaceEquipmentRepository>, IWorkplaceEquipmentRepository
     {

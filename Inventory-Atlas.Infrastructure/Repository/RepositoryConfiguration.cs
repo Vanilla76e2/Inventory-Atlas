@@ -1,17 +1,17 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Technics.Components;
-using Inventory_Atlas.Infrastructure.Repository.Audit;
-using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Repository.Consumables;
-using Inventory_Atlas.Infrastructure.Repository.Dictionaries;
-using Inventory_Atlas.Infrastructure.Repository.Documents;
-using Inventory_Atlas.Infrastructure.Repository.Employees;
-using Inventory_Atlas.Infrastructure.Repository.Inventory;
-using Inventory_Atlas.Infrastructure.Repository.Technics;
-using Inventory_Atlas.Infrastructure.Repository.Technics.Components;
-using Inventory_Atlas.Infrastructure.Repository.Users;
+﻿using Inventory_Atlas.Application.Entities.Technics.Components;
+using Inventory_Atlas.Application.Repository.Audit;
+using Inventory_Atlas.Application.Repository.Common;
+using Inventory_Atlas.Application.Repository.Consumables;
+using Inventory_Atlas.Application.Repository.Dictionaries;
+using Inventory_Atlas.Application.Repository.Documents;
+using Inventory_Atlas.Application.Repository.Employees;
+using Inventory_Atlas.Application.Repository.Inventory;
+using Inventory_Atlas.Application.Repository.Technics;
+using Inventory_Atlas.Application.Repository.Technics.Components;
+using Inventory_Atlas.Application.Repository.Users;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Inventory_Atlas.Infrastructure.Repository
+namespace Inventory_Atlas.Application.Repository
 {
     /// <summary>
     /// Класс для конфигурации и регистрации репозиториев в контейнере зависимостей.

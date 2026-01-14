@@ -1,7 +1,5 @@
-﻿using Inventory_Atlas.Core.DTOs.Users;
-using Inventory_Atlas.Infrastructure.Entities.Audit;
-using Inventory_Atlas.Infrastructure.Entities.Users;
-using System.Net;
+﻿using Inventory_Atlas.Application.Entities.Audit;
+using Audit.Core;
 
 namespace Inventory_Atlas.Application.Services.Audit
 {
@@ -18,7 +16,7 @@ namespace Inventory_Atlas.Application.Services.Audit
         /// <param name="userAgent">User-Agent клиента. Может быть null.</param>
         /// <param name="ct">Токен отмены операции.</param>
         /// <returns>Созданная сессия с уникальным токеном.</returns>
-        Task<UserSession> CreateSessionAsync(string username, string? ip, string? userAgent, CancellationToken ct = default);
+        UserSession CreateSession(string username, int userId, string? ip, string? userAgent);
 
         /// <summary>
         /// Проверяет токен сессии и возвращает сессию, если она действительна.
@@ -29,7 +27,7 @@ namespace Inventory_Atlas.Application.Services.Audit
         /// Сессию пользователя, если токен найден и сессия активна/не истекла; 
         /// иначе <see langword="null"/>.
         /// </returns>
-        Task<UserSession?> ValidateTokenAsync(string token, CancellationToken ct = default);
+        Task<bool> ValidateTokenAsync(string token, CancellationToken ct = default);
 
         /// <summary>
         /// Аннулирует (удаляет или помечает неактивной) сессию по токену.
@@ -45,6 +43,13 @@ namespace Inventory_Atlas.Application.Services.Audit
         /// <param name="token">Токен сессии.</param>
         /// <param name="ct">Токен отмены.</param>
         /// <returns><see cref="UserSession"/> с заданным токеном или <see langword="null"/> если такой сессии нет.</returns>
-        Task<UserSession?> GetSessionByToken(string token, CancellationToken ct = default);
+        Task<UserSession?> GetSessionByTokenAsync (string token, CancellationToken ct = default);
+
+        /// <summary>
+        /// Асинхронно аннулирует все сессии пользователя.
+        /// </summary>
+        /// <param name="userId">Id пользователя.</param>
+        /// <param name="ct">Токен отмены.</param>
+        Task InvalidateAllSessionsForUser(string userName, CancellationToken ct = default);
     }
 }

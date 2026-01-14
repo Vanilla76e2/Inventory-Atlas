@@ -1,9 +1,9 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Base;
-using Inventory_Atlas.Infrastructure.Entities.Users;
+﻿using Inventory_Atlas.Application.Entities.Base;
+using Inventory_Atlas.Application.Entities.Users;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Audit
+namespace Inventory_Atlas.Application.Entities.Audit
 {
     /// <summary>
     /// Сессия пользователя в системе.
@@ -90,7 +90,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         /// Может быть null, если IpAddress-адрес не определён.
         /// </summary>
         [Column("ip_address")]
-        public string? IpAddress {  get; set; }
+        public string? IpAddress { get; set; }
 
         /// <summary>
         /// Агент пользователя (User-Agent) при создании сессии.
@@ -101,5 +101,27 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         /// </summary>
         [Column("user_agent")]
         public string? UserAgent { get; set; }
+
+        protected UserSession() {} // Для EF
+
+        public UserSession(string token, string username, int? userId, string? ipAddress, string? userAgent, DateTime startTime = default, DateTime? endTime = default, bool isActive = default)
+        {
+            Token = token ?? throw new ArgumentNullException(nameof(token)); ;
+            Username = username ?? throw new ArgumentNullException(nameof(username));
+            UserId = userId;
+            StartTime = startTime == default ? DateTime.UtcNow : startTime;
+            EndTime = endTime == default ? null : endTime;
+            IsActive = isActive == default ? true : isActive;
+            IpAddress = ipAddress;
+            UserAgent = userAgent;
+        }
+
+        
+        public void Invalidate()
+        {
+            if (!IsActive) return;
+            IsActive = false;
+            EndTime = DateTime.UtcNow;
+        }
     }
 }

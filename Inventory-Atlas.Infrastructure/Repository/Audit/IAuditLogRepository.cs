@@ -1,6 +1,6 @@
 ﻿using Inventory_Atlas.Core.DTOs.Audit;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Audit
+namespace Inventory_Atlas.Application.Repository.Audit
 {
     public interface IAuditLogRepository
     {

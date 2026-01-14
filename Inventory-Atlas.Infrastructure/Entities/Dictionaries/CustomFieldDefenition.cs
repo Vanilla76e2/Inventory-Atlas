@@ -1,9 +1,9 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Infrastructure.Entities.Base;
-using Inventory_Atlas.Infrastructure.Entities.Services;
+using Inventory_Atlas.Application.Entities.Base;
+using Inventory_Atlas.Application.Entities.Services;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Dictionaries
+namespace Inventory_Atlas.Application.Entities.Dictionaries
 {
     /// <summary>
     /// Свойства пользовательского поля.

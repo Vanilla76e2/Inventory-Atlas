@@ -1,9 +1,9 @@
-﻿using Inventory_Atlas.Infrastructure.Data;
-using Inventory_Atlas.Infrastructure.Entities.Audit;
-using Inventory_Atlas.Infrastructure.Repository.Common;
+﻿using Inventory_Atlas.Application.Data;
+using Inventory_Atlas.Application.Entities.Audit;
+using Inventory_Atlas.Application.Repository.Common;
 using Microsoft.Extensions.Logging;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Audit
+namespace Inventory_Atlas.Application.Repository.Audit
 {
     /// <summary>
     /// Репозиторий для работы с сессиями пользователей.
@@ -28,13 +28,13 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         }
 
         /// <inheritdoc/>
-        public async Task<UserSession?> GetActiveSessionByUsernameAsync(string username, CancellationToken ct = default)
+        public async Task<List<UserSession>> GetActiveSessionsByUsernameAsync(string username, CancellationToken ct = default)
         {
-            return await FindAsync(us => us.Username == username && us.IsActive, ct);
+            return await FindManyAsync(us => us.Username == username && us.IsActive, ct);
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<UserSession>> GetSessionsByUsernameAsync(string username, CancellationToken ct = default)
+        public async Task<List<UserSession>> GetSessionsByUsernameAsync(string username, CancellationToken ct = default)
         {
             return await FindManyAsync(us => us.Username == username, ct);
         }
@@ -43,6 +43,13 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         public async Task<IEnumerable<UserSession>> GetSessionsInRangeAsync(DateTime fromUtc, DateTime toUtc, CancellationToken ct = default)
         {
             return await FindManyAsync(us => us.StartTime >= fromUtc && (us.EndTime ?? DateTime.MaxValue) <= toUtc, ct);
+        }
+
+        public async Task<UserSession?> GetActiveSessionByTokenAsync(string token, CancellationToken ct = default)
+        {
+            return await FindAsync(
+                s => s.Token == token && s.IsActive,
+                ct);
         }
     }
 }

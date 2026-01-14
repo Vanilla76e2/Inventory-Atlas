@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Inventory;
-using Inventory_Atlas.Infrastructure.Entities.Inventory;
+using Inventory_Atlas.Application.Entities.Inventory;
 
 namespace Inventory_Atlas.Application.Mappings.Inventory
 {

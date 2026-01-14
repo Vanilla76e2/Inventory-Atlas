@@ -1,5 +1,5 @@
 ﻿
-namespace Inventory_Atlas.Infrastructure.Repository.Common
+namespace Inventory_Atlas.Application.Repository.Common
 {
     /// <summary>
     /// Представляет единицу работы для атомарного сохранения изменений в базе данных.

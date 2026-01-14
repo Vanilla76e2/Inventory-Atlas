@@ -1,8 +1,8 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+﻿using Inventory_Atlas.Application.Entities.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using Inventory_Atlas.Core.Enums;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Technics
+namespace Inventory_Atlas.Application.Entities.Technics
 {
     /// <summary>
     /// Запись о проведённом обслуживании устройства.

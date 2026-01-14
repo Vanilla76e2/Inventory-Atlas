@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Inventory;
-using Inventory_Atlas.Infrastructure.Entities.Inventory;
-using Inventory_Atlas.Infrastructure.Entities.Technics;
+using Inventory_Atlas.Application.Entities.Inventory;
+using Inventory_Atlas.Application.Entities.Technics;
 
 namespace Inventory_Atlas.Application.Mappings.Inventory
 {
@@ -29,7 +29,7 @@ namespace Inventory_Atlas.Application.Mappings.Inventory
             CreateMap<Laptop, InventoryItemDto>()
                 .IncludeBase<InventoryItem, InventoryItemDto>();
 
-            CreateMap<Infrastructure.Entities.Technics.Monitor, InventoryItemDto>()
+            CreateMap<Application.Entities.Technics.Monitor, InventoryItemDto>()
                 .IncludeBase<InventoryItem, InventoryItemDto>();
 
             CreateMap<NetworkDevice, InventoryItemDto>()

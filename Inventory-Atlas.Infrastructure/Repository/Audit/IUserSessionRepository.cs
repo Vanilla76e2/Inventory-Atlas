@@ -1,7 +1,7 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Audit;
-using Inventory_Atlas.Infrastructure.Repository.Common;
+﻿using Inventory_Atlas.Application.Entities.Audit;
+using Inventory_Atlas.Application.Repository.Common;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Audit
+namespace Inventory_Atlas.Application.Repository.Audit
 {
     /// <summary>
     /// Репозиторий для работы с сессиями пользователей.
@@ -22,7 +22,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         /// Может быть <c>null</c>, если активная сессия отсутствует.
         /// </summary>
         /// <param name="username">Имя пользователя.</param>
-        Task<UserSession?> GetActiveSessionByUsernameAsync(string username, CancellationToken ct = default);
+        Task<List<UserSession>> GetActiveSessionsByUsernameAsync(string username, CancellationToken ct = default);
 
         /// <summary>
         /// Получить все сессии пользователя по имени пользователя.
@@ -30,7 +30,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         /// Тип возвращаемого значения: <see cref="IEnumerable{UserSession}"/>
         /// </summary>
         /// <param name="username">Имя пользователя.</param>
-        Task<IEnumerable<UserSession>> GetSessionsByUsernameAsync(string username, CancellationToken ct = default);
+        Task<List<UserSession>> GetSessionsByUsernameAsync(string username, CancellationToken ct = default);
 
         /// <summary>
         /// Получить все сессии пользователей в указанном диапазоне дат.
@@ -40,5 +40,7 @@ namespace Inventory_Atlas.Infrastructure.Repository.Audit
         /// <param name="fromUtc">Начальная дата диапазона (UTC).</param>
         /// <param name="toUtc">Конечная дата диапазона (UTC).</param>
         Task<IEnumerable<UserSession>> GetSessionsInRangeAsync(DateTime fromUtc, DateTime toUtc, CancellationToken ct = default);
+
+        Task<UserSession?> GetActiveSessionByTokenAsync(string token, CancellationToken ct = default);
     }
 }

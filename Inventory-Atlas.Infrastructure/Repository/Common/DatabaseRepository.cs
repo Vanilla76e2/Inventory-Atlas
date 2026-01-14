@@ -1,9 +1,9 @@
-﻿using Inventory_Atlas.Infrastructure.Data;
+﻿using Inventory_Atlas.Application.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Common
+namespace Inventory_Atlas.Application.Repository.Common
 {
     /// <summary>
     /// Репозиторий для работы с сущностями типа <typeparamref name="T"/> в базе данных.

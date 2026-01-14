@@ -136,7 +136,7 @@ namespace Inventory_Atlas.Core.DTOs.Audit
     /// <summary>
     /// DTO для сервиса сессий пользователя.
     /// </summary>
-    public class UserSeesionServiceDto
+    public class UserSessionServiceDto
     {
         /// <summary>
         /// Идентификатор сессии (для внутреннего использования)
@@ -150,7 +150,7 @@ namespace Inventory_Atlas.Core.DTOs.Audit
         /// <para/>
         /// Тип: <see cref="Guid"/>.
         /// </summary>
-        public Guid Token { get; set; }
+        public string Token { get; set; } = null!;
 
         /// <summary>
         /// Имя пользователя
@@ -199,26 +199,5 @@ namespace Inventory_Atlas.Core.DTOs.Audit
         /// Может быть <see langword="null"/> если информация недоступна.
         /// </summary>
         public string? UserAgent { get; set; }
-
-        /// <summary>
-        /// Название роли пользователя
-        /// <para/>
-        /// Тип: <see langword="string"/>.
-        /// </summary>
-        public string RoleName { get; set; } = null!;
-
-        /// <summary>
-        /// Права пользователя (можно десериализовать в объект)
-        /// <para/>
-        /// Тип: <see langword="string"/>.
-        /// </summary>
-        public string PermissionJson { get; set; } = "{}";
-
-        /// <summary>
-        /// Id пользователя в системе (связь с UserProfile)
-        /// <para/>
-        /// Тип: <see langword="int"/>
-        /// </summary>
-        public int UserId { get; set; }
     }
 }

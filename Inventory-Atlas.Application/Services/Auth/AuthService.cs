@@ -1,15 +1,13 @@
-﻿using Inventory_Atlas.Application.Services.Audit;
+﻿using Audit.Core;
+using Inventory_Atlas.Application.Services.Audit;
 using Inventory_Atlas.Application.Services.PasswordHasher;
 using Inventory_Atlas.Application.Services.TokenService;
+using Inventory_Atlas.Application.Services.Users;
 using Inventory_Atlas.Core;
-using Inventory_Atlas.Core.Enums;
 using Inventory_Atlas.Core.Models;
-using Inventory_Atlas.Infrastructure.Entities.Audit;
-using Inventory_Atlas.Infrastructure.Repository.Audit;
-using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Repository.Users;
 using Microsoft.Extensions.Logging;
-using System.Net;
+using Microsoft.AspNetCore.Http;
+using Inventory_Atlas.Application.Auditor.Service;
 
 namespace Inventory_Atlas.Application.Services.Auth
 {
@@ -20,9 +18,9 @@ namespace Inventory_Atlas.Application.Services.Auth
     {
         private readonly ILogger _logger;
         private readonly IUserSessionService _sessionService;
-        private readonly IUserProfileRepository _userRepo;
+        private readonly IUserProfileService _userService;
         private readonly IPasswordHasher _hasher;
-        private readonly IUnitOfWork _uow;
+        private readonly IAuditService _audit;
 
         /// <summary>
         /// Создаёт новый экземпляр <see cref="AuthService"/>.
@@ -33,18 +31,18 @@ namespace Inventory_Atlas.Application.Services.Auth
         /// <param name="hasher">Сервис хэширования паролей.</param>
         /// <param name="logService">Сервис логирования действий пользователей.</param>
         /// <param name="uow">Единица работы.</param>
-        public AuthService(ILogger<AuthService> logger, 
-                           IUserProfileRepository userRepo, 
+        public AuthService(ILogger<AuthService> logger,
+                           IUserProfileService userService,
                            IUserSessionService sessionService,
                            IPasswordHasher hasher,
-                           IUnitOfWork uow,
-                           ITokenGenerator tokenGenerator)
+                           ITokenGenerator tokenGenerator,
+                           IAuditService audit)
         {
             _sessionService = sessionService;
-            _userRepo = userRepo;
             _logger = logger;
             _hasher = hasher;
-            _uow = uow;
+            _userService = userService;
+            _audit = audit;
         }
 
         /// <inheritdoc/>
@@ -60,7 +58,7 @@ namespace Inventory_Atlas.Application.Services.Auth
                     ErrorCode = ErrorCodes.AuthMissingCredentials
                 };
 
-            var user = await _userRepo.GetByUsernameAsync(username, ct);
+            var user = await _userService.GetByUsernameAsync(username, ct);
             if (user == null)
             {
                 _logger.LogDebug("User {Username} not found during login attempt", username);
@@ -91,22 +89,33 @@ namespace Inventory_Atlas.Application.Services.Auth
                 };
             }
 
-            _logger.LogDebug("{Username} authenticated successfuly from {IpAddress} {Useragent}", username, ip, userAgent);
-            var session = await _sessionService.CreateSessionAsync(username, 
-                                                                   ip, 
-                                                                   userAgent);
+            using var scope = _audit.BeginScope(new Auditor.AuditContext{});
 
-            _logger.LogDebug("User {Username} logged in successfully with session token {Token}", username, session.Token);
-            return new LoginResponse
+            _logger.LogDebug("{Username} authenticated successfuly from {IpAddress} {Useragent}", username, ip, userAgent);
+            try
             {
-                Success = true,
-                Token = session.Token
-            };
-            
+                var session = await _sessionService.CreateSession(username, user.Id, ip, userAgent, ct);
+
+                _logger.LogDebug("User {Username} logged in successfully with session token {Token}", username, session.Token);
+                return new LoginResponse
+                {
+                    Success = true,
+                    Token = session.Token
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating session for user {Username}", username);
+                return new LoginResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCodes.UnexpectedError
+                };
+            }
         }
 
         /// <inheritdoc/>
-        public async Task<bool> LogoutAsync(string token, CancellationToken ct = default)
+        public async Task<bool> LogoutAsync(string token, CancellationToken ct = default, IAuditScope? parentScope = null)
         {
             _logger.LogDebug("Attempting to logout session with token {Token}", token);
             if (string.IsNullOrWhiteSpace(token))
@@ -115,33 +124,17 @@ namespace Inventory_Atlas.Application.Services.Auth
                 return true;
             }
 
-            var session = await _sessionService.GetSessionByToken(token);
-
-            if (session == null)
-            {
-                _logger.LogWarning("No session found for token {Token}", token);
-                return true;
-            }
-
-            if (!session.IsActive)
-            {
-                _logger.LogWarning("Session with token {Token} is already inactive", token);
-                return true;
-            }
-
-            session.IsActive = false;
-            session.EndTime = DateTime.UtcNow;
             try
             {
-                await _uow.SaveChangesAsync(ct);
-                _logger.LogDebug("Successfully logged out session with token {Token}", token);
+                await _sessionService.InvalidateSessionAsync(token, ct, scope);
+                _logger.LogDebug("Session with token {Token} logged out successfully", token);
+                return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while logging out session with token {Token}", token);
+                _logger.LogError(ex, "Error invalidating session with token {Token}", token);
+                return true;
             }
-            
-            return true;
         }
     }
 }

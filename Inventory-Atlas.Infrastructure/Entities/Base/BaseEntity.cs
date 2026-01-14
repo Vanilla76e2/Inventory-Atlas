@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Base
+namespace Inventory_Atlas.Application.Entities.Base
 {
     /// <summary>
     /// Базовая абстрактная сущность с уникальным идентификатором.

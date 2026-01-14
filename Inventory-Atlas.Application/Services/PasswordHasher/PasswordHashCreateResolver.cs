@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Users;
-using Inventory_Atlas.Infrastructure.Entities.Users;
+using Inventory_Atlas.Application.Entities.Users;
 
 namespace Inventory_Atlas.Application.Services.PasswordHasher
 {

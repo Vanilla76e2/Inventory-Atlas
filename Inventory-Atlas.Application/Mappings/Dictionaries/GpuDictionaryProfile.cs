@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Dictionaries;
-using Inventory_Atlas.Infrastructure.Entities.References;
+using Inventory_Atlas.Application.Entities.References;
 
 namespace Inventory_Atlas.Application.Mappings.Dictionaries
 {

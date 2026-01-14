@@ -2,16 +2,16 @@ using Audit.Core;
 using Inventory_Atlas.Application;
 using Inventory_Atlas.Application.Services.JwtKeyProvider;
 using Inventory_Atlas.Core.Models;
-using Inventory_Atlas.Infrastructure.Data;
-using Inventory_Atlas.Infrastructure.Entities.Audit;
-using Inventory_Atlas.Infrastructure.Repository;
-using Inventory_Atlas.Infrastructure.Services.DbInstaller;
+using Inventory_Atlas.Application.Data;
+using Inventory_Atlas.Application.Entities.Audit;
+using Inventory_Atlas.Application.Repository;
+using Inventory_Atlas.Application.Services.Auditor;
+using Inventory_Atlas.Application.Services.DbInstaller;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace Inventory_Atlas.Server
 { 
@@ -20,9 +20,9 @@ namespace Inventory_Atlas.Server
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
-            #region build
 
+            #region build
+            builder.Logging.AddConsole();
             builder.Services.AddControllers();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -107,24 +107,9 @@ namespace Inventory_Atlas.Server
                 options.UseNpgsql(builder.Configuration.GetConnectionString("InventoryAtlasDatabase"));
             });
 
-            Audit.Core.Configuration.Setup()
-                .UseEntityFramework(x => x
-                .AuditTypeMapper(t => typeof(AuditLog))
-                .AuditEntityAction<AuditLog>((ev, entry, audit) =>
-                {
-                    audit.ActionDate = DateTime.UtcNow;
+            services.AddScoped<IAuditScopeFactory, AuditScopeFactory>();
 
-                    audit.Details = JsonConvert.SerializeObject(new
-                    {
-                        EventType = ev.EventType,
-                        ev.StartDate,
-                        ev.EndDate,
-                        ev.Duration,
-                        AuditContext.SessionToken,
-                        AuditContext.ActionType,
-                        EntryFrameworkEvent = entry
-                    });
-                }));
+            AuditConfiguration.Configure();
         }
 
         /// <summary>

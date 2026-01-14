@@ -1,19 +1,19 @@
-﻿using Inventory_Atlas.Core.Models;
-using Inventory_Atlas.Infrastructure.Data;
-using Inventory_Atlas.Infrastructure.Entities.Users;
+﻿using Audit.Core;
+using Inventory_Atlas.Core.Models;
+using Inventory_Atlas.Application.Data;
+using Inventory_Atlas.Application.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
+namespace Inventory_Atlas.Application.Services.DbInstaller
 {
     /// <summary>
     /// Инициализатор базы данных
     /// </summary>
     public static class DbInitializer
     {
-
         /// <summary>
         /// Развёртывает или обновляет базу данных с помощью миграций.
         /// Вызывается один раз при старте приложения.
@@ -25,6 +25,8 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
             var context = serviceProvider.GetRequiredService<AppDbContext>();
             var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
             var logger = loggerFactory.CreateLogger("DbInitializer");
+
+            Audit.Core.Configuration.AuditDisabled = true;
 
             try
             {
@@ -39,6 +41,8 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
             }
 
             await Seed(context, logger);
+
+            Audit.Core.Configuration.AuditDisabled = false;
         }
 
         /// <summary>
@@ -77,7 +81,7 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
 
                 context.Roles.AddRange(adminRole, userRole);
                 await context.SaveChangesAsync();
-
+                
                 logger.LogInformation("Roles created.");
             }
 

@@ -1,12 +1,12 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Infrastructure.Data;
-using Inventory_Atlas.Infrastructure.Entities.Technics;
-using Inventory_Atlas.Infrastructure.Repository.Common;
+using Inventory_Atlas.Application.Data;
+using Inventory_Atlas.Application.Entities.Technics;
+using Inventory_Atlas.Application.Repository.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Technics
+namespace Inventory_Atlas.Application.Repository.Technics
 {
     /// <summary>
     /// Репозиторий для работы с компьютерами

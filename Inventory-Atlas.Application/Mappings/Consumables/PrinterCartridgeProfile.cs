@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Consumables;
-using Inventory_Atlas.Infrastructure.Entities.Сonsumables;
+using Inventory_Atlas.Application.Entities.Сonsumables;
 
 namespace Inventory_Atlas.Application.Mappings.Consumables
 {

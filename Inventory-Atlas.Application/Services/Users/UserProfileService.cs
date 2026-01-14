@@ -2,9 +2,9 @@
 using Inventory_Atlas.Application.Services.PasswordHasher;
 using Inventory_Atlas.Application.Validators;
 using Inventory_Atlas.Core.DTOs.Users;
-using Inventory_Atlas.Infrastructure.Entities.Users;
-using Inventory_Atlas.Infrastructure.Repository.Common;
-using Inventory_Atlas.Infrastructure.Repository.Users;
+using Inventory_Atlas.Application.Entities.Users;
+using Inventory_Atlas.Application.Repository.Common;
+using Inventory_Atlas.Application.Repository.Users;
 using Microsoft.Extensions.Logging;
 using Inventory_Atlas.Core.Models;
 using Inventory_Atlas.Core;
@@ -66,6 +66,7 @@ namespace Inventory_Atlas.Application.Services.Users
             }
         }
 
+        /// <inheritdoc/>
         public async Task<Response<UserProfileDto>> UpdateUserProfile(UserProfileUpdateDto newUserDto, CancellationToken ct = default)
         {
             try
@@ -103,6 +104,7 @@ namespace Inventory_Atlas.Application.Services.Users
             }
         }
 
+        /// <inheritdoc/>
         public async Task<UserProfile?> GetByUsernameAsync(string username, CancellationToken ct = default)
         {
             try
@@ -124,6 +126,7 @@ namespace Inventory_Atlas.Application.Services.Users
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default)
         {
             try

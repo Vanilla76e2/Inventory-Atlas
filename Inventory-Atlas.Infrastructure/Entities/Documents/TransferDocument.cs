@@ -1,7 +1,7 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+﻿using Inventory_Atlas.Application.Entities.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Documents
+namespace Inventory_Atlas.Application.Entities.Documents
 {
     /// <summary>
     /// Документ передачи оборудования между сотрудниками.

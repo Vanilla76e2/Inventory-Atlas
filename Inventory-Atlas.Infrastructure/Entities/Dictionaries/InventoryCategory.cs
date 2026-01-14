@@ -1,8 +1,8 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Base;
-using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
+﻿using Inventory_Atlas.Application.Entities.Base;
+using Inventory_Atlas.Application.Entities.Dictionaries;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Infrastructure.Entities.Services
+namespace Inventory_Atlas.Application.Entities.Services
 {
     /// <summary>
     /// Категория инвентарных объектов.

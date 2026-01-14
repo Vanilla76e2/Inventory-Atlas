@@ -1,7 +1,7 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Employees;
-using Inventory_Atlas.Infrastructure.Repository.Common;
+﻿using Inventory_Atlas.Application.Entities.Employees;
+using Inventory_Atlas.Application.Repository.Common;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Employees
+namespace Inventory_Atlas.Application.Repository.Employees
 {
     /// <summary>
     /// Интерфейс репозитория для работы с сотрудниками.

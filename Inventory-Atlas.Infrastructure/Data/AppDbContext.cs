@@ -1,29 +1,31 @@
 ﻿using Audit.EntityFramework;
-using Inventory_Atlas.Infrastructure.Converters;
+using Inventory_Atlas.Application.Converters;
+using Inventory_Atlas.Application.Entities.Audit;
+using Inventory_Atlas.Application.Entities.Dictionaries;
+using Inventory_Atlas.Application.Entities.Documents;
+using Inventory_Atlas.Application.Entities.Employees;
+using Inventory_Atlas.Application.Entities.Inventory;
+using Inventory_Atlas.Application.Entities.References;
+using Inventory_Atlas.Application.Entities.Services;
+using Inventory_Atlas.Application.Entities.Technics;
+using Inventory_Atlas.Application.Entities.Technics.Components;
+using Inventory_Atlas.Application.Entities.Users;
+using Inventory_Atlas.Application.Entities.Сonsumables;
 using Inventory_Atlas.Infrastructure.Entities.Audit;
-using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
-using Inventory_Atlas.Infrastructure.Entities.Documents;
-using Inventory_Atlas.Infrastructure.Entities.Employees;
-using Inventory_Atlas.Infrastructure.Entities.Inventory;
-using Inventory_Atlas.Infrastructure.Entities.References;
-using Inventory_Atlas.Infrastructure.Entities.Services;
-using Inventory_Atlas.Infrastructure.Entities.Technics;
-using Inventory_Atlas.Infrastructure.Entities.Technics.Components;
-using Inventory_Atlas.Infrastructure.Entities.Users;
-using Inventory_Atlas.Infrastructure.Entities.Сonsumables;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 
-namespace Inventory_Atlas.Infrastructure.Data
+namespace Inventory_Atlas.Application.Data
 {
     /// <summary>
     /// Контекст базы данных приложения Inventory Atlas.
     /// </summary>
-    public partial class AppDbContext : AuditDbContext
+    public partial class AppDbContext : DbContext
     {
         // Audit
         public DbSet<UserSession> UserSessions { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<AuditChange> AuditChanges { get; set; }
 
         // Documents
         public DbSet<CheckoutDocument> CheckoutDocuments { get; set; }
@@ -139,15 +141,15 @@ namespace Inventory_Atlas.Infrastructure.Data
 
         private void AuditBuilder(ModelBuilder mb)
         {
-            mb.Entity<AuditLog>(entity =>
-            {
-                entity.Property(x => x.Id).ValueGeneratedOnAdd();
-                entity.Property(x => x.ActionDate)
-                        .HasDefaultValueSql("NOW()");
-                entity.Property(x => x.Details)
-                        .HasColumnType("jsonb")
-                        .IsRequired();
-            });
+            mb.Entity<AuditLog>()
+                .ToTable("AuditLogs", "Audit")
+                .HasKey(x => x.Id);
+
+            mb.Entity<AuditChange>()
+                .HasOne(i => i.audit_log_id)
+                .WithMany(d => d.Items)
+                .HasForeignKey(i => i.DocumentId)
+                .OnDelete(DeleteBehavior.Cascade); ;
 
             mb.Entity<UserSession>()
                 .ToTable("UserSessions", "Audit")

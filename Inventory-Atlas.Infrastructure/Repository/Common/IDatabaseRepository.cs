@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Inventory_Atlas.Infrastructure.Repository.Common
+namespace Inventory_Atlas.Application.Repository.Common
 {
     /// <summary>
     /// Интерфейс репозитория для работы с сущностями типа <typeparamref name="T"/> в базе данных.

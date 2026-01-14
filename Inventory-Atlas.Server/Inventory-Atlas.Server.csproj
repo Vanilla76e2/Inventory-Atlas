@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Inventory-Atlas.Infrastructure\Inventory-Atlas.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Middlewares\" />
+  </ItemGroup>
+
 </Project>
