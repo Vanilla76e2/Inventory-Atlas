@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Audit;
-using Inventory_Atlas.Application.Entities.Audit;
+using Inventory_Atlas.Infrastructure.Entities.Audit;
 
-namespace Inventory_Atlas.Application.Mappings.Audit
+namespace Inventory_Atlas.Infrastructure.Mappings.Audit
 {
     public class UserSessionProfile : Profile
     {

@@ -1,8 +1,8 @@
-﻿using Inventory_Atlas.Application.Entities.Base;
-using Inventory_Atlas.Application.Entities.Employees;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Application.Entities.Technics
+namespace Inventory_Atlas.Infrastructure.Entities.Inventory
 {
     /// <summary>
     /// Связь рабочего места с оборудованием.

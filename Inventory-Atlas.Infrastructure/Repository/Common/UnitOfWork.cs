@@ -1,8 +1,11 @@
-﻿using Inventory_Atlas.Application.Data;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
+using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Auditor.Service;
+using Inventory_Atlas.Infrastructure.Auditor;
 
-namespace Inventory_Atlas.Application.Repository.Common
+
+namespace Inventory_Atlas.Infrastructure.Repository.Common
 {
     /// <summary>
     /// Реализация Unit of Work для работы с репозиториями.
@@ -12,24 +15,29 @@ namespace Inventory_Atlas.Application.Repository.Common
         private readonly ILogger<UnitOfWork> _logger;
         private readonly AppDbContext _context;
         private IDbContextTransaction? _transaction;
+        private readonly IAuditService _audit;
 
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="UnitOfWork"/>.
         /// </summary>
         /// <param name="context">Контекст базы данных.</param>
         /// <param name="loggerFactory">Фабрика логгеров.</param>
-        public UnitOfWork(AppDbContext context, ILoggerFactory loggerFactory)
+        public UnitOfWork(AppDbContext context, ILoggerFactory loggerFactory, IAuditService audit)
         {
             _logger = loggerFactory.CreateLogger<UnitOfWork>();
+            _audit = audit;
             _context = context;
         }
 
         /// <inheritdoc/>
-        public async Task SaveChangesAsync(CancellationToken ct = default)
+        public async Task SaveChangesAsync(CancellationToken ct = default, AuditContext? auditContext = null)
         {
             _logger.LogInformation("Saving changes to the database...");
             try
             {
+                if (auditContext != null)
+                    _audit.RegisterAudit(_context, auditContext);
+                
                 await _context.SaveChangesAsync(ct);
             }
             catch (Exception ex)

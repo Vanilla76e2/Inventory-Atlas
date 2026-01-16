@@ -1,11 +1,12 @@
-﻿using Inventory_Atlas.Application.Entities.Base;
-using Inventory_Atlas.Application.Entities.Documents;
-using Inventory_Atlas.Application.Entities.Technics;
-using Inventory_Atlas.Application.Entities.Users;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+using Inventory_Atlas.Infrastructure.Entities.Documents;
+using Inventory_Atlas.Infrastructure.Entities.Inventory;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Application.Entities.Employees
+namespace Inventory_Atlas.Infrastructure.Entities.Employees
 {
     /// <summary>
     /// Сотрудник компании.

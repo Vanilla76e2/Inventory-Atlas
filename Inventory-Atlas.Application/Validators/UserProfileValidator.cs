@@ -2,7 +2,7 @@
 using Inventory_Atlas.Core.DTOs.Users;
 using Inventory_Atlas.Core.Models;
 
-namespace Inventory_Atlas.Application.Validators
+namespace Inventory_Atlas.Infrastructure.Validators
 {
     /// <summary>
     /// Валидатор данных профиля пользователей.

@@ -1,7 +1,7 @@
 ﻿using Inventory_Atlas.Core.Enums;
 using Microsoft.AspNetCore.Http;
 
-namespace Inventory_Atlas.Application.Services.PermissionService
+namespace Inventory_Atlas.Infrastructure.Services.PermissionService
 {
     /// <summary>
     /// Интерфейс сервиса проверки прав пользователя на доступ к ресурсам системы.

@@ -1,9 +1,9 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Application.Entities.Base;
-using Inventory_Atlas.Application.Entities.Technics.Components;
 using System.ComponentModel.DataAnnotations.Schema;
+using Inventory_Atlas.Infrastructure.Entities.Base;
+using Inventory_Atlas.Infrastructure.Entities.Technics.Components;
 
-namespace Inventory_Atlas.Application.Entities.References
+namespace Inventory_Atlas.Infrastructure.Entities.Dictionaries
 {
     /// <summary>
     /// Видеокарта (GPU).

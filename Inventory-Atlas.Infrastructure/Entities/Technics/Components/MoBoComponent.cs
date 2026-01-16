@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Application.Entities.Technics.Components
+namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
 {
     /// <summary>
     /// Компонент компьютера, представляющий материнскую плату (MoBo).
@@ -26,6 +26,6 @@ namespace Inventory_Atlas.Application.Entities.Technics.Components
         /// Позволяет получить информацию о модели материнской платы, которой является данный компонент.
         /// </summary>
         [ForeignKey(nameof(MoBoId))]
-        public virtual References.MoBoDictionary MoBoReference { get; set; } = null!;
+        public virtual Dictionaries.MoBoDictionary MoBoReference { get; set; } = null!;
     }
 }

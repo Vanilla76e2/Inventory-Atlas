@@ -1,9 +1,9 @@
-﻿using Inventory_Atlas.Application.Entities.Base;
-using Inventory_Atlas.Application.Entities.Users;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
-namespace Inventory_Atlas.Application.Entities.Audit
+namespace Inventory_Atlas.Infrastructure.Entities.Audit
 {
     /// <summary>
     /// Сессия пользователя в системе.

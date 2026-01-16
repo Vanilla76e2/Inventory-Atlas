@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Consumables;
-using Inventory_Atlas.Application.Entities.Сonsumables;
+using Inventory_Atlas.Infrastructure.Entities.Consumables;
 
-namespace Inventory_Atlas.Application.Mappings.Consumables
+namespace Inventory_Atlas.Infrastructure.Mappings.Consumables
 {
     public class PrinterCartridgeProfile : Profile
     {

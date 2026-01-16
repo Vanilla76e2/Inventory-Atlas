@@ -1,7 +1,7 @@
-﻿using Inventory_Atlas.Application.Entities.Technics;
+﻿using Inventory_Atlas.Infrastructure.Entities.Technics;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Application.Entities.Base
+namespace Inventory_Atlas.Infrastructure.Entities.Base
 {
     /// <summary>
     /// Представляет запись об устройстве в инвентаре.

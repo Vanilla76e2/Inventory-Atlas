@@ -1,6 +1,6 @@
 ﻿using Inventory_Atlas.Core.DTOs.Users;
 
-namespace Inventory_Atlas.Application.Services.Users
+namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
 {
     public interface IRoleService
     {

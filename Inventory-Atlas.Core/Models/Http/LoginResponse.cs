@@ -1,4 +1,4 @@
-﻿namespace Inventory_Atlas.Core.Models
+﻿namespace Inventory_Atlas.Core.Models.Http
 {
     public class LoginResponse
     {

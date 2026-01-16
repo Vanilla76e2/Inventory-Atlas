@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Technics;
-using Inventory_Atlas.Application.Entities.Technics;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
 
-namespace Inventory_Atlas.Application.Mappings.Technics
+namespace Inventory_Atlas.Infrastructure.Mappings.Technics
 {
     public class LaptopProfile : Profile
     {

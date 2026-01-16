@@ -1,7 +1,7 @@
-﻿using Inventory_Atlas.Application.Entities.Documents;
-using Inventory_Atlas.Application.Repository.Common;
+﻿using Inventory_Atlas.Infrastructure.Entities.Documents;
+using Inventory_Atlas.Infrastructure.Repository.Common;
 
-namespace Inventory_Atlas.Application.Repository.Documents
+namespace Inventory_Atlas.Infrastructure.Repository.Documents
 {
     /// <summary>
     /// Репозиторий для работы с документами возврата оборудования.

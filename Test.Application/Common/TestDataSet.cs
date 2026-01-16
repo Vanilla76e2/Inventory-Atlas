@@ -1,17 +1,15 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Application.Entities.Audit;
-using Inventory_Atlas.Application.Entities.Сonsumables;
-using Inventory_Atlas.Application.Entities.Technics;
 using System.Net;
-using Inventory_Atlas.Application.Entities.References;
-using Inventory_Atlas.Application.Entities.Dictionaries;
-using Inventory_Atlas.Application.Entities.Services;
-using Inventory_Atlas.Application.Entities.Technics.Components;
-using Inventory_Atlas.Application.Entities.Inventory;
-using Inventory_Atlas.Application.Entities.Documents;
-using Inventory_Atlas.Application.Entities.Employees;
-using Inventory_Atlas.Application.Entities.Users;
 using Inventory_Atlas.Core.Models;
+using Inventory_Atlas.Infrastructure.Entities.Audit;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
+using Inventory_Atlas.Infrastructure.Entities.Inventory;
+using Inventory_Atlas.Infrastructure.Entities.Users;
+using Inventory_Atlas.Infrastructure.Entities.Consumables;
+using Inventory_Atlas.Infrastructure.Entities.Documents;
+using Inventory_Atlas.Infrastructure.Entities.Technics.Components;
+using Inventory_Atlas.Infrastructure.Entities.Employees;
+using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
 
 namespace ApplicationTests.Common
 {
@@ -67,7 +65,7 @@ namespace ApplicationTests.Common
         internal Computer ComputerTest;
         internal Laptop LaptopTest;
         internal MaintenanceLog MaintenanceLogTest;
-        internal Inventory_Atlas.Application.Entities.Technics.Monitor MonitorTest;
+        internal Inventory_Atlas.Infrastructure.Entities.Technics.Monitor MonitorTest;
         internal Printer PrinterTest;
         internal NetworkDevice NetworkDeviceTest;
         internal Phone PhoneTest;
@@ -675,7 +673,7 @@ namespace ApplicationTests.Common
                 IpAddress = IPAddress.Parse("127.0.0.1")
             };
 
-            MonitorTest = new Inventory_Atlas.Application.Entities.Technics.Monitor()
+            MonitorTest = new Inventory_Atlas.Infrastructure.Entities.Technics.Monitor()
             {
                 Id = 5,
 

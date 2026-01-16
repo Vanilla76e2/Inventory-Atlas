@@ -1,7 +1,8 @@
-﻿using Inventory_Atlas.Application.Entities.Base;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+using Inventory_Atlas.Infrastructure.Entities.Employees;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Application.Entities.Documents
+namespace Inventory_Atlas.Infrastructure.Entities.Documents
 {
     /// <summary>
     /// Документ передачи оборудования между сотрудниками.
@@ -22,12 +23,12 @@ namespace Inventory_Atlas.Application.Entities.Documents
         /// <summary>
         /// Навигационное свойство на сотрудника-отправителя.
         /// <para/>
-        /// Тип: <see cref="Employees.Employee"/>.
+        /// Тип: <see cref="Employee"/>.
         /// <para/>
         /// Не может быть <see langword="null"/>.
         /// </summary>
         [ForeignKey("FromEmployeeId")]
-        public Employees.Employee FromEmployee { get; set; } = null!;
+        public Employee FromEmployee { get; set; } = null!;
 
         /// <summary>
         /// Идентификатор сотрудника-получателя оборудования.
@@ -40,12 +41,12 @@ namespace Inventory_Atlas.Application.Entities.Documents
         /// <summary>
         /// Навигационное свойство на сотрудника-получателя.
         /// <para/>
-        /// Тип: <see cref="Employees.Employee"/>.
+        /// Тип: <see cref="Employee"/>.
         /// <para/>
         /// Не может быть <see langword="null"/>.
         /// </summary>
         [ForeignKey("ToEmployeeId")]
-        public Employees.Employee ToEmployee { get; set; } = null!;
+        public Employee ToEmployee { get; set; } = null!;
 
         /// <summary>
         /// Коллекция позиций документа передачи.

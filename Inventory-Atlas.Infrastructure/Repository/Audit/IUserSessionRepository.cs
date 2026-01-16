@@ -1,7 +1,7 @@
-﻿using Inventory_Atlas.Application.Entities.Audit;
-using Inventory_Atlas.Application.Repository.Common;
+﻿using Inventory_Atlas.Infrastructure.Entities.Audit;
+using Inventory_Atlas.Infrastructure.Repository.Common;
 
-namespace Inventory_Atlas.Application.Repository.Audit
+namespace Inventory_Atlas.Infrastructure.Repository.Audit
 {
     /// <summary>
     /// Репозиторий для работы с сессиями пользователей.
@@ -12,7 +12,7 @@ namespace Inventory_Atlas.Application.Repository.Audit
     /// </summary>
     public interface IUserSessionRepository : IDatabaseRepository<UserSession>
     {
-        Task<UserSession?> GetSessionByToken(string token, CancellationToken ct = default);
+        Task<UserSession?> GetSessionByTokenAsync(string token, CancellationToken ct = default);
 
         /// <summary>
         /// Получить активную сессию пользователя по имени пользователя.

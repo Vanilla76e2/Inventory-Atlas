@@ -1,8 +1,8 @@
-﻿using Inventory_Atlas.Application.Entities.Base;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
-namespace Inventory_Atlas.Application.Entities.Dictionaries
+namespace Inventory_Atlas.Infrastructure.Entities.Dictionaries
 {
     /// <summary>
     /// Сущность для аудита IpAddress-адресов.

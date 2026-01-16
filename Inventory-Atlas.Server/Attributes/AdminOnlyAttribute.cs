@@ -1,4 +1,4 @@
-﻿using Inventory_Atlas.Application.Services.PermissionService;
+﻿using Inventory_Atlas.Infrastructure.Services.PermissionService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

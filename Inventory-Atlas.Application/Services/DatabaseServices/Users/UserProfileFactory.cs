@@ -1,8 +1,8 @@
-﻿using Inventory_Atlas.Application.Services.PasswordHasher;
+﻿using Inventory_Atlas.Infrastructure.Services.PasswordHasher;
 using Inventory_Atlas.Core.DTOs.Users;
-using Inventory_Atlas.Application.Entities.Users;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 
-namespace Inventory_Atlas.Application.Services.Users
+namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
 {
     internal static class UserProfileFactory
     {
@@ -27,7 +27,7 @@ namespace Inventory_Atlas.Application.Services.Users
                 entity.EmployeeId = dto.EmployeeId == 0 ? null : dto.EmployeeId.Value;
 
             if (dto.RoleId.HasValue)
-                entity.RoleId = (int)dto.RoleId.Value;
+                entity.RoleId = dto.RoleId.Value;
 
             if (dto.IsActive.HasValue)
                 entity.IsActive = dto.IsActive.Value;

@@ -1,15 +1,19 @@
 ﻿using Audit.Core;
-using Inventory_Atlas.Application.Services.Audit;
-using Inventory_Atlas.Application.Services.PasswordHasher;
-using Inventory_Atlas.Application.Services.TokenService;
-using Inventory_Atlas.Application.Services.Users;
+using Audit.EntityFramework;
+using Inventory_Atlas.Application.Services.DatabaseServices.Audit;
+using Inventory_Atlas.Application.Services.DatabaseServices.Users;
 using Inventory_Atlas.Core;
-using Inventory_Atlas.Core.Models;
-using Microsoft.Extensions.Logging;
+using Inventory_Atlas.Core.Models.Http;
+using Inventory_Atlas.Infrastructure.Auditor;
+using Inventory_Atlas.Infrastructure.Auditor.Service;
+using Inventory_Atlas.Infrastructure.Entities.Audit;
+using Inventory_Atlas.Infrastructure.Repository.Common;
+using Inventory_Atlas.Infrastructure.Services.PasswordHasher;
+using Inventory_Atlas.Infrastructure.Services.TokenService;
 using Microsoft.AspNetCore.Http;
-using Inventory_Atlas.Application.Auditor.Service;
+using Microsoft.Extensions.Logging;
 
-namespace Inventory_Atlas.Application.Services.Auth
+namespace Inventory_Atlas.Infrastructure.Services.Auth
 {
     /// <summary>
     /// Сервис для аутентификации пользователей.
@@ -21,6 +25,7 @@ namespace Inventory_Atlas.Application.Services.Auth
         private readonly IUserProfileService _userService;
         private readonly IPasswordHasher _hasher;
         private readonly IAuditService _audit;
+        private readonly IUnitOfWork _uow;
 
         /// <summary>
         /// Создаёт новый экземпляр <see cref="AuthService"/>.
@@ -36,13 +41,15 @@ namespace Inventory_Atlas.Application.Services.Auth
                            IUserSessionService sessionService,
                            IPasswordHasher hasher,
                            ITokenGenerator tokenGenerator,
-                           IAuditService audit)
+                           IAuditService audit,
+                           IUnitOfWork uow)
         {
             _sessionService = sessionService;
             _logger = logger;
             _hasher = hasher;
             _userService = userService;
             _audit = audit;
+            _uow = uow;
         }
 
         /// <inheritdoc/>
@@ -89,12 +96,17 @@ namespace Inventory_Atlas.Application.Services.Auth
                 };
             }
 
-            using var scope = _audit.BeginScope(new Auditor.AuditContext{});
-
             _logger.LogDebug("{Username} authenticated successfuly from {IpAddress} {Useragent}", username, ip, userAgent);
             try
             {
-                var session = await _sessionService.CreateSession(username, user.Id, ip, userAgent, ct);
+                var session = _sessionService.CreateSession(username, user.Id, ip, userAgent);
+
+                await _uow.SaveChangesAsync(ct, new AuditContext
+                {
+                    ActionType = Core.Enums.ActionType.Login,
+                    SessionToken = session.Token,
+                    UserId = user.Id
+                });
 
                 _logger.LogDebug("User {Username} logged in successfully with session token {Token}", username, session.Token);
                 return new LoginResponse
@@ -115,7 +127,7 @@ namespace Inventory_Atlas.Application.Services.Auth
         }
 
         /// <inheritdoc/>
-        public async Task<bool> LogoutAsync(string token, CancellationToken ct = default, IAuditScope? parentScope = null)
+        public async Task<bool> LogoutAsync(string token, CancellationToken ct = default)
         {
             _logger.LogDebug("Attempting to logout session with token {Token}", token);
             if (string.IsNullOrWhiteSpace(token))
@@ -126,7 +138,15 @@ namespace Inventory_Atlas.Application.Services.Auth
 
             try
             {
-                await _sessionService.InvalidateSessionAsync(token, ct, scope);
+                await _sessionService.InvalidateSessionAsync(token, ct);
+
+                await _uow.SaveChangesAsync(ct, new AuditContext
+                {
+                    ActionType = Core.Enums.ActionType.Logout,
+                    SessionToken = token,
+                    UserId = await _sessionService.GetUserIdByTokenAsync(token)
+                });
+
                 _logger.LogDebug("Session with token {Token} logged out successfully", token);
                 return true;
             }

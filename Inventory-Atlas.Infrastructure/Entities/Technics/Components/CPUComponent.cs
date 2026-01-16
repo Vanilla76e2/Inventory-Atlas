@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Application.Entities.Technics.Components
+namespace Inventory_Atlas.Infrastructure.Entities.Technics.Components
 {
     /// <summary>
     /// Компонент компьютера, представляющий процессор (CPU).
@@ -26,6 +26,6 @@ namespace Inventory_Atlas.Application.Entities.Technics.Components
         /// Позволяет получить информацию о модели CPU, которой является данный компонент.
         /// </summary>
         [ForeignKey(nameof(CPUId))]
-        public virtual References.CpuDictionary CPUReference { get; set; } = null!;
+        public virtual Dictionaries.CpuDictionary CPUReference { get; set; } = null!;
     }
 }

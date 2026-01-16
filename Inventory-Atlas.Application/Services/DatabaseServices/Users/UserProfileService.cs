@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
-using Inventory_Atlas.Application.Services.PasswordHasher;
-using Inventory_Atlas.Application.Validators;
+using Inventory_Atlas.Infrastructure.Services.PasswordHasher;
+using Inventory_Atlas.Infrastructure.Validators;
 using Inventory_Atlas.Core.DTOs.Users;
-using Inventory_Atlas.Application.Entities.Users;
-using Inventory_Atlas.Application.Repository.Common;
-using Inventory_Atlas.Application.Repository.Users;
 using Microsoft.Extensions.Logging;
 using Inventory_Atlas.Core.Models;
 using Inventory_Atlas.Core;
+using Inventory_Atlas.Infrastructure.Entities.Users;
+using Inventory_Atlas.Infrastructure.Repository.Common;
+using Inventory_Atlas.Infrastructure.Repository.Users;
+using Inventory_Atlas.Infrastructure.Auditor;
+using Inventory_Atlas.Application.Services.DatabaseServices.Audit;
 
-namespace Inventory_Atlas.Application.Services.Users
+namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
 {
     public class UserProfileService : IUserProfileService
     {
@@ -18,18 +20,29 @@ namespace Inventory_Atlas.Application.Services.Users
         private readonly ILogger _logger;
         private readonly IUserProfileRepository _userRepo;
         private readonly IPasswordHasher _hasher;
+        private readonly IUserSessionService _sessionService;
 
-        public UserProfileService(IUnitOfWork uow, IMapper mapper, IUserProfileRepository repo, ILogger<UserProfileService> logger, IPasswordHasher hasher) 
+        public UserProfileService(
+            IUnitOfWork uow, 
+            IMapper mapper, 
+            IUserProfileRepository repo, 
+            ILogger<UserProfileService> logger, 
+            IPasswordHasher hasher,
+            IUserSessionService sessionService) 
         {
             _uow = uow;
             _mapper = mapper;
             _logger = logger;
             _userRepo = repo;
             _hasher = hasher;
+            _sessionService = sessionService;
         }
 
         /// <inheritdoc/>
-        public async Task<Response<UserProfileDto>> CreateUserProfile(UserProfileCreateDto newUser, CancellationToken ct = default)
+        public async Task<Response<UserProfileDto>> CreateUserProfileAsync(
+            UserProfileCreateDto newUser, 
+            string sessionToken, 
+            CancellationToken ct = default)
         {
             try
             {
@@ -51,7 +64,12 @@ namespace Inventory_Atlas.Application.Services.Users
 
                 var userProfile = UserProfileFactory.Create(newUser, _hasher);
 
-                await _uow.SaveChangesAsync();
+                await _uow.SaveChangesAsync(ct,new AuditContext
+                {
+                    ActionType = Core.Enums.ActionType.Create,
+                    SessionToken = sessionToken,
+                    UserId = await _sessionService.GetUserIdByTokenAsync(sessionToken)
+                });
 
                 _logger.LogDebug("User created successfully.");
 
@@ -67,7 +85,7 @@ namespace Inventory_Atlas.Application.Services.Users
         }
 
         /// <inheritdoc/>
-        public async Task<Response<UserProfileDto>> UpdateUserProfile(UserProfileUpdateDto newUserDto, CancellationToken ct = default)
+        public async Task<Response<UserProfileDto>> UpdateUserProfileAsync(UserProfileUpdateDto newUserDto, string sessionToken, CancellationToken ct = default)
         {
             try
             {
@@ -91,7 +109,12 @@ namespace Inventory_Atlas.Application.Services.Users
 
                 _userRepo.Update(user);
 
-                await _uow.SaveChangesAsync(ct);
+                await _uow.SaveChangesAsync(ct, new AuditContext
+                {
+                    ActionType = Core.Enums.ActionType.Update,
+                    SessionToken = sessionToken,
+                    UserId = await _sessionService.GetUserIdByTokenAsync(sessionToken)
+                });
 
                 _logger.LogDebug("User with id {UserId} updated successfuly.", newUserDto.Id);
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Application.Entities.Technics
+namespace Inventory_Atlas.Infrastructure.Entities.Technics
 {
     /// <summary>
     /// Сущность программного обеспечения.

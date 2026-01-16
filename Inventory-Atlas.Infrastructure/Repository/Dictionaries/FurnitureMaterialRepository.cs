@@ -1,10 +1,10 @@
-﻿using Inventory_Atlas.Application.Data;
-using Inventory_Atlas.Application.Entities.Dictionaries;
-using Inventory_Atlas.Application.Repository.Common;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
+using Inventory_Atlas.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Inventory_Atlas.Application.Repository.Dictionaries
+namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
 {
     /// <summary>
     /// Репозиторий для работы с материалами мебели.

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System.Text.Json;
 
-namespace Inventory_Atlas.Application.Converters
+namespace Inventory_Atlas.Infrastructure.Converters
 {
     public class JsonStringToDictionaryConverter : IValueConverter<string?, Dictionary<string, object>?>
     {

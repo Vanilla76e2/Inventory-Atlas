@@ -1,11 +1,11 @@
-﻿using Inventory_Atlas.Application.Services.JwtKeyProvider;
+﻿using Inventory_Atlas.Infrastructure.Services.JwtKeyProvider;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Inventory_Atlas.Application.Services.TokenService
+namespace Inventory_Atlas.Infrastructure.Services.TokenService
 {
     /// <summary>
     /// Класс для генерации JWT токенов для сессий пользователей.

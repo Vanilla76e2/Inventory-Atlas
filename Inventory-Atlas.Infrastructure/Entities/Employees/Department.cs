@@ -1,7 +1,7 @@
-﻿using Inventory_Atlas.Application.Entities.Base;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Application.Entities.Employees
+namespace Inventory_Atlas.Infrastructure.Entities.Employees
 {
     /// <summary>
     /// Отдел компании.

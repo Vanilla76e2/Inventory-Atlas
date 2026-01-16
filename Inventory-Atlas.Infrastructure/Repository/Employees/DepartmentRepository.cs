@@ -1,10 +1,10 @@
-﻿using Inventory_Atlas.Application.Data;
-using Inventory_Atlas.Application.Entities.Employees;
-using Inventory_Atlas.Application.Repository.Common;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Employees;
+using Inventory_Atlas.Infrastructure.Repository.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Inventory_Atlas.Application.Repository.Employees
+namespace Inventory_Atlas.Infrastructure.Repository.Employees
 {
     /// <summary>
     /// Репозиторий для работы с отделами.

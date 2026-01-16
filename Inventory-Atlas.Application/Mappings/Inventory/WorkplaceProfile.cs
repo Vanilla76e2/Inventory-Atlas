@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Inventory;
-using Inventory_Atlas.Application.Entities.Employees;
-using Inventory_Atlas.Application.Entities.Technics;
+using Inventory_Atlas.Infrastructure.Entities.Inventory;
 
-namespace Inventory_Atlas.Application.Mappings.Inventory
+namespace Inventory_Atlas.Infrastructure.Mappings.Inventory
 {
     public class WorkplaceProfile : Profile
     {

@@ -1,17 +1,13 @@
 using Audit.Core;
-using Inventory_Atlas.Application;
-using Inventory_Atlas.Application.Services.JwtKeyProvider;
-using Inventory_Atlas.Core.Models;
-using Inventory_Atlas.Application.Data;
-using Inventory_Atlas.Application.Entities.Audit;
-using Inventory_Atlas.Application.Repository;
-using Inventory_Atlas.Application.Services.Auditor;
-using Inventory_Atlas.Application.Services.DbInstaller;
+using Inventory_Atlas.Infrastructure;
+using Inventory_Atlas.Infrastructure.Services.JwtKeyProvider;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System.Text;
+using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Repository;
+using Inventory_Atlas.Infrastructure.Services.DbInstaller;
 
 namespace Inventory_Atlas.Server
 { 
@@ -109,7 +105,6 @@ namespace Inventory_Atlas.Server
 
             services.AddScoped<IAuditScopeFactory, AuditScopeFactory>();
 
-            AuditConfiguration.Configure();
         }
 
         /// <summary>

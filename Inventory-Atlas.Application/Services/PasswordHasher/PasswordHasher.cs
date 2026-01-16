@@ -1,4 +1,4 @@
-﻿namespace Inventory_Atlas.Application.Services.PasswordHasher
+﻿namespace Inventory_Atlas.Infrastructure.Services.PasswordHasher
 {
     /// <summary>
     /// Сервис для хеширования и проверки паролей пользователей.

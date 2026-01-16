@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Inventory-Atlas.Core\Inventory-Atlas.Core.csproj" />
     <ProjectReference Include="..\Inventory-Atlas.Infrastructure\Inventory-Atlas.Infrastructure.csproj" />
+    <ProjectReference Include="..\Inventory_Atlas.Auditor\Inventory_Atlas.Auditor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

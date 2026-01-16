@@ -1,9 +1,9 @@
-﻿using Inventory_Atlas.Application.Data;
-using Inventory_Atlas.Application.Entities.Audit;
-using Inventory_Atlas.Application.Repository.Common;
+﻿using Inventory_Atlas.Infrastructure.Data;
+using Inventory_Atlas.Infrastructure.Entities.Audit;
+using Inventory_Atlas.Infrastructure.Repository.Common;
 using Microsoft.Extensions.Logging;
 
-namespace Inventory_Atlas.Application.Repository.Audit
+namespace Inventory_Atlas.Infrastructure.Repository.Audit
 {
     /// <summary>
     /// Репозиторий для работы с сессиями пользователей.
@@ -22,7 +22,7 @@ namespace Inventory_Atlas.Application.Repository.Audit
         {
         }
 
-        public async Task<UserSession?> GetSessionByToken(string token, CancellationToken ct = default)
+        public async Task<UserSession?> GetSessionByTokenAsync(string token, CancellationToken ct = default)
         {
             return await FindAsync(us => us.Token == token, ct);
         }

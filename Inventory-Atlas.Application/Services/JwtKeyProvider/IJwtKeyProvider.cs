@@ -1,4 +1,4 @@
-﻿namespace Inventory_Atlas.Application.Services.JwtKeyProvider
+﻿namespace Inventory_Atlas.Infrastructure.Services.JwtKeyProvider
 {
     /// <summary>
     /// Интерфейс предоставляющий приватный ключ для создания JWT токенов.

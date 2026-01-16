@@ -1,13 +1,13 @@
 using ApplicationTests.Common;
 using AutoMapper;
-using Inventory_Atlas.Application.Mappings.Audit;
-using Inventory_Atlas.Application.Mappings.Consumables;
-using Inventory_Atlas.Application.Mappings.Dictionaries;
-using Inventory_Atlas.Application.Mappings.Documents;
-using Inventory_Atlas.Application.Mappings.Employees;
-using Inventory_Atlas.Application.Mappings.Inventory;
-using Inventory_Atlas.Application.Mappings.Technics;
-using Inventory_Atlas.Application.Mappings.Users;
+using Inventory_Atlas.Infrastructure.Mappings.Audit;
+using Inventory_Atlas.Infrastructure.Mappings.Consumables;
+using Inventory_Atlas.Infrastructure.Mappings.Dictionaries;
+using Inventory_Atlas.Infrastructure.Mappings.Documents;
+using Inventory_Atlas.Infrastructure.Mappings.Employees;
+using Inventory_Atlas.Infrastructure.Mappings.Inventory;
+using Inventory_Atlas.Infrastructure.Mappings.Technics;
+using Inventory_Atlas.Infrastructure.Mappings.Users;
 using Inventory_Atlas.Core.DTOs.Audit;
 using Inventory_Atlas.Core.DTOs.Consumables;
 using Inventory_Atlas.Core.DTOs.Dictionaries;
@@ -99,7 +99,7 @@ public class MappersTest
     public void PagedLogEntry_Should_Map_Correctly()
     {
         //Arrange
-        var logEntries = new List<Inventory_Atlas.Application.Entities.Audit.LogEntry>
+        var logEntries = new List<Inventory_Atlas.Infrastructure.Entities.Audit.LogEntry>
         {
             _dataSet.LogEntryTest,
             _dataSet.LogEntryTest

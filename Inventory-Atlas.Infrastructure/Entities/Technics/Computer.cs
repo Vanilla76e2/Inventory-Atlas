@@ -1,9 +1,9 @@
 ﻿using Inventory_Atlas.Core.DTOs.Common;
-using Inventory_Atlas.Application.Entities.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
+using Inventory_Atlas.Infrastructure.Entities.Base;
 
-namespace Inventory_Atlas.Application.Entities.Technics
+namespace Inventory_Atlas.Infrastructure.Entities.Technics
 {
     /// <summary>
     /// Сущность компьютера.

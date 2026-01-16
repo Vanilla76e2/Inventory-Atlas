@@ -1,8 +1,8 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Application.Entities.Dictionaries;
 using System.ComponentModel.DataAnnotations.Schema;
+using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
 
-namespace Inventory_Atlas.Application.Entities.Inventory
+namespace Inventory_Atlas.Infrastructure.Entities.Inventory
 {
     /// <summary>
     /// Мебель в инвентаре компании.

@@ -1,7 +1,7 @@
 ﻿using Audit.Core;
-using Inventory_Atlas.Core.Models;
+using Inventory_Atlas.Core.Models.Http;
 
-namespace Inventory_Atlas.Application.Services.Auth
+namespace Inventory_Atlas.Infrastructure.Services.Auth
 {
     /// <summary>
     /// Сервис для аутентификации пользователей.
@@ -20,13 +20,12 @@ namespace Inventory_Atlas.Application.Services.Auth
             string password, 
             string? userAgent = null, 
             string? ip = null, 
-            CancellationToken ct = default,
-            IAuditScope? parentScope = null);
+            CancellationToken ct = default);
 
         /// <summary>
         /// Метод для выхода пользователя из системы по токену сессии.
         /// </summary>
         /// <param name="token">Токен пользователя.</param>
-        Task<bool> LogoutAsync(string token, CancellationToken ct = default, IAuditScope? parentScope = null);
+        Task<bool> LogoutAsync(string token, CancellationToken ct = default);
     }
 }

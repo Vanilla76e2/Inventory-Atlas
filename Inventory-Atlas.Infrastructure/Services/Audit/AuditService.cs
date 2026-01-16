@@ -1,10 +1,8 @@
-﻿using Audit.Core;
-using Inventory_Atlas.Application.Entities.Audit;
-using Inventory_Atlas.Infrastructure.Entities.Audit;
+﻿using Inventory_Atlas.Infrastructure.Entities.Audit;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace Inventory_Atlas.Application.Auditor.Service
+namespace Inventory_Atlas.Infrastructure.Auditor.Service
 {
     public class AuditService : IAuditService
     {
@@ -28,10 +26,9 @@ namespace Inventory_Atlas.Application.Auditor.Service
             return scope;
         }
 
-        public async Task SaveAsync(DbContext dbContext, CancellationToken ct)
+        public void RegisterAudit(DbContext dbContext, AuditContext context)
         {
-            var scope = _currentScope.Value;
-            if (scope == null)
+            if (context == null)
                 return;
 
             var changes = CollectChanges(dbContext);
@@ -39,19 +36,18 @@ namespace Inventory_Atlas.Application.Auditor.Service
             var auditLog = new AuditLog
             {
                 OccurredAt = DateTime.UtcNow,
-                UserId = scope.Context.UserId,
-                SessionToken = scope.Context.SessionToken,
-                ActionType = scope.Context.ActionType,
-                TargetType = scope.Context.TargetType,
-                TargetId = scope.Context.TargetId,
-                Details = scope.Context.Details is null
+                UserId = context.UserId,
+                SessionToken = context.SessionToken,
+                ActionType = context.ActionType,
+                TargetType = context.TargetType,
+                TargetId = context.TargetId,
+                Details = context.Details is null
                     ? null
-                    : JsonConvert.SerializeObject(scope.Context.Details),
+                    : JsonConvert.SerializeObject(context.Details),
                 Changes = changes
             };
 
             dbContext.Set<AuditLog>().Add(auditLog);
-            await dbContext.SaveChangesAsync(ct);
         }
 
         private List<AuditChange> CollectChanges(DbContext context)

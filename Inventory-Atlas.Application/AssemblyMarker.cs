@@ -1,4 +1,4 @@
-﻿namespace Inventory_Atlas.Application
+﻿namespace Inventory_Atlas.Infrastructure
 {
     public sealed class AssemblyMarker { }
 }

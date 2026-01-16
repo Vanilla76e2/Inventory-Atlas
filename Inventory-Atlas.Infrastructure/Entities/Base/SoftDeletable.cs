@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Application.Entities.Base
+namespace Inventory_Atlas.Infrastructure.Entities.Base
 {
     /// <summary>
     /// Абстрактная сущность с поддержкой мягкого удаления.

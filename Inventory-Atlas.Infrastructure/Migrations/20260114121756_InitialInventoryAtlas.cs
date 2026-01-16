@@ -43,12 +43,14 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
-                    action_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
-                    duration = table.Column<int>(type: "integer", nullable: false),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    occurred_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     session_token = table.Column<string>(type: "text", nullable: true),
+                    user_id = table.Column<int>(type: "integer", nullable: true),
                     action_type = table.Column<int>(type: "integer", nullable: false),
-                    details = table.Column<string>(type: "jsonb", nullable: false)
+                    target_type = table.Column<string>(type: "text", nullable: true),
+                    target_id = table.Column<string>(type: "text", nullable: true),
+                    details = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -240,6 +242,32 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AuditChanges",
+                schema: "Audit",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    audit_log_id = table.Column<int>(type: "integer", nullable: false),
+                    entity_name = table.Column<string>(type: "text", nullable: true),
+                    entity_id = table.Column<string>(type: "text", nullable: true),
+                    property_name = table.Column<string>(type: "text", nullable: true),
+                    old_value = table.Column<string>(type: "text", nullable: true),
+                    new_value = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditChanges", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_AuditChanges_AuditLogs_audit_log_id",
+                        column: x => x.audit_log_id,
+                        principalSchema: "Audit",
+                        principalTable: "AuditLogs",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1438,6 +1466,12 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AuditChanges_audit_log_id",
+                schema: "Audit",
+                table: "AuditChanges",
+                column: "audit_log_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CheckoutDocumentItems_document_id",
                 schema: "Documents",
                 table: "CheckoutDocumentItems",
@@ -1701,7 +1735,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AuditLogs",
+                name: "AuditChanges",
                 schema: "Audit");
 
             migrationBuilder.DropTable(
@@ -1823,6 +1857,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "WriteOffDocumentItems",
                 schema: "Documents");
+
+            migrationBuilder.DropTable(
+                name: "AuditLogs",
+                schema: "Audit");
 
             migrationBuilder.DropTable(
                 name: "CheckoutDocuments",

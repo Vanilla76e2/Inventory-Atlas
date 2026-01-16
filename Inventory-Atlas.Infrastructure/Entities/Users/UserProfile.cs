@@ -1,8 +1,8 @@
-﻿using Inventory_Atlas.Application.Entities.Base;
+﻿using Inventory_Atlas.Infrastructure.Entities.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Inventory_Atlas.Application.Entities.Users
+namespace Inventory_Atlas.Infrastructure.Entities.Users
 {
     /// <summary>
     /// Профиль пользователя.

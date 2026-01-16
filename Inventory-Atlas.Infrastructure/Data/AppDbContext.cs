@@ -1,21 +1,18 @@
 ﻿using Audit.EntityFramework;
-using Inventory_Atlas.Application.Converters;
-using Inventory_Atlas.Application.Entities.Audit;
-using Inventory_Atlas.Application.Entities.Dictionaries;
-using Inventory_Atlas.Application.Entities.Documents;
-using Inventory_Atlas.Application.Entities.Employees;
-using Inventory_Atlas.Application.Entities.Inventory;
-using Inventory_Atlas.Application.Entities.References;
-using Inventory_Atlas.Application.Entities.Services;
-using Inventory_Atlas.Application.Entities.Technics;
-using Inventory_Atlas.Application.Entities.Technics.Components;
-using Inventory_Atlas.Application.Entities.Users;
-using Inventory_Atlas.Application.Entities.Сonsumables;
+using Inventory_Atlas.Infrastructure.Converters;
 using Inventory_Atlas.Infrastructure.Entities.Audit;
+using Inventory_Atlas.Infrastructure.Entities.Consumables;
+using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
+using Inventory_Atlas.Infrastructure.Entities.Documents;
+using Inventory_Atlas.Infrastructure.Entities.Employees;
+using Inventory_Atlas.Infrastructure.Entities.Inventory;
+using Inventory_Atlas.Infrastructure.Entities.Technics;
+using Inventory_Atlas.Infrastructure.Entities.Technics.Components;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 
-namespace Inventory_Atlas.Application.Data
+namespace Inventory_Atlas.Infrastructure.Data
 {
     /// <summary>
     /// Контекст базы данных приложения Inventory Atlas.
@@ -146,10 +143,10 @@ namespace Inventory_Atlas.Application.Data
                 .HasKey(x => x.Id);
 
             mb.Entity<AuditChange>()
-                .HasOne(i => i.audit_log_id)
-                .WithMany(d => d.Items)
-                .HasForeignKey(i => i.DocumentId)
-                .OnDelete(DeleteBehavior.Cascade); ;
+                .HasOne(i => i.AuditLog)
+                .WithMany(d => d.Changes)
+                .HasForeignKey(i => i.AuditLogId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             mb.Entity<UserSession>()
                 .ToTable("UserSessions", "Audit")

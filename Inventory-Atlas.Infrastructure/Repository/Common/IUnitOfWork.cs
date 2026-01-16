@@ -1,5 +1,6 @@
-﻿
-namespace Inventory_Atlas.Application.Repository.Common
+﻿using Inventory_Atlas.Infrastructure.Auditor;
+
+namespace Inventory_Atlas.Infrastructure.Repository.Common
 {
     /// <summary>
     /// Представляет единицу работы для атомарного сохранения изменений в базе данных.
@@ -12,7 +13,7 @@ namespace Inventory_Atlas.Application.Repository.Common
         /// входящие в текущий Unit of Work.
         /// </summary>
         /// <param name="ct">Токен отмены операции.</param>
-        Task SaveChangesAsync(CancellationToken ct = default);
+        Task SaveChangesAsync(CancellationToken ct = default, AuditContext? auditContext = null);
 
         /// <summary>
         /// Асинхронно начинает новую транзакцию базы данных.

@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace Inventory_Atlas.Application.Services.JwtKeyProvider
+namespace Inventory_Atlas.Infrastructure.Services.JwtKeyProvider
 {
     public class FileJwtKeyProvider : IJwtKeyProvider
     {

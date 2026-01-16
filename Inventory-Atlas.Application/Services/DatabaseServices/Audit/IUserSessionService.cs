@@ -1,7 +1,8 @@
-﻿using Inventory_Atlas.Application.Entities.Audit;
-using Audit.Core;
+﻿using Audit.Core;
+using Inventory_Atlas.Infrastructure.Entities.Audit;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 
-namespace Inventory_Atlas.Application.Services.Audit
+namespace Inventory_Atlas.Application.Services.DatabaseServices.Audit
 {
     /// <summary>
     /// Сервис для управления сессиями пользователей.
@@ -51,5 +52,13 @@ namespace Inventory_Atlas.Application.Services.Audit
         /// <param name="userId">Id пользователя.</param>
         /// <param name="ct">Токен отмены.</param>
         Task InvalidateAllSessionsForUser(string userName, CancellationToken ct = default);
+
+        /// <summary>
+        /// Асинхронно ищет пользователя по токену сессии.
+        /// </summary>
+        /// <param name="token">Токен сесии.</param>
+        /// <param name="ct">Токен отмены.</param>
+        /// <returns><see cref="UserProfile"/>.</returns>
+        Task<int?> GetUserIdByTokenAsync(string token, CancellationToken ct = default);
     }
 }

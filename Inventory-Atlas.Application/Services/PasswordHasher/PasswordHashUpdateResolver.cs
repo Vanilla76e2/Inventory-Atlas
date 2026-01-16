@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Inventory_Atlas.Core.DTOs.Users;
-using Inventory_Atlas.Application.Entities.Users;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 
-namespace Inventory_Atlas.Application.Services.PasswordHasher
+namespace Inventory_Atlas.Infrastructure.Services.PasswordHasher
 {
     public class PasswordHashUpdateResolver : IMemberValueResolver<UserProfileUpdateDto, UserProfile, string?, string>
     {

@@ -1,8 +1,8 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Application.Entities.References;
-using Inventory_Atlas.Application.Repository.Common;
+using Inventory_Atlas.Infrastructure.Entities.Dictionaries;
+using Inventory_Atlas.Infrastructure.Repository.Common;
 
-namespace Inventory_Atlas.Application.Repository.Dictionaries
+namespace Inventory_Atlas.Infrastructure.Repository.Dictionaries
 {
     /// <summary>
     /// Репозиторий для работы с материнскими платами (MoBo).

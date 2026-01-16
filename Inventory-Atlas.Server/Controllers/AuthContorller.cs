@@ -1,9 +1,10 @@
-using Inventory_Atlas.Application.Services.Auth;
+using Inventory_Atlas.Infrastructure.Services.Auth;
 using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Core.Models;
 using Inventory_Atlas.Server.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Inventory_Atlas.Core.Models.Http;
+using Inventory_Atlas.Core;
 
 namespace Inventory_Atlas.Server.Controllers
 {
@@ -32,7 +33,7 @@ namespace Inventory_Atlas.Server.Controllers
         /// <param name="request">Запрос.</param>
         /// <returns><see cref="IActionResult"/>.</returns>
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequests request)
         {
             _logger.LogInformation("Login attempt for user: {Username}", request.Username);
 
@@ -45,10 +46,10 @@ namespace Inventory_Atlas.Server.Controllers
 
             var result = await _authService.LoginAsync(request.Username, request.Password, userAgent, ipAddress);
 
-            if (result == null)
+            if (!result.Success)
             {
                 _logger.LogWarning("Failed login attempt for user: {Username} from IP: {IP} with agent: {UserAgent}", request.Username, ipAddress, userAgent);
-                return Unauthorized("Неверный логин или пароль.");
+                return Unauthorized(Core.ErrorCodes.AuthInvalidCredentials);
             }
 
             _logger.LogInformation("User {Username} logged in successfully from IP: {IP} with agent: {UserAgent}", request.Username, ipAddress, userAgent);

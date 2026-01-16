@@ -1,10 +1,10 @@
 ﻿using Inventory_Atlas.Core.Models;
-using Inventory_Atlas.Application.Entities.Base;
-using Inventory_Atlas.Application.Entities.Inventory;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
+using Inventory_Atlas.Infrastructure.Entities.Base;
+using Inventory_Atlas.Infrastructure.Entities.Inventory;
 
-namespace Inventory_Atlas.Application.Entities.Technics
+namespace Inventory_Atlas.Infrastructure.Entities.Technics
 {
     /// <summary>
     /// Сетевое устройство.

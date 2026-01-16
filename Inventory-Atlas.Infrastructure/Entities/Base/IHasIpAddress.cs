@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Inventory_Atlas.Application.Entities.Base
+namespace Inventory_Atlas.Infrastructure.Entities.Base
 {
     public interface IHasIpAddress
     {

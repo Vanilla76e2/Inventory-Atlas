@@ -1,4 +1,4 @@
-﻿namespace Inventory_Atlas.Application.Auditor.Scope
+﻿namespace Inventory_Atlas.Infrastructure.Auditor.Scope
 {
     public interface IAuditScope : IDisposable
     {

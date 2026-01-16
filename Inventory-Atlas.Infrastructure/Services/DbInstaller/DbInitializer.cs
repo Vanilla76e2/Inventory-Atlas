@@ -1,13 +1,12 @@
-﻿using Audit.Core;
-using Inventory_Atlas.Core.Models;
-using Inventory_Atlas.Application.Data;
-using Inventory_Atlas.Application.Entities.Users;
+﻿using Inventory_Atlas.Core.Models;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using Inventory_Atlas.Infrastructure.Data;
 
-namespace Inventory_Atlas.Application.Services.DbInstaller
+namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
 {
     /// <summary>
     /// Инициализатор базы данных

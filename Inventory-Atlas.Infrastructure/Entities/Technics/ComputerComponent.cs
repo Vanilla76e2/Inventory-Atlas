@@ -1,8 +1,8 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Application.Entities.Base;
 using System.ComponentModel.DataAnnotations.Schema;
+using Inventory_Atlas.Infrastructure.Entities.Base;
 
-namespace Inventory_Atlas.Application.Entities.Technics
+namespace Inventory_Atlas.Infrastructure.Entities.Technics
 {
     /// <summary>
     /// Сущность, описывающая компонент компьютера.

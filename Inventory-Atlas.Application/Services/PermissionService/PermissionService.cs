@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace Inventory_Atlas.Application.Services.PermissionService
+namespace Inventory_Atlas.Infrastructure.Services.PermissionService
 {
     /// <summary>
     /// Сервис проверки прав пользователя на доступ к ресурсам системы.

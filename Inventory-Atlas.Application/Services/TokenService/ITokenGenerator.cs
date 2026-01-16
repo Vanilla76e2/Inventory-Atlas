@@ -1,4 +1,4 @@
-﻿namespace Inventory_Atlas.Application.Services.TokenService
+﻿namespace Inventory_Atlas.Infrastructure.Services.TokenService
 {
     /// <summary>
     /// Интерфейс сервиса предоставляющего токены для сессий пользователей.
