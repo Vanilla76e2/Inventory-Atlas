@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Inventory_Atlas.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialInventoryAtlas : Migration
+    public partial class IntialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,6 +47,8 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     occurred_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     session_token = table.Column<string>(type: "text", nullable: true),
                     user_id = table.Column<int>(type: "integer", nullable: true),
+                    ip_address = table.Column<string>(type: "text", nullable: true),
+                    user_agent = table.Column<string>(type: "text", nullable: true),
                     action_type = table.Column<int>(type: "integer", nullable: false),
                     target_type = table.Column<string>(type: "text", nullable: true),
                     target_id = table.Column<string>(type: "text", nullable: true),

@@ -21,6 +21,12 @@ namespace Inventory_Atlas.Infrastructure.Entities.Audit
         [Column("user_id")]
         public int? UserId { get; set; }
 
+        [Column("ip_address")]
+        public string? IpAddress { get; set; }
+
+        [Column("user_agent")]
+        public string? UserAgent { get; set; }
+
 
         [Column("action_type")]
         public Core.Enums.ActionType ActionType { get; set; } = Core.Enums.ActionType.Unknown;

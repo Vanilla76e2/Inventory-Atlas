@@ -1,4 +1,5 @@
 ﻿using Audit.Core;
+using Inventory_Atlas.Core.DTOs.Users;
 using Inventory_Atlas.Infrastructure.Entities.Audit;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 
@@ -59,6 +60,6 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Audit
         /// <param name="token">Токен сесии.</param>
         /// <param name="ct">Токен отмены.</param>
         /// <returns><see cref="UserProfile"/>.</returns>
-        Task<int?> GetUserIdByTokenAsync(string token, CancellationToken ct = default);
+        Task<int?> GetIdByTokenAsync(string token, CancellationToken ct = default);
     }
 }

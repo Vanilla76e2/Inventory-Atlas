@@ -81,6 +81,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("jsonb")
                         .HasColumnName("details");
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text")
+                        .HasColumnName("ip_address");
+
                     b.Property<DateTime>("OccurredAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("occurred_at");
@@ -96,6 +100,10 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                     b.Property<string>("TargetType")
                         .HasColumnType("text")
                         .HasColumnName("target_type");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("text")
+                        .HasColumnName("user_agent");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("integer")

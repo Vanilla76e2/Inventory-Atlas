@@ -39,9 +39,9 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
         }
 
         /// <inheritdoc/>
-        public async Task<Response<UserProfileDto>> CreateUserProfileAsync(
+        public async Task<Response<UserProfileDto>> CreateAsync(
             UserProfileCreateDto newUser, 
-            string sessionToken, 
+            ClientInfo clientInfo, 
             CancellationToken ct = default)
         {
             try
@@ -62,16 +62,24 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
                     return Response<UserProfileDto>.Fail(ErrorCodes.UsernameAlreadtExists);
                 }
 
+                var userId = await _sessionService.GetIdByTokenAsync(clientInfo.SessionToken!);
+                if (userId == null)
+                    return Response<UserProfileDto>.Fail(ErrorCodes.InvalidSession);
+
                 var userProfile = UserProfileFactory.Create(newUser, _hasher);
 
-                await _uow.SaveChangesAsync(ct,new AuditContext
+                await _uow.SaveChangesAsync(ct, new AuditContext
                 {
                     ActionType = Core.Enums.ActionType.Create,
-                    SessionToken = sessionToken,
-                    UserId = await _sessionService.GetUserIdByTokenAsync(sessionToken)
+                    SessionToken = clientInfo.SessionToken,
+                    UserId = userId,
+                    UserAgent = clientInfo.UserAgent,
+                    IpAddress = clientInfo.IpAddress,
+                    TargetType = typeof(UserProfile).ToString(),
+                    TargetId = userProfile.Id.ToString()
                 });
 
-                _logger.LogDebug("User created successfully.");
+                _logger.LogDebug("User {Username} created successfully.", userProfile.Username);
 
                 var userProfileDto = _mapper.Map<UserProfileDto>(userProfile);
 
@@ -85,7 +93,10 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
         }
 
         /// <inheritdoc/>
-        public async Task<Response<UserProfileDto>> UpdateUserProfileAsync(UserProfileUpdateDto newUserDto, string sessionToken, CancellationToken ct = default)
+        public async Task<Response<UserProfileDto>> UpdateAsync(
+            UserProfileUpdateDto newUserDto, 
+            ClientInfo clientInfo, 
+            CancellationToken ct = default)
         {
             try
             {
@@ -105,15 +116,22 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
                     return Response<UserProfileDto>.Fail(ErrorCodes.UserNotExist);
                 }
 
-                UserProfileFactory.Update(user, newUserDto, _hasher);
+                var userId = await _sessionService.GetIdByTokenAsync(clientInfo.SessionToken!);
+                if (userId == null)
+                {
+                    _logger.LogWarning("Invalid Session");
+                    return Response<UserProfileDto>.Fail(ErrorCodes.InvalidSession);
+                }
 
-                _userRepo.Update(user);
+                _userRepo.Update(UserProfileFactory.Update(user, newUserDto, _hasher));
 
                 await _uow.SaveChangesAsync(ct, new AuditContext
                 {
                     ActionType = Core.Enums.ActionType.Update,
-                    SessionToken = sessionToken,
-                    UserId = await _sessionService.GetUserIdByTokenAsync(sessionToken)
+                    SessionToken = clientInfo.SessionToken,
+                    UserId = userId,
+                    TargetType = typeof(UserProfile).ToString(),
+                    TargetId = newUserDto.Id.ToString()
                 });
 
                 _logger.LogDebug("User with id {UserId} updated successfuly.", newUserDto.Id);
@@ -128,7 +146,7 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
         }
 
         /// <inheritdoc/>
-        public async Task<UserProfile?> GetByUsernameAsync(string username, CancellationToken ct = default)
+        public async Task<UserProfileDto?> GetByUsernameAsync(string username, CancellationToken ct = default)
         {
             try
             {
@@ -140,7 +158,7 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
                 else
                     _logger.LogDebug("User {Username} not found", username);
 
-                return result;
+                return _mapper.Map<UserProfileDto>(result);
             }
             catch (Exception ex)
             {
@@ -150,24 +168,47 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
         }
 
         /// <inheritdoc/>
-        public async Task<List<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default)
+        public async Task<List<UserProfileDto>> GetActiveAsync(CancellationToken ct = default)
         {
             try
             {
-                _logger.LogDebug("Try to get all active users.");
+                _logger.LogDebug("Try to get all active users...");
                 var result = await _userRepo.GetActiveUsersAsync(ct);
 
                 if (result.Count > 0)
                     _logger.LogDebug("Active users found: {Count}", result.Count);
                 else
-                    _logger.LogDebug("No active users found.");
+                    _logger.LogWarning("No active users found.");
 
-                return result;
+                return _mapper.Map<List<UserProfileDto>>(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Getting active users failed.");
-                return new List<UserProfile>();
+                return new List<UserProfileDto>();
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<UserProfileDto>> GetAllAsync(CancellationToken ct = default)
+        {
+            try
+            {
+                _logger.LogDebug("Try to get all users...");
+
+                var result = await _userRepo.GetAllAsync(ct);
+
+                if (result.Count > 0)
+                    _logger.LogDebug($"Users found: {result.Count}");
+                else
+                    _logger.LogWarning($"No users found.");
+
+                return _mapper.Map<List<UserProfileDto>>(result);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Getting users failed.");
+                return new List<UserProfileDto>();
             }
         }
     }

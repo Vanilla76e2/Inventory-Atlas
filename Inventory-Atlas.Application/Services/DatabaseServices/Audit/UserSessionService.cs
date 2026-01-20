@@ -68,7 +68,7 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Audit
             }
         }
 
-        public async Task<int?> GetUserIdByTokenAsync(string token, CancellationToken ct = default)
+        public async Task<int?> GetIdByTokenAsync(string token, CancellationToken ct = default)
         {
             var session = await _sessionRepo.GetSessionByTokenAsync(token, ct);
 

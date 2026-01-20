@@ -19,5 +19,8 @@
         public const string AuthMissingCredentials = "Auth.MissingCredetials";
         public const string AuthInvalidCredentials = "Auth.InvalidCredetials";
         public const string AuthUserInactive = "Auth.UserInactive";
+
+        // Session
+        public const string InvalidSession = "Session.InvalidSession";
     }
 }

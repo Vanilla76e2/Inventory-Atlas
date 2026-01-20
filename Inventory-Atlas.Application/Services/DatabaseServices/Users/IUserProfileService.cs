@@ -15,14 +15,14 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
         /// <param name="username">Имя пользователя для поиска.</param>
         /// <param name="ct">Токен отмены операции.</param>
         /// <returns>Профиль пользователя или <see langword="null"/>, если пользователь не найден.</returns>
-        Task<UserProfile?> GetByUsernameAsync(string username, CancellationToken ct = default);
+        Task<UserProfileDto?> GetByUsernameAsync(string username, CancellationToken ct = default);
 
         /// <summary>
         /// Возвращает список пользователей, которые могут авторизоваться в системе.
         /// </summary>
         /// <param name="ct">Токен отмены операции.</param>
-        /// <returns>Список профилей пользователей с активным статусом, допускающих вход в систему.</returns>
-        Task<List<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default);
+        /// <returns>Список <see cref="UserProfile"/> с активным статусом, допускающих вход в систему.</returns>
+        Task<List<UserProfileDto>> GetActiveAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Создаёт пользователя и асинхронно сохраняет.
@@ -31,7 +31,7 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
         /// <param name="sessionToken">Токен сессии пользователя.</param>
         /// <param name="ct">Токен отмены.</param>
         /// <returns><see cref="Response{T}"/> с <see cref="UserProfileDto"/>.</returns>
-        Task<Response<UserProfileDto>> CreateUserProfileAsync(UserProfileCreateDto newUser, string sessionToken, CancellationToken ct = default);
+        Task<Response<UserProfileDto>> CreateAsync(UserProfileCreateDto newUser, ClientInfo clientInfo, CancellationToken ct = default);
 
         /// <summary>
         /// Изменяет пользователя и асинхронно сохраняет.
@@ -40,7 +40,13 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
         /// <param name="sessionToken">Токен сесии пользователя.</param>
         /// <param name="ct">Токен отмены.</param>
         /// <returns><see cref="Response{T}"/> с <see cref="UserProfileDto"/>.</returns>
-        Task<Response<UserProfileDto>> UpdateUserProfileAsync(UserProfileUpdateDto newUserDto, string sessionToken, CancellationToken ct = default);
+        Task<Response<UserProfileDto>> UpdateAsync(UserProfileUpdateDto newUserDto, ClientInfo clientInfo, CancellationToken ct = default);
 
+        /// <summary>
+        /// Получает всех пользователей в системе.
+        /// </summary>
+        /// <param name="ct">Токен отмены.</param>
+        /// <returns>Список <see cref="UserProfileDto"/>.</returns>
+        Task<List<UserProfileDto>> GetAllAsync(CancellationToken ct = default);
     }
 }

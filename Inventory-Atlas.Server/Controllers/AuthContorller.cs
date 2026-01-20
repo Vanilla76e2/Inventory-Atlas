@@ -1,10 +1,8 @@
 using Inventory_Atlas.Infrastructure.Services.Auth;
-using Inventory_Atlas.Core.Enums;
-using Inventory_Atlas.Server.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Inventory_Atlas.Core.Models.Http;
-using Inventory_Atlas.Core;
+using Inventory_Atlas.Infrastructure.Auditor;
 
 namespace Inventory_Atlas.Server.Controllers
 {
@@ -33,26 +31,24 @@ namespace Inventory_Atlas.Server.Controllers
         /// <param name="request">Запрос.</param>
         /// <returns><see cref="IActionResult"/>.</returns>
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequests request)
+        public async Task<IActionResult> Login([FromBody] LoginRequests request, CancellationToken ct)
         {
             _logger.LogInformation("Login attempt for user: {Username}", request.Username);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var userAgent = Request.Headers["User-Agent"].ToString();
-            var ipAddress = Request.Headers["X-Forwarded-For"].FirstOrDefault() 
-                ?? HttpContext.Connection.RemoteIpAddress?.ToString();
+            var clientInfo = HttpContext.GetClientInfo(); 
 
-            var result = await _authService.LoginAsync(request.Username, request.Password, userAgent, ipAddress);
+            var result = await _authService.LoginAsync(request.Username, request.Password, clientInfo, ct);
 
             if (!result.Success)
             {
-                _logger.LogWarning("Failed login attempt for user: {Username} from IP: {IP} with agent: {UserAgent}", request.Username, ipAddress, userAgent);
+                _logger.LogWarning("Failed login attempt for user: {Username} from IP: {IP} with agent: {UserAgent}", request.Username, clientInfo.IpAddress, clientInfo.UserAgent);
                 return Unauthorized(Core.ErrorCodes.AuthInvalidCredentials);
             }
 
-            _logger.LogInformation("User {Username} logged in successfully from IP: {IP} with agent: {UserAgent}", request.Username, ipAddress, userAgent);
+            _logger.LogInformation("User {Username} logged in successfully from IP: {IP} with agent: {UserAgent}", request.Username, clientInfo.IpAddress, clientInfo.UserAgent);
             return Ok(result);
         }
 
@@ -64,24 +60,23 @@ namespace Inventory_Atlas.Server.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            var userAgent = Request.Headers["User-Agent"].ToString();
-            var ipAddress = Request.Headers["X-Forwarded-For"].FirstOrDefault()
-                ?? HttpContext.Connection.RemoteIpAddress?.ToString();
-
-            _logger.LogInformation("Logout attempt received.");
+            _logger.LogInformation($"Attempt to logout user ...");
          
-            var tokenStr = Request.Headers["Authorization"].ToString();
-            if(!tokenStr.StartsWith("Bearer "))
+            var clientInfo = HttpContext.GetClientInfo();
+
+            if (clientInfo == null || string.IsNullOrWhiteSpace(clientInfo.SessionToken))
             {
-                _logger.LogWarning("Logout attempt without Bearer token.");
-                return Unauthorized("Токен не предоставлен.");
-            }
+                _logger.LogWarning(
+                    "Invalid session. Client is null or SessionToken is empty. IP: {Ip}, Path: {Path}",
+                    HttpContext.Connection.RemoteIpAddress?.ToString(),
+                    HttpContext.Request.Path
+                );
+                return Ok();
+            }   
+            
+            var result = await _authService.LogoutAsync(clientInfo);
 
-            var token = tokenStr.Substring("Bearer ".Length).Trim();
-
-            var success = await _authService.LogoutAsync(token);
-
-            _logger.LogInformation("Logout processed successfully from IP {IP} with User-Agent {UserAgent}", ipAddress, userAgent);
+            _logger.LogInformation("Logout processed successfully from IP {IP} with User-Agent {UserAgent}", clientInfo.IpAddress, clientInfo.UserAgent);
 
             return Ok();
         }
