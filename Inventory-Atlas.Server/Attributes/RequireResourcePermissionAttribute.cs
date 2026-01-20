@@ -1,7 +1,7 @@
-﻿using Inventory_Atlas.Infrastructure.Services.PermissionService;
-using Inventory_Atlas.Core.Enums;
+﻿using Inventory_Atlas.Core.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Inventory_Atlas.Application.Services.PermissionService;
 
 namespace Inventory_Atlas.Server.Attributes
 {

@@ -1,6 +1,6 @@
-﻿using Inventory_Atlas.Infrastructure.Services.PasswordHasher;
-using Inventory_Atlas.Core.DTOs.Users;
+﻿using Inventory_Atlas.Core.DTOs.Users;
 using Inventory_Atlas.Infrastructure.Entities.Users;
+using Inventory_Atlas.Application.Services.PasswordHasher;
 
 namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
 {
@@ -14,7 +14,7 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
                 PasswordHash = hasher.Hash(dto.Password),
                 IsActive = true,
                 RoleId = dto.RoleId,
-                EmployeeId = dto.EmployeeId
+                EmployeeId = dto.EmployeeId == 0 ? null : dto.EmployeeId
             };
         }
 

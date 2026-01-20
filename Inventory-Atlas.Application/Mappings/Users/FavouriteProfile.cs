@@ -2,7 +2,7 @@
 using Inventory_Atlas.Core.DTOs.Users;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 
-namespace Inventory_Atlas.Infrastructure.Mappings.Users
+namespace Inventory_Atlas.Application.Mappings.Users
 {
     public class FavouriteProfile : Profile
     {

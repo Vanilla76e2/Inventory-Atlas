@@ -6,7 +6,7 @@ using Inventory_Atlas.Infrastructure.Entities.Base;
 using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Entities.Inventory;
 
-namespace Inventory_Atlas.Infrastructure.Mappings.Technics
+namespace Inventory_Atlas.Application.Mappings.Technics
 {
     public class PrinterProfile : Profile
     {

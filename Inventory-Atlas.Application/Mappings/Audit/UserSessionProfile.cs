@@ -2,7 +2,7 @@
 using Inventory_Atlas.Core.DTOs.Audit;
 using Inventory_Atlas.Infrastructure.Entities.Audit;
 
-namespace Inventory_Atlas.Infrastructure.Mappings.Audit
+namespace Inventory_Atlas.Application.Mappings.Audit
 {
     public class UserSessionProfile : Profile
     {

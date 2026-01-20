@@ -1,11 +1,9 @@
 ﻿using Inventory_Atlas.Application.Services.DatabaseServices.Audit;
 using Inventory_Atlas.Application.Services.DatabaseServices.Users;
+using Inventory_Atlas.Application.Services.PermissionService;
 using Inventory_Atlas.Core.DTOs.Users;
-using Inventory_Atlas.Infrastructure.Auditor;
-using Inventory_Atlas.Infrastructure.Services.PermissionService;
 using Inventory_Atlas.Server.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Inventory_Atlas.Server.Controllers
 {

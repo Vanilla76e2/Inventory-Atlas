@@ -1,8 +1,7 @@
-using Inventory_Atlas.Infrastructure.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Inventory_Atlas.Core.Models.Http;
-using Inventory_Atlas.Infrastructure.Auditor;
+using Inventory_Atlas.Application.Services.Auth;
 
 namespace Inventory_Atlas.Server.Controllers
 {

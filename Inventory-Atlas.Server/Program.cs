@@ -1,6 +1,4 @@
 using Audit.Core;
-using Inventory_Atlas.Infrastructure;
-using Inventory_Atlas.Infrastructure.Services.JwtKeyProvider;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,6 +6,8 @@ using System.Text;
 using Inventory_Atlas.Infrastructure.Data;
 using Inventory_Atlas.Infrastructure.Repository;
 using Inventory_Atlas.Infrastructure.Services.DbInstaller;
+using Inventory_Atlas.Application;
+using Inventory_Atlas.Application.Services.JwtKeyProvider;
 
 namespace Inventory_Atlas.Server
 { 

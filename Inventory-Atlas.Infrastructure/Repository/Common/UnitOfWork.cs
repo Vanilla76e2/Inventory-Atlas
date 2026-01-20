@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Inventory_Atlas.Infrastructure.Data;
-using Inventory_Atlas.Infrastructure.Auditor.Service;
-using Inventory_Atlas.Infrastructure.Auditor;
+using Inventory_Atlas.Auditor;
 
 
 namespace Inventory_Atlas.Infrastructure.Repository.Common

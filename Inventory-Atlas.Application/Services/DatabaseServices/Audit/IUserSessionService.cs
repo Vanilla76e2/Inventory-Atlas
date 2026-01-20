@@ -18,7 +18,7 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Audit
         /// <param name="userAgent">User-Agent клиента. Может быть null.</param>
         /// <param name="ct">Токен отмены операции.</param>
         /// <returns>Созданная сессия с уникальным токеном.</returns>
-        UserSession CreateSession(string username, int userId, string? ip, string? userAgent);
+        UserSession CreateSession(UserProfile user, string? ip, string? userAgent);
 
         /// <summary>
         /// Проверяет токен сессии и возвращает сессию, если она действительна.

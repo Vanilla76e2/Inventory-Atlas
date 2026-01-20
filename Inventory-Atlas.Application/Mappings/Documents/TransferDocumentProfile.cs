@@ -1,10 +1,10 @@
-﻿using Inventory_Atlas.Infrastructure.Mappings.Common;
-using Inventory_Atlas.Core.DTOs.Common;
+﻿using Inventory_Atlas.Core.DTOs.Common;
 using Inventory_Atlas.Core.DTOs.Documents;
 using Inventory_Atlas.Infrastructure.Entities.Base;
 using Inventory_Atlas.Infrastructure.Entities.Documents;
+using Inventory_Atlas.Application.Mappings.Common;
 
-namespace Inventory_Atlas.Infrastructure.Mappings.Documents
+namespace Inventory_Atlas.Application.Mappings.Documents
 {
     public class TransferDocumentProfile : DocumentProfile
     {

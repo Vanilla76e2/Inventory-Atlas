@@ -1,4 +1,4 @@
-﻿using Inventory_Atlas.Infrastructure.Services.PermissionService;
+﻿using Inventory_Atlas.Application.Services.PermissionService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -16,7 +16,7 @@ namespace Inventory_Atlas.Server.Attributes
 
             if (!permService!.HasAdminPermission(context.HttpContext))
             {
-                logger?.LogDebug("Access denied. User does not have admin permissions.");
+                logger?.LogWarning("Access denied. User does not have admin permissions.");
                 context.Result = new ForbidResult();
                 return;
             }

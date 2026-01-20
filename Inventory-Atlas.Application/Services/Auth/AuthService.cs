@@ -1,21 +1,15 @@
-﻿using Audit.Core;
-using Audit.EntityFramework;
-using Inventory_Atlas.Application.Services.DatabaseServices.Audit;
-using Inventory_Atlas.Application.Services.DatabaseServices.Users;
+﻿using Inventory_Atlas.Application.Services.DatabaseServices.Audit;
+using Inventory_Atlas.Application.Services.PasswordHasher;
 using Inventory_Atlas.Core;
 using Inventory_Atlas.Core.Models;
 using Inventory_Atlas.Core.Models.Http;
-using Inventory_Atlas.Infrastructure.Auditor;
-using Inventory_Atlas.Infrastructure.Auditor.Service;
-using Inventory_Atlas.Infrastructure.Entities.Audit;
 using Inventory_Atlas.Infrastructure.Repository.Common;
 using Inventory_Atlas.Infrastructure.Repository.Users;
-using Inventory_Atlas.Infrastructure.Services.PasswordHasher;
-using Inventory_Atlas.Infrastructure.Services.TokenService;
-using Microsoft.AspNetCore.Http;
+using Inventory_Atlas.Application.Services.TokenService;
 using Microsoft.Extensions.Logging;
+using Inventory_Atlas.Auditor;
 
-namespace Inventory_Atlas.Infrastructure.Services.Auth
+namespace Inventory_Atlas.Application.Services.Auth
 {
     /// <summary>
     /// Сервис для аутентификации пользователей.
@@ -57,47 +51,32 @@ namespace Inventory_Atlas.Infrastructure.Services.Auth
             _logger.LogDebug("Attempting to log in user {Username}", username);
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-                return new LoginResponse
-                {
-                    Success = false,
-                    ErrorCode = ErrorCodes.AuthMissingCredentials
-                };
+                return LoginResponse.Fail(ErrorCodes.AuthMissingCredentials);
 
-            var user = await _userRepo.GetByUsernameAsync(username, ct);
+            var user = await _userRepo.GetWithRoleByUsername(username, ct);
             if (user == null)
             {
                 _logger.LogDebug("User {Username} not found during login attempt", username);
-                return new LoginResponse
-                {
-                    Success = false,
-                    ErrorCode = ErrorCodes.AuthInvalidCredentials
-                };
+                return LoginResponse.Fail(ErrorCodes.AuthInvalidCredentials);
             }
 
             if (!user.IsActive)
             {
                 _logger.LogDebug($"User {username} is not active.");
-                return new LoginResponse
-                {
-                    Success = false,
-                    ErrorCode = ErrorCodes.AuthUserInactive
-                };
+                return LoginResponse.Fail(ErrorCodes.AuthUserInactive);
             }
 
             if (!_hasher.Verify(password, user.PasswordHash))
             {
                 _logger.LogDebug("Invalid password for user {Username}", username);
-                return new LoginResponse
-                {
-                    Success = false,
-                    ErrorCode = ErrorCodes.AuthInvalidCredentials
-                };
+                return LoginResponse.Fail(ErrorCodes.AuthInvalidCredentials);
             }
 
             _logger.LogDebug("{Username} authenticated successfuly from {IpAddress} {Useragent}", username, clientInfo.IpAddress, clientInfo.UserAgent);
+            
             try
-            {
-                var session = _sessionService.CreateSession(username, user.Id, clientInfo.IpAddress, clientInfo.UserAgent);
+            {  
+                var session = _sessionService.CreateSession(user, clientInfo.IpAddress, clientInfo.UserAgent);
 
                 await _uow.SaveChangesAsync(ct, new AuditContext
                 {
@@ -109,20 +88,12 @@ namespace Inventory_Atlas.Infrastructure.Services.Auth
                 });
 
                 _logger.LogDebug("User {Username} logged in successfully with session token {Token}", username, session.Token);
-                return new LoginResponse
-                {
-                    Success = true,
-                    Token = session.Token
-                };
+                return LoginResponse.Ok(session.Token);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating session for user {Username}", username);
-                return new LoginResponse
-                {
-                    Success = false,
-                    ErrorCode = ErrorCodes.UnexpectedError
-                };
+                return LoginResponse.Fail(ErrorCodes.UnexpectedError);
             }
         }
 

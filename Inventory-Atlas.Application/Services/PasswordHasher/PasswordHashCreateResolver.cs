@@ -2,7 +2,7 @@
 using Inventory_Atlas.Core.DTOs.Users;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 
-namespace Inventory_Atlas.Infrastructure.Services.PasswordHasher
+namespace Inventory_Atlas.Application.Services.PasswordHasher
 {
     public class PasswordHashCreateResolver : IMemberValueResolver<UserProfileCreateDto, UserProfile, string, string>
     {

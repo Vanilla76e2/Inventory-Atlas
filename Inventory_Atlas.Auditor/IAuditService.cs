@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Inventory_Atlas.Infrastructure.Auditor.Service
+namespace Inventory_Atlas.Auditor
 {
     public interface IAuditService
     {
-        Scope.IAuditScope BeginScope(AuditContext context);
+        IAuditScope BeginScope(AuditContext context);
 
         void RegisterAudit(DbContext dbContext, AuditContext context);
     }

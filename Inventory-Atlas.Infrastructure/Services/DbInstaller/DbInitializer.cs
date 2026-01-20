@@ -25,8 +25,6 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
             var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
             var logger = loggerFactory.CreateLogger("DbInitializer");
 
-            Audit.Core.Configuration.AuditDisabled = true;
-
             try
             {
                 logger.LogInformation("Applying database migrations...");
@@ -40,8 +38,6 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
             }
 
             await Seed(context, logger);
-
-            Audit.Core.Configuration.AuditDisabled = false;
         }
 
         /// <summary>

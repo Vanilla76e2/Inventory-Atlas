@@ -1,18 +1,19 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Audit;
+﻿using Inventory_Atlas.Auditor;
+using Inventory_Atlas.Infrastructure.Entities.Audit;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace Inventory_Atlas.Infrastructure.Auditor.Service
+namespace Inventory_Atlas.Infrastructure.Services.Audit
 {
     public class AuditService : IAuditService
     {
-        private readonly AsyncLocal<Scope.IAuditScope?> _currentScope = new();
+        private readonly AsyncLocal<IAuditScope?> _currentScope = new();
 
         public AuditService()
         {
         }
 
-        public Scope.IAuditScope BeginScope(AuditContext context)
+        public IAuditScope BeginScope(AuditContext context)
         {
             if (_currentScope.Value != null)
             {
@@ -20,7 +21,7 @@ namespace Inventory_Atlas.Infrastructure.Auditor.Service
                     "AuditScope is already active. Nested scopes are not supported.");
             }
 
-            var scope = new Scope.AuditScope(context, onDispose: () => _currentScope.Value = null);
+            var scope = new AuditScope(context, onDispose: () => _currentScope.Value = null);
 
             _currentScope.Value = scope;
             return scope;

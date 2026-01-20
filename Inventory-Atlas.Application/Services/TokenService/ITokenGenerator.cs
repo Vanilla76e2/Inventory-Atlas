@@ -1,4 +1,6 @@
-﻿namespace Inventory_Atlas.Infrastructure.Services.TokenService
+﻿using Inventory_Atlas.Infrastructure.Entities.Users;
+
+namespace Inventory_Atlas.Application.Services.TokenService
 {
     /// <summary>
     /// Интерфейс сервиса предоставляющего токены для сессий пользователей.
@@ -9,6 +11,6 @@
         /// Метод генерации токенов.
         /// </summary>
         /// <returns>Токен в виде строки.</returns>
-        string GenerateToken(string username);
+        string GenerateToken(UserProfile user);
     }
 }

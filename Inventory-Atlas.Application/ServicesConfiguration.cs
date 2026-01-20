@@ -1,15 +1,16 @@
 ﻿using Audit.Core;
+using Inventory_Atlas.Application.Services.Auth;
 using Inventory_Atlas.Application.Services.DatabaseServices.Audit;
 using Inventory_Atlas.Application.Services.DatabaseServices.Users;
-using Inventory_Atlas.Infrastructure.Auditor.Service;
-using Inventory_Atlas.Infrastructure.Services.Auth;
-using Inventory_Atlas.Infrastructure.Services.JwtKeyProvider;
-using Inventory_Atlas.Infrastructure.Services.PasswordHasher;
-using Inventory_Atlas.Infrastructure.Services.PermissionService;
-using Inventory_Atlas.Infrastructure.Services.TokenService;
+using Inventory_Atlas.Application.Services.JwtKeyProvider;
+using Inventory_Atlas.Application.Services.PasswordHasher;
+using Inventory_Atlas.Application.Services.PermissionService;
+using Inventory_Atlas.Auditor;
+using Inventory_Atlas.Infrastructure.Services.Audit;
+using Inventory_Atlas.Application.Services.TokenService;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Inventory_Atlas.Infrastructure
+namespace Inventory_Atlas.Application
 {
     /// <summary>
     /// Класс конфигурации сервисов.

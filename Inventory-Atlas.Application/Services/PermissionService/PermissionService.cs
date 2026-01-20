@@ -1,10 +1,12 @@
-﻿using Inventory_Atlas.Core.Enums;
+﻿using Inventory_Atlas.Application.Services.DatabaseServices.Audit;
+using Inventory_Atlas.Core.Enums;
 using Inventory_Atlas.Core.Models;
+using Inventory_Atlas.Infrastructure.Repository.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace Inventory_Atlas.Infrastructure.Services.PermissionService
+namespace Inventory_Atlas.Application.Services.PermissionService
 {
     /// <summary>
     /// Сервис проверки прав пользователя на доступ к ресурсам системы.
@@ -88,27 +90,24 @@ namespace Inventory_Atlas.Infrastructure.Services.PermissionService
         /// <inheritdoc/>
         private RolePermission GetPermissions(HttpContext context)
         {
-            _logger.LogDebug("Retrieving RolePermission from HttpContext.Items.");
+            var user = context.User;
+            if(user?.Identity?.IsAuthenticated != true)
+                return new RolePermission();
 
-            var prmsJson = context.Items["Permissions"] as string;
-            if (string.IsNullOrEmpty(prmsJson))
+            var json = user.FindFirst("permissions")?.Value;
+            if (string.IsNullOrWhiteSpace(json))
+                return new RolePermission();
+
+            try
             {
-                _logger.LogWarning("Permissions not found in HttpContext.Items or is empty.");
+                return JsonSerializer.Deserialize<RolePermission>(json) ?? new RolePermission();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to deserialize permissions from JWT token.");
                 return new RolePermission();
             }
 
-            _logger.LogDebug("Deserializing Permissions JSON: {PermissionsJson}", prmsJson);
-
-            var rolePermission = JsonSerializer.Deserialize<RolePermission>(prmsJson);
-            if (rolePermission == null)
-            {
-                _logger.LogWarning("Failed to deserialize Permissions JSON to RolePermission object.");
-                return new RolePermission();
-            }    
-
-            _logger.LogDebug("Successfully retrieved RolePermission.");
-
-            return rolePermission;
         }
 
         /// <inheritdoc/>

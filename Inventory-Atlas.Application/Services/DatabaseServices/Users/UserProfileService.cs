@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Inventory_Atlas.Infrastructure.Services.PasswordHasher;
-using Inventory_Atlas.Infrastructure.Validators;
 using Inventory_Atlas.Core.DTOs.Users;
 using Microsoft.Extensions.Logging;
 using Inventory_Atlas.Core.Models;
@@ -8,8 +6,10 @@ using Inventory_Atlas.Core;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 using Inventory_Atlas.Infrastructure.Repository.Common;
 using Inventory_Atlas.Infrastructure.Repository.Users;
-using Inventory_Atlas.Infrastructure.Auditor;
 using Inventory_Atlas.Application.Services.DatabaseServices.Audit;
+using Inventory_Atlas.Application.Services.PasswordHasher;
+using Inventory_Atlas.Application.Validators;
+using Inventory_Atlas.Auditor;
 
 namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
 {
@@ -68,6 +68,8 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
 
                 var userProfile = UserProfileFactory.Create(newUser, _hasher);
 
+                _userRepo.Add(userProfile);
+
                 await _uow.SaveChangesAsync(ct, new AuditContext
                 {
                     ActionType = Core.Enums.ActionType.Create,
@@ -80,6 +82,8 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
                 });
 
                 _logger.LogDebug("User {Username} created successfully.", userProfile.Username);
+
+                userProfile = await _userRepo.GetWithRoleByUsername(userProfile.Username);
 
                 var userProfileDto = _mapper.Map<UserProfileDto>(userProfile);
 
@@ -136,7 +140,11 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
 
                 _logger.LogDebug("User with id {UserId} updated successfuly.", newUserDto.Id);
 
-                return Response<UserProfileDto>.Ok(_mapper.Map<UserProfileDto>(user));
+                user = await _userRepo.GetWithRoleByUsername(user.Username);
+
+                var userDto = _mapper.Map<UserProfileDto>(user);
+
+                return Response<UserProfileDto>.Ok(userDto);
             }
             catch (Exception ex)
             {
@@ -196,7 +204,7 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Users
             {
                 _logger.LogDebug("Try to get all users...");
 
-                var result = await _userRepo.GetAllAsync(ct);
+                var result = await _userRepo.GetAllWithRolesAsync(ct);
 
                 if (result.Count > 0)
                     _logger.LogDebug($"Users found: {result.Count}");

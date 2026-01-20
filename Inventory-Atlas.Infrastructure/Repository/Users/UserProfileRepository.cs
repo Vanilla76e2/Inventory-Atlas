@@ -22,9 +22,19 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
         }
 
         /// <inheritdoc/>
+        public async Task<UserProfile?> GetWithRoleByUsername(string username, CancellationToken ct = default)
+        {
+            return await _context.Set<UserProfile>()
+                .AsNoTracking()
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Username == username);
+        }
+
+        /// <inheritdoc/>
         public async Task<UserProfile?> GetByUsernameAsync(string username, CancellationToken ct = default)
         {
             return await _context.Set<UserProfile>()
+                .AsNoTracking()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Username == username, ct);
         }
@@ -35,6 +45,14 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
             return await _context.Set<UserProfile>()
                 .AsNoTracking()             
                 .Where(u => u.IsActive)
+                .ToListAsync(ct);
+        }
+
+        public async Task<List<UserProfile>> GetAllWithRolesAsync(CancellationToken ct = default)
+        {
+            return await _context.Set<UserProfile>()
+                .AsNoTracking()
+                .Include(u => u.Role)
                 .ToListAsync(ct);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Inventory_Atlas.Core.Enums;
 
-namespace Inventory_Atlas.Infrastructure.Auditor
+namespace Inventory_Atlas.Auditor
 {
     public class AuditContext
     {

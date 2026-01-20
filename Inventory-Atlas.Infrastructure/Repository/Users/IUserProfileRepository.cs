@@ -20,5 +20,18 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
         /// </summary>
         /// <returns>Коллекция активных пользователей</returns>
         Task<List<UserProfile>> GetActiveUsersAsync(CancellationToken ct = default);
+
+        /// <summary>
+        /// Получает профиль пользователя вместе с ролью по имени пользователя.
+        /// </summary>
+        /// <param name="username">Имя пользователя.</param>
+        /// <param name="ct">Токен отмены.</param>
+        Task<UserProfile?> GetWithRoleByUsername(string username, CancellationToken ct = default);
+
+        /// <summary>
+        /// Получает всех пользователей вместе с их ролями.
+        /// </summary>
+        /// <param name="ct">Токен отмены.</param>
+        Task<List<UserProfile>> GetAllWithRolesAsync(CancellationToken ct = default);
     }
 }

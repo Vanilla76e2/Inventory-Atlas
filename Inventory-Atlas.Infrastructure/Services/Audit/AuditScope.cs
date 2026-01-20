@@ -1,4 +1,6 @@
-﻿namespace Inventory_Atlas.Infrastructure.Auditor.Scope
+﻿using Inventory_Atlas.Auditor;
+
+namespace Inventory_Atlas.Infrastructure.Services.Audit
 {
     public class AuditScope : IAuditScope
     {

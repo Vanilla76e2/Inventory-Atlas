@@ -4,7 +4,7 @@ using Inventory_Atlas.Core.DTOs.Technics;
 using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Entities.Inventory;
 
-namespace Inventory_Atlas.Infrastructure.Mappings.Technics
+namespace Inventory_Atlas.Application.Mappings.Technics
 {
     public class SoftwareProfile : Profile
     {

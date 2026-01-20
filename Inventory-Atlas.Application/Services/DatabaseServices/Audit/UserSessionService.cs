@@ -1,6 +1,7 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Audit;
+﻿using Inventory_Atlas.Application.Services.TokenService;
+using Inventory_Atlas.Infrastructure.Entities.Audit;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 using Inventory_Atlas.Infrastructure.Repository.Audit;
-using Inventory_Atlas.Infrastructure.Services.TokenService;
 
 namespace Inventory_Atlas.Application.Services.DatabaseServices.Audit
 {
@@ -17,15 +18,14 @@ namespace Inventory_Atlas.Application.Services.DatabaseServices.Audit
         }
 
         /// <inheritdoc/>
-        public UserSession CreateSession(string username, 
-            int userId, 
+        public UserSession CreateSession(UserProfile user, 
             string? ip, 
             string? userAgent)
         {
             var session = new UserSession(
-                token: _tokenGenerator.GenerateToken(username),
-                username: username,
-                userId: userId,
+                token: _tokenGenerator.GenerateToken(user),
+                username: user.Username,
+                userId: user.Id,
                 ipAddress: ip,
                 userAgent: userAgent
             );

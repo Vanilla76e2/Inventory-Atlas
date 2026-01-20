@@ -1,9 +1,7 @@
-﻿using Audit.Core;
-using Inventory_Atlas.Core.Models;
+﻿using Inventory_Atlas.Core.Models;
 using Inventory_Atlas.Core.Models.Http;
-using Inventory_Atlas.Infrastructure.Auditor;
 
-namespace Inventory_Atlas.Infrastructure.Services.Auth
+namespace Inventory_Atlas.Application.Services.Auth
 {
     /// <summary>
     /// Сервис для аутентификации пользователей.

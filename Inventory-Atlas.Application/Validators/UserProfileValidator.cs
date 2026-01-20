@@ -2,7 +2,7 @@
 using Inventory_Atlas.Core.DTOs.Users;
 using Inventory_Atlas.Core.Models;
 
-namespace Inventory_Atlas.Infrastructure.Validators
+namespace Inventory_Atlas.Application.Validators
 {
     /// <summary>
     /// Валидатор данных профиля пользователей.
@@ -28,7 +28,7 @@ namespace Inventory_Atlas.Infrastructure.Validators
             if (dto.Password.Length < 8)
                 return new(false, ErrorCodes.PasswordTooShort);
 
-            if (dto.EmployeeId.HasValue && dto.EmployeeId <= 0)
+            if (dto.EmployeeId.HasValue && dto.EmployeeId < 0)
                 return new(false, ErrorCodes.InvalidEmployeeId);
 
             if (dto.RoleId <= 0)

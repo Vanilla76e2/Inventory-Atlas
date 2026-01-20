@@ -1,4 +1,4 @@
-﻿using Inventory_Atlas.Infrastructure.Auditor;
+﻿using Inventory_Atlas.Auditor;
 
 namespace Inventory_Atlas.Infrastructure.Repository.Common
 {
