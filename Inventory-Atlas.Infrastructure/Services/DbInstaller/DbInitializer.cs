@@ -55,7 +55,7 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
             {
                 logger.LogInformation("Seeding roles...");
 
-                var adminPerm = new RolePermission
+                var adminPerm = new RolePermissions
                 {
                     IsAdmin = true,
                 };
@@ -63,14 +63,17 @@ namespace Inventory_Atlas.Infrastructure.Services.DbInstaller
                 var adminRole = new Role
                 {
                     Name = "Admin",
-                    PermissionJson = JsonSerializer.Serialize(adminPerm),
+                    Permissions = new()
+                    {
+                        IsAdmin = true
+                    },
                     IsSystem = true
                 };
 
                 var userRole = new Role
                 {
                     Name = "None",
-                    PermissionJson = JsonSerializer.Serialize(new RolePermission()),
+                    Permissions = new(),
                     IsSystem = true
                 };
 

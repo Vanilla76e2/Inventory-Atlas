@@ -1,13 +1,18 @@
 using Audit.Core;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Inventory_Atlas.Application;
+using Inventory_Atlas.Application.Services.JwtKeyProvider;
+using Inventory_Atlas.Core.Models;
 using Inventory_Atlas.Infrastructure.Data;
 using Inventory_Atlas.Infrastructure.Repository;
 using Inventory_Atlas.Infrastructure.Services.DbInstaller;
-using Inventory_Atlas.Application;
-using Inventory_Atlas.Application.Services.JwtKeyProvider;
+using Inventory_Atlas.Server.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+using System.Text.Json;
 
 namespace Inventory_Atlas.Server
 { 
@@ -27,7 +32,7 @@ namespace Inventory_Atlas.Server
 
             RegisterDatabase(builder);
 
-            // Нужно будет сделать services.AddExceptionHandler();
+            // РќР°РґРѕ Р±СѓРґРµС‚ РґРѕР±Р°РІРёС‚СЊ services.AddExceptionHandler();
 
             RegisterProject(builder);
 
@@ -35,26 +40,39 @@ namespace Inventory_Atlas.Server
 
             builder.Services.AddSwaggerGen(c =>
             {
-                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-                    Description = "Введите JWT токен: Bearer {token}",
                     Name = "Authorization",
-                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
                     BearerFormat = "JWT",
-                    Scheme = "Bearer"
+                    In = ParameterLocation.Header,
+                    Description = "Р’РІРµРґРёС‚Рµ JWT С‚РѕРєРµРЅ. РџСЂРёРјРµСЂ: Bearer {token}"
                 });
 
-                c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement {
-    {
-                    new Microsoft.OpenApi.Models.OpenApiSecurityScheme {
-                        Reference = new Microsoft.OpenApi.Models.OpenApiReference {
-                            Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    Array.Empty<string>()
-                }});
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+            });
+
+            builder.Services.AddScoped<IAuthorizationHandler, AdminRequirementHandler>();
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy =>
+                {
+                    policy.Requirements.Add(new AdminRequirement());
+                });
             });
 
             #endregion
@@ -92,7 +110,7 @@ namespace Inventory_Atlas.Server
         }
 
         /// <summary>
-        /// Регистрирует базу данных.
+        /// Р РµРіРёСЃС‚СЂР°С†РёСЏ Р±Р°Р·С‹ РґР°РЅРЅС‹С….
         /// </summary>
         private static void RegisterDatabase(WebApplicationBuilder builder)
         {
@@ -108,7 +126,7 @@ namespace Inventory_Atlas.Server
         }
 
         /// <summary>
-        /// Регистрация сервисов в DI.
+        /// Р РµРіРёСЃС‚СЂР°С†РёСЏ СЃРµСЂРІРёСЃРѕРІ РїСЂРѕРµРєС‚Р° РІ DI-РєРѕРЅС‚РµР№РЅРµСЂРµ.
         /// </summary>
         private static void RegisterProject(WebApplicationBuilder builder)
         {
@@ -117,11 +135,11 @@ namespace Inventory_Atlas.Server
             services.AddRepositories();
             services.AddAutoMapper(typeof(AssemblyMarker));
             services.AddApplicationServices();
-            // Нужно будет сделать services.AddHealthChecks
+            // РќСѓР¶РЅРѕ Р±СѓРґРµС‚ РґРѕР±Р°РІРёС‚СЊ services.AddHealthChecks
         }
 
         /// <summary>
-        /// Настройки JWT авторизации и аутентификации.
+        /// РќР°СЃС‚СЂРѕР№РєР° JWT-Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё Рё Р°РІС‚РѕСЂРёР·Р°С†РёРё.
         /// </summary>
         private static void AuthConfig(WebApplicationBuilder builder)
         {

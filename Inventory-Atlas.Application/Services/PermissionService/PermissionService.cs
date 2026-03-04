@@ -1,10 +1,11 @@
-﻿using Inventory_Atlas.Application.Services.DatabaseServices.Audit;
+﻿using Inventory_Atlas.Application.Services.DatabaseServices.Users;
 using Inventory_Atlas.Core.Enums;
 using Inventory_Atlas.Core.Models;
-using Inventory_Atlas.Infrastructure.Repository.Users;
+using Inventory_Atlas.Infrastructure.Entities.Users;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
+using System.Net.WebSockets;
 
 namespace Inventory_Atlas.Application.Services.PermissionService
 {
@@ -13,32 +14,53 @@ namespace Inventory_Atlas.Application.Services.PermissionService
     /// </summary>
     public class PermissionService : IPermissionService
     {
-        ILogger _logger;
+        private readonly ILogger _logger;
+        private readonly IMemoryCache _cache;
+        private readonly IRoleService _roleService;
+        private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(5);
+
 
         /// <summary>
         /// Создает новый экземпляр <see cref="PermissionService"/>.
         /// </summary>
         /// <param name="logger">Сервис логирования.</param>
-        public PermissionService(ILogger<PermissionService> logger)
+        public PermissionService(ILogger<PermissionService> logger,
+            IMemoryCache cache,
+            IRoleService roleService,
+            CancellationToken ct = default)
         {
             _logger = logger;
+            _cache = cache;
+            _roleService = roleService;
         }
 
         /// <inheritdoc/>
-        public bool HasPermission(HttpContext context, ResourceType resourceType, int responsibleUserId, RolePermissionEnum requiredLevel = RolePermissionEnum.Read)
+        public async Task<bool> HasPermission(int roleId,
+            ResourceType resourceType,
+            int responsibleUserId,
+            RolePermissionEnum requiredLevel = RolePermissionEnum.Read,
+            CancellationToken ct = default)
         {
             _logger.LogDebug("Checking permissions for resource type {ResourceType} with required level {RequiredLevel} for responsible user ID {ResponsibleUserId}.",
                 resourceType, requiredLevel, responsibleUserId);
 
-            if (IsAdmin(context, out var rolePermission))
+            var permissions = await GetRolePermissionsAsync(roleId, ct);
+
+            if (permissions == null)
+            {
+                _logger.LogWarning("Role with ID {RoleId} not found when checking permissions.", roleId);
+                return false;
+            }
+
+            if (permissions.IsAdmin)
                 return true;
 
             return resourceType switch
             {
-                ResourceType.InventoryItems => rolePermission.InventoryItemsPermissions
+                ResourceType.InventoryItems => permissions.InventoryItemsPermissions
                     .Any(p => p.Level >= requiredLevel && p.ResponsibleIds.Contains(responsibleUserId)),
 
-                ResourceType.Documents => rolePermission.DocumentsPermissions
+                ResourceType.Documents => permissions.DocumentsPermissions
                     .Any(p => p.Level >= requiredLevel && p.ResponsibleIds.Contains(responsibleUserId)),
 
                 _ => false
@@ -46,75 +68,69 @@ namespace Inventory_Atlas.Application.Services.PermissionService
         }
 
         /// <inheritdoc/>
-        public bool HasPermission(HttpContext context, ResourceType resourceType, DictionariesEnum dictionary, RolePermissionEnum requiredLevel = RolePermissionEnum.Read)
+        public async Task<bool> HasPermission(int roleId, 
+            ResourceType resourceType, 
+            DictionariesEnum dictionary, 
+            RolePermissionEnum requiredLevel = RolePermissionEnum.Read, 
+            CancellationToken ct = default)
         {
             _logger.LogDebug("Checking dictionary permissions for resource type {ResourceType} with required level {RequiredLevel} for dictionary {Dictionary}.",
                 resourceType, requiredLevel, dictionary);
 
-            if (IsAdmin(context, out var rolePermission))
+            var permissions = await GetRolePermissionsAsync(roleId, ct);
+
+            if (permissions.IsAdmin)
                 return true;
 
             return resourceType switch
             {
-                ResourceType.Dictionaries => rolePermission.DictionaryPermissions.TryGetValue(dictionary, out var level) && level >= requiredLevel,
+                ResourceType.Dictionaries => permissions.DictionaryPermissions.TryGetValue(dictionary, out var level) && level >= requiredLevel,
 
                 _ => false
             };
         }
 
         /// <inheritdoc/>
-        public bool HasPermission(HttpContext context, ResourceType resourceType, RolePermissionEnum requiredLevel = RolePermissionEnum.Read)
+        public async Task<bool> HasPermission(int roleId, 
+            ResourceType resourceType, 
+            RolePermissionEnum requiredLevel = RolePermissionEnum.Read, 
+            CancellationToken ct = default)
         {
             _logger.LogDebug("Checking global permissions for resource type {ResourceType} with required level {RequiredLevel}.",
                 resourceType, requiredLevel);
 
-            if (IsAdmin(context, out var rolePermission))
+            var permissions = await GetRolePermissionsAsync(roleId, ct);
+
+            if (permissions.IsAdmin)
                 return true;
 
             return resourceType switch
             {
-                ResourceType.Workplaces => rolePermission.Workplaces >= requiredLevel,
+                ResourceType.Workplaces => permissions.Workplaces >= requiredLevel,
 
                 _ => false
             };
         }
 
         /// <inheritdoc/>
-        public bool HasAdminPermission(HttpContext context)
+        public async Task<bool> HasAdminPermission(int id, CancellationToken ct = default)
         {
-            _logger.LogDebug("Checking if user has admin permissions.");
+            _logger.LogDebug("Checking admin permissions.");
 
-            return IsAdmin(context, out _);
+            var permissions = await GetRolePermissionsAsync(id, ct);
+            return permissions.IsAdmin;
         }
 
-        /// <inheritdoc/>
-        private RolePermission GetPermissions(HttpContext context)
+        private async Task<RolePermissions> GetRolePermissionsAsync(int roleId, CancellationToken ct = default)
         {
-            var user = context.User;
-            if(user?.Identity?.IsAuthenticated != true)
-                return new RolePermission();
-
-            var json = user.FindFirst("permissions")?.Value;
-            if (string.IsNullOrWhiteSpace(json))
-                return new RolePermission();
-
-            try
+            var result = await _cache.GetOrCreateAsync(roleId, async entry =>
             {
-                return JsonSerializer.Deserialize<RolePermission>(json) ?? new RolePermission();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to deserialize permissions from JWT token.");
-                return new RolePermission();
-            }
+                entry.AbsoluteExpirationRelativeToNow = _cacheDuration;
+                var role = await _roleService.GetByIdWithPermissionsAsync(roleId, ct);
+                return role.Permission;
+            });
 
-        }
-
-        /// <inheritdoc/>
-        private bool IsAdmin(HttpContext context, out RolePermission rolePermission)
-        {
-            rolePermission = GetPermissions(context);
-            return rolePermission.IsAdmin;
+            return result ?? new();
         }
     }
 }

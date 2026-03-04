@@ -32,51 +32,53 @@ namespace Inventory_Atlas.Server.Attributes
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var permService = context.HttpContext.RequestServices.GetService<IPermissionService>();
-            var logger = context.HttpContext.RequestServices.GetService<ILogger<RequireResourcePermissionAttribute>>();
-            bool allowed = false;
+            throw new NotImplementedException("RequireResourcePermissionAttribute is not implemented yet.");
 
-            logger?.LogDebug("Checking permissions for resource type {ResourceType} with required level {RequiredLevel}.",
-                _resourceType, _requiredLevel);
+            //var permService = context.HttpContext.RequestServices.GetService<IPermissionService>();
+            //var logger = context.HttpContext.RequestServices.GetService<ILogger<RequireResourcePermissionAttribute>>();
+            //bool allowed = false;
 
-            if (_responsible != null)
-            {
-                if (!context.ActionArguments.TryGetValue(_responsible, out var arg))
-                {
-                    context.Result = new BadRequestObjectResult($"Missing action argument: {_responsible}");
-                    logger?.LogWarning("Missing action argument: {Responsible}", _responsible);
-                    return;
-                }
-                
-                if (arg is not int resposnibleId)
-                {
-                    context.Result = new BadRequestObjectResult($"Invalid type for action argument: {_responsible}. Expected int.");
-                    logger?.LogWarning("Invalid type for action argument: {Responsible}. Expected int.", _responsible);
-                    return;
-                }
+            //logger?.LogDebug("Checking permissions for resource type {ResourceType} with required level {RequiredLevel}.",
+            //    _resourceType, _requiredLevel);
 
-                allowed = permService!.HasPermission(context.HttpContext, _resourceType, resposnibleId, _requiredLevel);
-            }
-            else if (_dictionary != null)
-            {
-                allowed = permService!.HasPermission(context.HttpContext, _resourceType, _dictionary.Value, _requiredLevel);
-            }
-            else
-            {
-                allowed = permService!.HasPermission(context.HttpContext, _resourceType, _requiredLevel);
-            }
+            //if (_responsible != null)
+            //{
+            //    if (!context.ActionArguments.TryGetValue(_responsible, out var arg))
+            //    {
+            //        context.Result = new BadRequestObjectResult($"Missing action argument: {_responsible}");
+            //        logger?.LogWarning("Missing action argument: {Responsible}", _responsible);
+            //        return;
+            //    }
 
-            if (!allowed)
-            {
-                context.Result = new ForbidResult();
-                logger?.LogDebug("Permission denied for resource type {ResourceType} with required level {RequiredLevel}.",
-                    _resourceType, _requiredLevel);
-                return;
-            }
+            //    if (arg is not int resposnibleId)
+            //    {
+            //        context.Result = new BadRequestObjectResult($"Invalid type for action argument: {_responsible}. Expected int.");
+            //        logger?.LogWarning("Invalid type for action argument: {Responsible}. Expected int.", _responsible);
+            //        return;
+            //    }
 
-            logger?.LogDebug("Permission granted for resource type {ResourceType} with required level {RequiredLevel}.",
-                _resourceType, _requiredLevel);
-            await next();
+            //    allowed = permService!.HasPermission(context.HttpContext, _resourceType, resposnibleId, _requiredLevel);
+            //}
+            //else if (_dictionary != null)
+            //{
+            //    allowed = permService!.HasPermission(context.HttpContext, _resourceType, _dictionary.Value, _requiredLevel);
+            //}
+            //else
+            //{
+            //    allowed = permService!.HasPermission(context.HttpContext, _resourceType, _requiredLevel);
+            //}
+
+            //if (!allowed)
+            //{
+            //    context.Result = new ForbidResult();
+            //    logger?.LogDebug("Permission denied for resource type {ResourceType} with required level {RequiredLevel}.",
+            //        _resourceType, _requiredLevel);
+            //    return;
+            //}
+
+            //logger?.LogDebug("Permission granted for resource type {ResourceType} with required level {RequiredLevel}.",
+            //    _resourceType, _requiredLevel);
+            //await next();
         }
     }
 }

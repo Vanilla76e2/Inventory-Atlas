@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Inventory_Atlas.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260120071744_IntialMigration")]
-    partial class IntialMigration
+    [Migration("20260204112310_InventoryAtlasInitial")]
+    partial class InventoryAtlasInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1327,7 +1327,7 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("name");
 
-                    b.Property<string>("PermissionJson")
+                    b.Property<string>("Permissions")
                         .IsRequired()
                         .HasColumnType("jsonb")
                         .HasColumnName("permissions");
@@ -1337,11 +1337,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PermissionJson")
-                        .HasDatabaseName("IX_Role_PermissionJson");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("PermissionJson"), "GIN");
 
                     b.ToTable("Roles", "Users");
                 });

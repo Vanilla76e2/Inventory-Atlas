@@ -1,6 +1,4 @@
-﻿using Inventory_Atlas.Application.Services.PermissionService;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Inventory_Atlas.Server.Attributes
 {
@@ -9,20 +7,22 @@ namespace Inventory_Atlas.Server.Attributes
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var permService = context.HttpContext.RequestServices.GetService<IPermissionService>();
-            var logger = context.HttpContext.RequestServices.GetService<ILogger<AdminOnlyAttribute>>();
+            //var permService = context.HttpContext.RequestServices.GetService<IPermissionService>();
+            //var logger = context.HttpContext.RequestServices.GetService<ILogger<AdminOnlyAttribute>>();
 
-            logger?.LogDebug("Checking admin permissions for the current user.");
+            //logger?.LogDebug("Checking admin permissions for the current user.");
 
-            if (!permService!.HasAdminPermission(context.HttpContext))
-            {
-                logger?.LogWarning("Access denied. User does not have admin permissions.");
-                context.Result = new ForbidResult();
-                return;
-            }
+            //if (!await permService!.HasAdminPermission(context.HttpContext.User.FindFirst("roleId")))
+            //{
+            //    logger?.LogWarning("Access denied. User does not have admin permissions.");
+            //    context.Result = new ForbidResult();
+            //    return;
+            //}
 
-            logger?.LogDebug("Access granted. User has admin permissions.");
-            await next();
+            //logger?.LogDebug("Access granted. User has admin permissions.");
+            //await next();
+            
+            throw new NotImplementedException("AdminOnlyAttribute is not implemented yet.");
         }
     }
 }

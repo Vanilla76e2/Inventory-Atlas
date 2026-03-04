@@ -9,6 +9,7 @@ using Inventory_Atlas.Auditor;
 using Inventory_Atlas.Infrastructure.Services.Audit;
 using Inventory_Atlas.Application.Services.TokenService;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Sockets;
 
 namespace Inventory_Atlas.Application
 {
@@ -29,15 +30,18 @@ namespace Inventory_Atlas.Application
             services.AddSingleton<IJwtKeyProvider, FileJwtKeyProvider>();
             services.AddScoped<PasswordHashCreateResolver>();
             services.AddScoped<PasswordHashUpdateResolver>();
+            services.AddScoped<IPermissionService, PermissionService>();
             services.AddHttpContextAccessor();
             //services.AddScoped<Auditor.Scope.IAuditScope, Auditor.Scope.AuditScope>();
             services.AddSingleton<IAuditService, AuditService>();
+            services.AddMemoryCache();
 
             // CRUD services
             // Audit
             services.AddScoped<IUserSessionService, UserSessionService>();
+            // Users
             services.AddScoped<IUserProfileService, UserProfileService>();
-
+            services.AddScoped<IRoleService, RoleService>();
             return services;
         }
     }

@@ -1,4 +1,5 @@
-﻿using Inventory_Atlas.Infrastructure.Entities.Base;
+﻿using Inventory_Atlas.Core.Models;
+using Inventory_Atlas.Infrastructure.Entities.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -49,9 +50,22 @@ namespace Inventory_Atlas.Infrastructure.Entities.Users
         /// <para/>
         /// Тип: <see langword="string"/>.
         /// <para/>
-        /// Не может быть <see langword="null"/>. По умолчанию пустой объект JSON.
+        /// Не может быть <see langword="null"/>. По умолчанию пустой объект.
         /// </summary>
         [Column("permissions", TypeName = "jsonb")]
-        public string PermissionJson { get; set; } = "{}";
+        public RolePermissions Permissions { get; set; } = new();
+
+        /// <summary>
+        /// Вычисляемое свойство для получения количества пользователей с этой ролью. <para/>
+        /// Тип: <see langword="int"/>.
+        /// </summary>
+        [NotMapped]
+        public int UserCount => UserProfiles.Count;
+
+        /// <summary>
+        /// Вычисляемое свойство IsAdmin для быстрой проверки, является ли роль администраторской.
+        /// </summary>
+        [NotMapped]
+        public bool IsAdmin => Permissions.IsAdmin;
     }
 }

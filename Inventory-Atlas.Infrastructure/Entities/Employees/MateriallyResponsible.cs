@@ -29,6 +29,7 @@ namespace Inventory_Atlas.Infrastructure.Entities.Employees
         /// </summary>
         [ForeignKey(nameof(EmployeeId))]
         public virtual Employee? Employee { get; set; }
+       
 
         /// <summary>
         /// Отображаемое имя ответственного.

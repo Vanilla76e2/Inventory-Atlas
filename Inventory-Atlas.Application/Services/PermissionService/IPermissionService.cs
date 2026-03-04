@@ -1,5 +1,4 @@
 ﻿using Inventory_Atlas.Core.Enums;
-using Microsoft.AspNetCore.Http;
 
 namespace Inventory_Atlas.Application.Services.PermissionService
 {
@@ -16,7 +15,7 @@ namespace Inventory_Atlas.Application.Services.PermissionService
         /// <param name="responsibleUserId">Идентификатор пользователя, ответственного за объект.</param>
         /// <param name="requiredLevel">Минимальный уровень прав для доступа (по умолчанию Read).</param>
         /// <returns>True, если пользователь имеет нужные права, иначе false.</returns>
-        bool HasPermission(HttpContext context, ResourceType resourceType, int responsibleUserId, RolePermissionEnum requiredLevel = RolePermissionEnum.Read);
+        Task<bool> HasPermission(int roleId, ResourceType resourceType, int responsibleUserId, RolePermissionEnum requiredLevel = RolePermissionEnum.Read, CancellationToken ct = default);
 
         /// <summary>
         /// Проверяет права пользователя на словари.
@@ -26,7 +25,7 @@ namespace Inventory_Atlas.Application.Services.PermissionService
         /// <param name="dictionary">Конкретный словарь.</param>
         /// <param name="requiredLevel">Минимальный уровень прав (по умолчанию Read).</param>
         /// <returns>True, если пользователь имеет нужные права, иначе false.</returns>
-        bool HasPermission(HttpContext context, ResourceType resourceType, DictionariesEnum dictionary, RolePermissionEnum requiredLevel = RolePermissionEnum.Read);
+        Task<bool> HasPermission(int roleId, ResourceType resourceType, DictionariesEnum dictionary, RolePermissionEnum requiredLevel = RolePermissionEnum.Read, CancellationToken ct = default);
 
         /// <summary>
         /// Проверяет права пользователя на глобальные ресурсы.
@@ -35,13 +34,13 @@ namespace Inventory_Atlas.Application.Services.PermissionService
         /// <param name="resourceType">Тип ресурса.</param>
         /// <param name="requiredLevel">Минимальный уровень прав (по умолчанию Read).</param>
         /// <returns>True, если пользователь имеет нужные права, иначе false.</returns>
-        bool HasPermission(HttpContext context, ResourceType resourceType, RolePermissionEnum requiredLevel = RolePermissionEnum.Read);
+        Task<bool> HasPermission(int roleId, ResourceType resourceType, RolePermissionEnum requiredLevel = RolePermissionEnum.Read, CancellationToken ct = default);
 
         /// <summary>
         /// Проверяет, является ли текущий пользователь администратором.
         /// </summary>
         /// <param name="context">HTTP-контекст текущего запроса.</param>
         /// <returns>True, если пользователь администратор, иначе false.</returns>
-        bool HasAdminPermission(HttpContext context);
+        Task<bool> HasAdminPermission(int roleId, CancellationToken ct = default);
     }
 }

@@ -22,5 +22,12 @@
 
         // Session
         public const string InvalidSession = "Session.InvalidSession";
+
+        // Role
+        public const string RoleNameAlreadyExists = "Role.NameAlreadyExists";
+        public const string RoleNotExist = "Role.NotExist";
+        public const string RoleIsSystem = "Role.IsSystem";
+        public const string InvalidRoleName = "Role.InvalidName";
+        public const string RolePermissionsInvalid = "Role.PermissionsInvalid";
     }
 }

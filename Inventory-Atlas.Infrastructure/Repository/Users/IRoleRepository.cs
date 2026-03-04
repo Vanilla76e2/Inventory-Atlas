@@ -20,5 +20,10 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
         /// </summary>
         /// <returns>Коллекция системных ролей</returns>
         Task<List<Role>> GetSystemRolesAsync(CancellationToken ct = default);
+
+        /// <summary>
+        /// Узнает, существует ли роль с указанным именем
+        /// </summary>
+        Task<bool> ExistsByNameAsync(string roleName, int? excludeId = null, CancellationToken ct = default);
     }
 }

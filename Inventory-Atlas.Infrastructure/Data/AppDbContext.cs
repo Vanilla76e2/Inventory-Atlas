@@ -1,4 +1,5 @@
 ﻿using Audit.EntityFramework;
+using Inventory_Atlas.Core.Models;
 using Inventory_Atlas.Infrastructure.Converters;
 using Inventory_Atlas.Infrastructure.Entities.Audit;
 using Inventory_Atlas.Infrastructure.Entities.Consumables;
@@ -10,7 +11,9 @@ using Inventory_Atlas.Infrastructure.Entities.Technics;
 using Inventory_Atlas.Infrastructure.Entities.Technics.Components;
 using Inventory_Atlas.Infrastructure.Entities.Users;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Reflection.Emit;
+using System.Text.Json;
 
 namespace Inventory_Atlas.Infrastructure.Data
 {
@@ -437,9 +440,20 @@ namespace Inventory_Atlas.Infrastructure.Data
                 .OnDelete(DeleteBehavior.SetNull);
 
             mb.Entity<Role>()
-                .HasIndex(p => p.PermissionJson)
-                .HasMethod("GIN")
-                .HasDatabaseName("IX_Role_PermissionJson");
+            .Property(r => r.Permissions)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, new JsonSerializerOptions()),
+                v => JsonSerializer.Deserialize<RolePermissions>(v, new JsonSerializerOptions())!
+            )
+            .HasColumnType("jsonb")
+            .Metadata.SetValueComparer(
+                new ValueComparer<RolePermissions>(
+                    (p1, p2) => JsonSerializer.Serialize(p1, new JsonSerializerOptions()) == JsonSerializer.Serialize(p2, new JsonSerializerOptions()),
+                    p => JsonSerializer.Serialize(p, new JsonSerializerOptions()).GetHashCode(),
+                    p => JsonSerializer.Deserialize<RolePermissions>(
+                             JsonSerializer.Serialize(p, new JsonSerializerOptions()), new JsonSerializerOptions())!
+                )
+            );
         }
 
         private void ConsumablesBuilder(ModelBuilder mb)

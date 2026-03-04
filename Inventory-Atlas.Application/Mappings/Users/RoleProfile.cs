@@ -10,8 +10,13 @@ namespace Inventory_Atlas.Application.Mappings.Users
         {
             CreateMap<Role, RoleDto>()
                 .ForMember(dest => dest.UserCount,
-                            opt => opt.MapFrom(src => src.UserProfiles.Count()));
+                            opt => opt.MapFrom(src => src.UserCount));
 
+            CreateMap<RoleCreateDto, Role>();
+
+            CreateMap<Role, RoleWithPermissionsDto>()
+                .ForMember(dest => dest.Permission,
+                            opt => opt.MapFrom(src => src.Permissions));
         }
     }
 }

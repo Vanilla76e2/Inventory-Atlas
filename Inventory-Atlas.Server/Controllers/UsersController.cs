@@ -3,6 +3,7 @@ using Inventory_Atlas.Application.Services.DatabaseServices.Users;
 using Inventory_Atlas.Application.Services.PermissionService;
 using Inventory_Atlas.Core.DTOs.Users;
 using Inventory_Atlas.Server.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventory_Atlas.Server.Controllers
@@ -28,7 +29,7 @@ namespace Inventory_Atlas.Server.Controllers
             _sessionService = sessionService;
         }
 
-        [AdminOnly]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost("create-userprofile")]
         public async Task<IActionResult> CreateUserProfile([FromBody] UserProfileCreateDto request, CancellationToken ct)
         {
@@ -66,7 +67,7 @@ namespace Inventory_Atlas.Server.Controllers
             }
         }
 
-        [AdminOnly]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost("update-userprofile")]
         public async Task<IActionResult> UpdateUserProfile([FromBody] UserProfileUpdateDto request, CancellationToken ct)
         {
@@ -98,7 +99,7 @@ namespace Inventory_Atlas.Server.Controllers
             }
         }
 
-        [AdminOnly]
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("get-all-userprofiles")]
         public async Task<IActionResult> GetAllUserProfiles(CancellationToken ct)
         {

@@ -5,7 +5,7 @@ namespace Inventory_Atlas.Core.Models
     /// <summary>
     /// Модель прав роли пользователя.
     /// </summary>
-    public class RolePermission
+    public class RolePermissions
     {
         /// <summary>
         /// Глобальные права администратора.

@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Inventory_Atlas.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class IntialMigration : Migration
+    public partial class InventoryAtlasInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -1640,13 +1640,6 @@ namespace Inventory_Atlas.Infrastructure.Migrations
                 schema: "Documents",
                 table: "ReturnDocuments",
                 column: "materially_responsible_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Role_PermissionJson",
-                schema: "Users",
-                table: "Roles",
-                column: "permissions")
-                .Annotation("Npgsql:IndexMethod", "GIN");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TransferDocumentItems_document_id",

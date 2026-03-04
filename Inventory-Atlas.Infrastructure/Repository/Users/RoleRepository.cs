@@ -35,5 +35,12 @@ namespace Inventory_Atlas.Infrastructure.Repository.Users
                 .Where(r => r.IsSystem)
                 .ToListAsync(ct);
         }
+
+        /// <inheritdoc/>
+        public async Task<bool> ExistsByNameAsync(string roleName, int? excludeId = null, CancellationToken ct = default)
+        {
+            return await _context.Set<Role>()
+                .AnyAsync(r => r.Name == roleName && (!excludeId.HasValue || r.Id != excludeId.Value), ct);
+        }
     }
 }

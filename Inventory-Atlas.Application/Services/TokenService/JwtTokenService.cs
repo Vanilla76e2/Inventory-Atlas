@@ -35,15 +35,14 @@ namespace Inventory_Atlas.Application.Services.TokenService
             if (user.Role == null)
                 throw new InvalidOperationException($"User {user.Username} has no role assigned.");
 
-            if (string.IsNullOrWhiteSpace(user.Role.PermissionJson))
+            if (user.Role.Permissions == null)
                 throw new InvalidOperationException($"Role {user.Role.Name} has empty permissions.");
 
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role.Name),
-                new Claim("permissions", user.Role.PermissionJson)
+                new Claim(ClaimTypes.Role, user.Role.Id.ToString())
             };
 
             var token = new JwtSecurityToken(
